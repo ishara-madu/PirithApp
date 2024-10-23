@@ -11,6 +11,7 @@ import Rate from '../../assets/svg/Rate'
 const Menu = () => {
   return (
     <SafeAreaView className='bg-black flex w-full h-full'>
+      
       <View className='flex relative h-auto items-center w-full flex-row justify-center mt-8 mb-8'>
         <Text className='text-2xl text-white font-bold'>Menu</Text>
         <Text className='absolute right-10 text-white'>Done</Text>
