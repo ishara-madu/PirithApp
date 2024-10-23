@@ -11,12 +11,6 @@ const Info = () => {
     const [showspeedOptions, setShowSpeedOptions] = useState(false);
 
 
-
- 
-
-
-
-
     const handleSleepButton = () => {
         setActiveButton(1);
         setShowSpeedOptions(false);

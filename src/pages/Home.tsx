@@ -1,5 +1,5 @@
 import { View, Text, SafeAreaView, Image, TouchableOpacity } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Shiffle from '../../assets/svg/Shiffle'
 import SkipPreviews from '../../assets/svg/SkipPreviews'
 import { NavigationContainer } from '@react-navigation/native';
@@ -7,9 +7,13 @@ import Play from '../../assets/svg/Play'
 import SkipNext from '../../assets/svg/SkipNext'
 import Repeat from '../../assets/svg/Repeat'
 import Info from '../components/Info';
+import Pause from '../../assets/svg/Pause';
+import YoutubePlayer, {YoutubeIframeRef} from "react-native-youtube-iframe";
+
 
 type HomeProps = {
   navigation: any;
+  
 }
 
 const Home = (props: HomeProps) => {
@@ -36,10 +40,11 @@ const Home = (props: HomeProps) => {
 
         <View className='w-full flex-1 justify-center items-center'>
           <View className='w-[80%] h-[85%] bg-slate-200 rounded-3xl'>
-
+          
           </View>
 
         </View>
+
 
         <View className='w-full bg-[#ffffff36] rounded-3xl flex items-center'>
           <View className='w-full flex flex-row justify-evenly items-center mt-5'>

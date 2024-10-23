@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import DownArrow from '../../../assets/svg/DownArrow';
 import Play from '../../../assets/svg/Playback';
 
@@ -15,6 +15,10 @@ const PlaybackSpeed = ({handlePlaybackButton,...props}:PlaybackProps) => {
     const handlePlaybackSpeed = () => {
         setShowSpeedOptions(true)
     }
+    useEffect(() => {
+        setShowSpeedOptions(props.showspeedOptions)
+    }, [props.showspeedOptions])
+
 
     const speedOptions = ["0.5", "Default", "1.5", "2"]
   return (
