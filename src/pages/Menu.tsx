@@ -37,9 +37,9 @@ const Menu = () => {
             <Help />
             <Text className='text-white text-lg ml-8'>Help & Support</Text>
           </TouchableOpacity>
-          <TouchableOpacity className='h-14 active:bg-[#0000002f] rounded-xl w-full flex flex-row items-center pl-5'>
-            <About wh={30}/>
-            <Text className='text-white text-lg ml-8'>About Us</Text>
+          <TouchableOpacity className='h-14  active:bg-[#0000002f] rounded-xl w-full flex flex-row items-center pl-4'>
+            <About wh={40}/>
+            <Text className='text-white text-lg ml-6'>About Us</Text>
           </TouchableOpacity>
         </View>
       </View>
