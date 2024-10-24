@@ -10,12 +10,17 @@ import Playlist from './src/pages/Playlist';
 import Menu from './src/pages/Menu';
 import Settings from './src/pages/Settings';
 import About from './src/pages/About';
+import { getData,displayAllKeys,clearAllStorage } from './src/pages/Database';
 
 const Stack = createNativeStackNavigator();
 
 
 
 function App() {
+
+  React.useEffect(() => {
+    }, []);
+  
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">
