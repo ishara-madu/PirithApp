@@ -13,8 +13,7 @@ import Shar from '../../assets/svg/Share';
 import { dropTable, insertData, updateFavorite } from './Database';
 import YoutubePlayer, { YoutubeIframeRef } from "react-native-youtube-iframe";
 import Playlist from './Playlist';
-import { Slider, genSliderStyle1, genSliderStyle2 } from 'react-native-reanimated-slider'
-
+import Slider from '@react-native-community/slider';
 
 
 const Home: React.FC = () => {
@@ -92,6 +91,13 @@ const Home: React.FC = () => {
     }
   };
 
+  
+  const formatTime = (seconds:number) => {
+    const minutes = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+  };
+
   return (
     <SafeAreaView>
       <View className='w-full h-full flex flex-col items-center bg-black justify-end'>
@@ -117,9 +123,9 @@ const Home: React.FC = () => {
               ref={playerRef}
               height={100}
               play={isPlay}
-              videoId={"dqkxmiI0kYo"}
+              videoId={url}
               onReady={onReady}
-            />
+              />
             <Image className='flex-1 rounded-3xl' source={{ uri: `https://img.youtube.com/vi/${url}/maxresdefault.jpg` }} />
           </View>
 
@@ -160,13 +166,10 @@ const Home: React.FC = () => {
                 maximumTrackTintColor="#8B8B8B"
                 thumbTintColor="#1EB1FC" // Large, vibrant thumb color
               />
-              {/* <View className='bg-white h-1.5 rounded-full'>
-                <View className='bg-red-800 h-full w-[40%] rounded-full'></View>
-              </View> */}
             </View>
             <View className='flex flex-row justify-between mt-2'>
-              <Text className='text-white'>{Math.floor(currentTime)}s</Text>
-              <Text className='text-white'>{Math.floor(duration)}s</Text>
+              <Text className='text-white'>{formatTime(currentTime)}</Text>
+              <Text className='text-white'>{formatTime(duration)}</Text>
             </View>
           </View>
 
