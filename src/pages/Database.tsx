@@ -31,13 +31,13 @@ export const dropTable = ()=>{
   console.log("dropped successfully");
 }
 
-export const getAllData = (keyword:any,showPlaylist?:any)=>{
+export const getAllData = (keyword:any,showPlaylist?:boolean)=>{
   const db = openDatabase();
-  return db.getAllSync(`SELECT id, url, name, artist, playlist, isFavorites 
-  FROM items 
-  WHERE (name || artist) LIKE ? 
-  ${showPlaylist ? "GROUP BY playlist" : ""}
-  ORDER BY id DESC`, [`%${keyword}%`]);
+  return db.getAllSync(`SELECT *
+    FROM items 
+    WHERE ${showPlaylist ? "playlist" : "(name || artist)"} LIKE ? 
+    ${showPlaylist ? "GROUP BY playlist" : ""}
+    ORDER BY id DESC`, [`%${keyword}%`]);
 }
 
 export const getFovoriteData = (keyword:any)=>{

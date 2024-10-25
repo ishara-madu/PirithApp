@@ -11,7 +11,7 @@ import List from '../../assets/svg/List'
 
 
 type PlaylistProps = {
-    onSelect: (url: string, name: string, artist: string, favorite: boolean, window: boolean) => void;
+    onSelect: (url: string, name: string, artist: string, favorite: boolean, window: boolean,urls:any) => void;
     showPlaylist: boolean
 }
 
@@ -59,7 +59,9 @@ const Playlist = ({ onSelect, ...props }: PlaylistProps) => {
 
     const handlePressed = (url: any, name: any, artist: any, favorite: boolean) => {
         const window = false;
-        onSelect(url, name, artist, favorite, window)
+        const urls = capturedValues.map((item:any) => item.url);
+        onSelect(url, name, artist, favorite, window,urls)
+        console.log(urls)
     }
 
     const handlePlaylist = (playlist: any) => {
@@ -116,8 +118,9 @@ const Playlist = ({ onSelect, ...props }: PlaylistProps) => {
                             <FlatList
                                 data={capturedValues}
                                 showsVerticalScrollIndicator={false}
+                                keyExtractor={(item) => item.id}
                                 renderItem={({ item }) => (
-                                    <TouchableOpacity onPress={() => { handlePlaylist(item.playlist) }} key={item.id} className='w-full flex flex-row items-center px-3 h-16 bg-[#00000065] rounded-xl mt-1'>
+                                    <TouchableOpacity onPress={() => { handlePlaylist(item.playlist) }} className='w-full flex flex-row items-center px-3 h-16 bg-[#00000065] rounded-xl mt-1'>
                                         <View className='w-11 h-11 rounded-md mr-7 overflow-hidden'>
                                             <View className='flex-1 justify-center items-center'>
                                             <List/>
@@ -128,7 +131,6 @@ const Playlist = ({ onSelect, ...props }: PlaylistProps) => {
                                         </View>
                                     </TouchableOpacity>
                                 )}
-                                keyExtractor={(item) => item.id}
                             />
                         ) : (
                             <FlatList

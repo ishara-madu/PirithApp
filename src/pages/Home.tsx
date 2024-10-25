@@ -2,7 +2,7 @@ import { View, Text, SafeAreaView, Image, TouchableOpacity, Alert, Share } from 
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import Shiffle from '../../assets/svg/Shiffle'
 import SkipPreviews from '../../assets/svg/SkipPreviews'
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, useFocusEffect } from '@react-navigation/native';
 import Play from '../../assets/svg/Play'
 import SkipNext from '../../assets/svg/SkipNext'
 import Repeat from '../../assets/svg/Repeat'
@@ -30,10 +30,12 @@ const Home: React.FC = () => {
   };
   const [isFavorites, setIsFavorites] = useState(false);
   const [showPlaylist, setShowPlaylist] = useState(false)
+  const [urls,setUrls] = useState([])
 
-  const handlePlayPause = () => {
-    isPlay ? setIsPlay(false) : setIsPlay(true);
-  };
+
+  const handlePlayPause = useCallback(() => {
+    setIsPlay((prev) => !prev);
+  }, []);
 
   const handleFavorite = () => {
     if (isFavorites) {
@@ -54,11 +56,12 @@ const Home: React.FC = () => {
 
   };
 
-  const params = (url: any, name: any, artist: any, favorite: boolean, window: boolean) => {
+  const params = (url: any, name: any, artist: any, favorite: boolean, window: boolean,urls:any) => {
     const selectedDetails = { url, name, artist, favorite };
     setSelectedPlaylist(selectedDetails);
     setShowPlaylist(window);
-    setIsFavorites(favorite)
+    setIsFavorites(favorite);
+    setUrls(urls);
   }
 
   useEffect(() => {
@@ -74,14 +77,16 @@ const Home: React.FC = () => {
     return () => clearInterval(interval); // Clean up interval on unmount
   }, [isPlay]);
 
-  const onReady = () => {
-    if (playerRef.current) {
-      playerRef.current
-        .getDuration()
-        .then(duration => setDuration(duration))
-        .catch(error => console.error("Error fetching duration:", error));
-    }
-  };
+useEffect(()=>{
+  if (playerRef.current) {
+    playerRef.current
+      .getDuration()
+      .then(duration => setDuration(duration))
+      .catch(error => console.error("Error fetching duration:", error));
+  }
+}, [isPlay])
+
+
 
   // Manually skip to a selected time
   const handleTimeChange = (time: any) => {
@@ -123,8 +128,7 @@ const Home: React.FC = () => {
               ref={playerRef}
               height={100}
               play={isPlay}
-              videoId={url}
-              onReady={onReady}
+              playList={urls}
               />
             <Image className='flex-1 rounded-3xl' source={{ uri: `https://img.youtube.com/vi/${url}/maxresdefault.jpg` }} />
           </View>
