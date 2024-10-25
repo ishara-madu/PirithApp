@@ -7,45 +7,43 @@ import { database } from '../../firebaseConfig'
 import { get, onValue, ref } from 'firebase/database'
 import { useFocusEffect } from '@react-navigation/native'
 import Return from '../../assets/svg/Return'
+import List from '../../assets/svg/List'
 
 
 type PlaylistProps = {
-    onSelect: (url: string, name: string, artist: string, favorite: boolean,window:boolean) => void;
+    onSelect: (url: string, name: string, artist: string, favorite: boolean, window: boolean) => void;
+    showPlaylist: boolean
 }
 
 
 
-const Playlist: React.FC<PlaylistProps> = ({onSelect}) => {
+const Playlist = ({ onSelect, ...props }: PlaylistProps) => {
     const [capturedValues, setCapturedValues] = useState<any>();
     const [listType, setListType] = useState("Recent");
     const [currentPlaylist, setCurrentPlaylist] = useState();
     const [inputValue, setInputValue] = useState('');
     const [insidePlaylist, setInsidePlaylist] = useState(false)
 
-    useFocusEffect(
-        React.useCallback(() => {
-            if (listType === "Playlist") {
-                if(insidePlaylist){
-                    const val = getPlaylistData(currentPlaylist);
-                    setCapturedValues(val);
-                }else{
-                    const val = getAllData(inputValue, true);
+
+    useEffect(() => {
+        if (listType === "Playlist") {
+            if (insidePlaylist) {
+                const val = getPlaylistData(currentPlaylist);
                 setCapturedValues(val);
-                }
-                
-            } else if (listType === "Favorite") {
-                const val = getFovoriteData(inputValue);
-                setCapturedValues(val)
             } else {
-                const val = getAllData(inputValue, false);
+                const val = getAllData(inputValue, true);
                 setCapturedValues(val);
             }
-            return () => {
-            };
-        }, [listType, inputValue])
-    );
 
-    // insertData();
+        } else if (listType === "Favorite") {
+            const val = getFovoriteData(inputValue);
+            setCapturedValues(val)
+        } else {
+            const val = getAllData(inputValue, false);
+            setCapturedValues(val);
+        }
+    }, [listType, inputValue])
+
 
     function truncateString(str: string) {
         if (str.length > 8) {
@@ -61,7 +59,7 @@ const Playlist: React.FC<PlaylistProps> = ({onSelect}) => {
 
     const handlePressed = (url: any, name: any, artist: any, favorite: boolean) => {
         const window = false;
-        onSelect(url, name, artist, favorite,window )
+        onSelect(url, name, artist, favorite, window)
     }
 
     const handlePlaylist = (playlist: any) => {
@@ -77,7 +75,7 @@ const Playlist: React.FC<PlaylistProps> = ({onSelect}) => {
     }
 
     return (
-        <View className='flex h-full w-full bg-black items-center absolute'>
+        <View className={`${props.showPlaylist ? "flex" : "hidden"} h-full w-full bg-black items-center absolute`}>
             <View className='flex flex-row w-[90%] mt-8 justify-between items-center mb-8'>
                 <View className='flex flex-row bg-[#b7b7b7d2] rounded-full h-11 w-[85%] items-center'>
                     <View className='flex px-3'>
@@ -105,12 +103,12 @@ const Playlist: React.FC<PlaylistProps> = ({onSelect}) => {
             </View>
             <View className='flex-1 w-full bg-[#b7b7b74e] rounded-t-3xl items-center pt-5'>
                 <View className='flex w-[85%] mb-5 flex-row items-center justify-between h-10'>
-                    <Text className='text-white text-2xl font-bold'>Favorites</Text>
+                    <Text className='text-white text-2xl font-bold'>{listType}</Text>
                     {
                         listType == "Playlist" && insidePlaylist &&
                         <TouchableOpacity onPress={handleReturn} className=' p-1'>
-                        <Return />
-                    </TouchableOpacity>}
+                            <Return />
+                        </TouchableOpacity>}
                 </View>
                 <View className='flex-1 w-[90%]'>
                     {
@@ -121,11 +119,12 @@ const Playlist: React.FC<PlaylistProps> = ({onSelect}) => {
                                 renderItem={({ item }) => (
                                     <TouchableOpacity onPress={() => { handlePlaylist(item.playlist) }} key={item.id} className='w-full flex flex-row items-center px-3 h-16 bg-[#00000065] rounded-xl mt-1'>
                                         <View className='w-11 h-11 rounded-md mr-7 overflow-hidden'>
-                                            <Image className='rounded-md flex-1 w-full h-full' source={{ uri: `https://img.youtube.com/vi/${item.playlist}/default.jpg` }} />
+                                            <View className='flex-1 justify-center items-center'>
+                                            <List/>
+                                            </View>
                                         </View>
                                         <View>
                                             <Text className='text-white text-base font-semibold'>{truncateString(item.playlist)}</Text>
-                                            <Text className='text-white text-xs text-opacity-50'>{item.playlist}</Text>
                                         </View>
                                     </TouchableOpacity>
                                 )}

@@ -11,10 +11,9 @@ import Pause from '../../assets/svg/Pause';
 import Heart from '../../assets/svg/Heart';
 import Shar from '../../assets/svg/Share';
 import { dropTable, insertData, updateFavorite } from './Database';
-import EventEmitter from 'events';
-import Video from '../components/Video';
-import YoutubePlayer, {YoutubeIframeRef} from "react-native-youtube-iframe";
+import YoutubePlayer, { YoutubeIframeRef } from "react-native-youtube-iframe";
 import Playlist from './Playlist';
+import { Slider, genSliderStyle1, genSliderStyle2 } from 'react-native-reanimated-slider'
 
 
 
@@ -22,7 +21,9 @@ const Home: React.FC = () => {
   const [showInfo, setShowInfo] = useState(false);
   const [isPlay, setIsPlay] = useState(false);
   const [selectedPlaylist, setSelectedPlaylist] = useState<any>(null);
-
+  const playerRef = useRef<YoutubeIframeRef>(null);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(100); // Placeholder for video duration
   const { url, name, artist } = selectedPlaylist || {
     url: 'No Url provided',
     name: 'No Name provided',
@@ -54,13 +55,42 @@ const Home: React.FC = () => {
 
   };
 
-  const params = (url: any, name: any, artist: any, favorite: boolean,window:boolean)=>{
+  const params = (url: any, name: any, artist: any, favorite: boolean, window: boolean) => {
     const selectedDetails = { url, name, artist, favorite };
     setSelectedPlaylist(selectedDetails);
     setShowPlaylist(window);
     setIsFavorites(favorite)
   }
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (playerRef.current && isPlay) {
+        playerRef.current
+          .getCurrentTime()
+          .then(currentTime => setCurrentTime(currentTime))
+          .catch(error => console.error("Error fetching time:", error));
+      }
+    }, 1000); // Adjust the interval time as needed
+
+    return () => clearInterval(interval); // Clean up interval on unmount
+  }, [isPlay]);
+
+  const onReady = () => {
+    if (playerRef.current) {
+      playerRef.current
+        .getDuration()
+        .then(duration => setDuration(duration))
+        .catch(error => console.error("Error fetching duration:", error));
+    }
+  };
+
+  // Manually skip to a selected time
+  const handleTimeChange = (time: any) => {
+    setCurrentTime(time);
+    if (playerRef.current) {
+      playerRef.current.seekTo(time, true); // true allows seeking ahead
+    }
+  };
 
   return (
     <SafeAreaView>
@@ -84,9 +114,11 @@ const Home: React.FC = () => {
         <View className='w-full flex-1 justify-center items-center'>
           <View className='w-[80%] h-[85%] bg-slate-200 rounded-3xl overflow-hidden'>
             <YoutubePlayer
+              ref={playerRef}
               height={100}
               play={isPlay}
-              videoId={"gRYV3Dgib7g"}
+              videoId={"dqkxmiI0kYo"}
+              onReady={onReady}
             />
             <Image className='flex-1 rounded-3xl' source={{ uri: `https://img.youtube.com/vi/${url}/maxresdefault.jpg` }} />
           </View>
@@ -119,13 +151,22 @@ const Home: React.FC = () => {
           </View>
           <View className='w-[70%] flex mt-10'>
             <View className='w-full flex'>
-              <View className='bg-white h-1.5 rounded-full'>
+              <Slider
+                minimumValue={0}
+                maximumValue={duration}
+                value={currentTime}
+                onValueChange={handleTimeChange}
+                minimumTrackTintColor="#1EB1FC"
+                maximumTrackTintColor="#8B8B8B"
+                thumbTintColor="#1EB1FC" // Large, vibrant thumb color
+              />
+              {/* <View className='bg-white h-1.5 rounded-full'>
                 <View className='bg-red-800 h-full w-[40%] rounded-full'></View>
-              </View>
+              </View> */}
             </View>
             <View className='flex flex-row justify-between mt-2'>
-              <Text className='text-white'>{ }</Text>
-              <Text className='text-white'>11.20</Text>
+              <Text className='text-white'>{Math.floor(currentTime)}s</Text>
+              <Text className='text-white'>{Math.floor(duration)}s</Text>
             </View>
           </View>
 
@@ -158,10 +199,11 @@ const Home: React.FC = () => {
         }
 
       </View>
-      {
-        showPlaylist &&     <Playlist onSelect={params} />
+      {/* {
+        showPlaylist &&   
 
-      }
+      } */}
+      <Playlist onSelect={params} showPlaylist={showPlaylist} />
     </SafeAreaView>
   )
 }
