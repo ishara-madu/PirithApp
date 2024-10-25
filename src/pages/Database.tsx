@@ -23,7 +23,7 @@ export const openDatabase = ()=>{
 
 export const insertData = ()=>{
   const db = openDatabase();
-  db.runSync("INSERT INTO items (id, url, name, artist, playlist, isFavorites) VALUES (?,?,?,?,?,?)", ['id2', 'url 2', 'Song 2', 'Artist 2', 'playlist 2', true]);
+  db.runSync("INSERT INTO items (id, url, name, artist, playlist, isFavorites) VALUES (?,?,?,?,?,?)", ['id1', 'gRYV3Dgib7g', 'Song 1', 'Artist 1', 'playlist 1', true]);
 }
 export const dropTable = ()=>{
   const db = openDatabase();

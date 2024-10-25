@@ -11,6 +11,7 @@ import Menu from './src/pages/Menu';
 import Settings from './src/pages/Settings';
 import About from './src/pages/About';
 import { getAllData } from './src/pages/Database';
+import Video from './src/components/Video';
 
 const Stack = createNativeStackNavigator();
 
@@ -18,15 +19,12 @@ const Stack = createNativeStackNavigator();
 
 function App() {
 
-  React.useEffect(() => {
-    }, []);
-  
+
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Playlist">
+      <Stack.Navigator initialRouteName="Home">
         <Stack.Screen name="Welcome" component={Welcome} options={{ headerShown: false }} />
         <Stack.Screen name="Home" component={Home} options={{headerShown:false}}/>
-        <Stack.Screen name="Playlist" component={Playlist} options={{headerShown:false}}/>
         <Stack.Screen name="Menu" component={Menu} options={{headerShown:false}}/>
         <Stack.Screen name="Settings" component={Settings} options={{headerShown:false}}/>
         <Stack.Screen name="About" component={About} options={{headerShown:false}}/>

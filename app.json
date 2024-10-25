@@ -20,7 +20,7 @@
         "backgroundColor": "#ffffff"
       },
       "permissions": [
-        "INTERNET"
+        "INTERNET","android.permission.RECEIVE_BOOT_COMPLETED","FOREGROUND_SERVICE"
       ]
     },
     "web": {

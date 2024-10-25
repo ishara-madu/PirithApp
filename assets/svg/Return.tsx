@@ -2,14 +2,17 @@ import { View, Text } from 'react-native'
 import React from 'react'
 import Svg, { Path } from 'react-native-svg'
 
-const Return = (props) => {
+type ReturnProps = {
+  fill?: string;
+}
+
+const Return = (props:ReturnProps) => {
   return (
     <Svg
       width={20}
       height={18}
       viewBox="0 0 20 18"
       fill="none"
-      xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
       <Path
