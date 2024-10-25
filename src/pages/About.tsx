@@ -12,7 +12,7 @@ const About = () => {
       </View>
       <View className='w-full flex-1 bg-slate-700 items-center rounded-t-3xl pt-10'>
         <View className='w-[80%] flex-1'>
-          <Text className='text-white text-base'><Text className='font-bold'>Pirith App</Text> offers a collection of sacred Buddhist chants for daily spiritual practice. With high-quality audio and access with Youtube package, you can listen to Pirith anytime, anywhere.</Text>
+          <Text className='text-white text-base'><Text className='font-bold'>Pirith App</Text> offers a collection of sacred Buddhist chants for daily spiritual practice. With high-quality audio and access with Youtube , you can listen to Pirith anytime, anywhere.</Text>
           <Text className='text-white text-xl font-bold mt-5'>What is Pirith?</Text>
           <Text className='text-white text-base'>Pirith refers to Buddhist chants that provide protection and blessings, promoting peace and harmony in daily life.</Text>
           <Text className='text-white text-xl font-bold mt-5'>Our Mission</Text>

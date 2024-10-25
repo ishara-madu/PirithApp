@@ -10,7 +10,7 @@ import Playlist from './src/pages/Playlist';
 import Menu from './src/pages/Menu';
 import Settings from './src/pages/Settings';
 import About from './src/pages/About';
-import { getData,displayAllKeys,clearAllStorage } from './src/pages/Database';
+import { getAllData } from './src/pages/Database';
 
 const Stack = createNativeStackNavigator();
 
@@ -23,7 +23,7 @@ function App() {
   
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
+      <Stack.Navigator initialRouteName="Playlist">
         <Stack.Screen name="Welcome" component={Welcome} options={{ headerShown: false }} />
         <Stack.Screen name="Home" component={Home} options={{headerShown:false}}/>
         <Stack.Screen name="Playlist" component={Playlist} options={{headerShown:false}}/>

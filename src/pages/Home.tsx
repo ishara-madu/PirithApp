@@ -1,5 +1,5 @@
-import { View, Text, SafeAreaView, Image, TouchableOpacity } from 'react-native'
-import React, { useEffect, useRef, useState } from 'react'
+import { View, Text, SafeAreaView, Image, TouchableOpacity, Alert,Share } from 'react-native'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import Shiffle from '../../assets/svg/Shiffle'
 import SkipPreviews from '../../assets/svg/SkipPreviews'
 import { NavigationContainer } from '@react-navigation/native';
@@ -8,16 +8,62 @@ import SkipNext from '../../assets/svg/SkipNext'
 import Repeat from '../../assets/svg/Repeat'
 import Info from '../components/Info';
 import Pause from '../../assets/svg/Pause';
-import YoutubePlayer, {YoutubeIframeRef} from "react-native-youtube-iframe";
+import YoutubePlayer from "react-native-youtube-iframe";
+import Heart from '../../assets/svg/Heart';
+import Shar from '../../assets/svg/Share';
+import { updateFavorite } from './Database';
+import EventEmitter from 'events';
+
+const eventEmitter = new EventEmitter();
 
 
 type HomeProps = {
   navigation: any;
-  
+  route: { params?: { url: any; name: string; artist: string,favorite:boolean } }; // Define all expected params
 }
 
 const Home = (props: HomeProps) => {
   const [showInfo, setShowInfo] = useState(false);
+  const [isPlay, setIsPlay] = useState(false);
+  const { url, name, artist,favorite } = props.route?.params || {
+    url: 'No Url provided',
+    name: 'No Name provided',
+    artist: 'No Artist provided',
+    favorite: false,
+  };
+  const [isFavorites, setIsFavorites] = useState(favorite);
+
+
+  const handlePlayPause = () => {
+    isPlay ? setIsPlay(false) : setIsPlay(true);
+  };
+
+  const handleFavorite = () => {
+    if (isFavorites) {
+      setIsFavorites(false);
+      updateFavorite(false,url);
+    }else{
+      setIsFavorites(true);
+      updateFavorite(true,url);
+
+    }
+  }
+
+  const onStateChange = useCallback((state: any) => {
+    if (state === "ended") {
+      setIsPlay(false);
+      Alert.alert("video has finished playing!");
+    }
+  }, []);
+
+
+  const onShare = async () => {
+      const result = await Share.share({
+        message: `✨ Check out this amazing content! 🌟\n👉 https://music.youtube.com/watch?v=${url}`,
+      });
+
+      
+  };
 
   return (
     <SafeAreaView>
@@ -32,32 +78,50 @@ const Home = (props: HomeProps) => {
           <Text className='text-white text-xl font-semibold'>Now Playing</Text>
           <TouchableOpacity
             className=' w-7 h-7 flex justify-center items-center rounded-full'
-            onPress={() => {showInfo ? setShowInfo(false): setShowInfo(true)}}
+            onPress={() => { showInfo ? setShowInfo(false) : setShowInfo(true) }}
           >
             <Image source={require('../../assets/More.png')} />
           </TouchableOpacity>
         </View>
 
         <View className='w-full flex-1 justify-center items-center'>
-          <View className='w-[80%] h-[85%] bg-slate-200 rounded-3xl'>
-          
+          <View className='w-[80%] h-[85%] bg-slate-200 rounded-3xl overflow-hidden'>
+            <YoutubePlayer
+              height={300}
+              play={isPlay}
+              videoId={"gRYV3Dgib7g"}
+              onChangeState={onStateChange}
+
+            />
+
+            <Image className='flex-1 rounded-3xl' source={{ uri: `https://img.youtube.com/vi/${url}/maxresdefault.jpg` }} />
           </View>
 
         </View>
 
 
         <View className='w-full bg-[#ffffff36] rounded-3xl flex items-center'>
-          <View className='w-full flex flex-row justify-evenly items-center mt-5'>
-            <Image className='scale-75' source={require('../../assets/Hart.png')} />
-            <View className='flex items-center gap-3'>
-              <Text className='text-3xl font-semibold text-white'>
-                Despasito
+          <View className='w-full flex flex-row justify-center items-center mt-5'>
+            <TouchableOpacity onPress={handleFavorite}>
+              {
+                isFavorites ? (
+                  <Heart fill={"red"} fillStr={"red"} />
+                ) : (
+                  <Heart fill={"none"} fillStr={"white"} />
+                )
+              }
+            </TouchableOpacity>
+            <View className='flex items-center gap-3 w-[70%] justify-center'>
+              <Text className='text-2xl font-semibold text-white text-center'>
+                {name}
               </Text>
               <Text className='text-md text-neutral-300'>
-                - Fernando Ponce
+                {artist}
               </Text>
             </View>
-            <Image className='scale-75' source={require('../../assets/Share.png')} />
+            <TouchableOpacity onPress={onShare}>
+            <Shar />
+            </TouchableOpacity>
           </View>
           <View className='w-[70%] flex mt-10'>
             <View className='w-full flex'>
@@ -66,7 +130,7 @@ const Home = (props: HomeProps) => {
               </View>
             </View>
             <View className='flex flex-row justify-between mt-2'>
-              <Text className='text-white'>01:20</Text>
+              <Text className='text-white'>{ }</Text>
               <Text className='text-white'>11.20</Text>
             </View>
           </View>
@@ -78,8 +142,14 @@ const Home = (props: HomeProps) => {
             <TouchableOpacity>
               <SkipPreviews />
             </TouchableOpacity>
-            <TouchableOpacity>
-              <Play />
+            <TouchableOpacity onPress={handlePlayPause}>
+              {
+                isPlay ? (
+                  <Pause />
+                ) : (
+                  <Play />
+                )
+              }
             </TouchableOpacity>
             <TouchableOpacity>
               <SkipNext />
@@ -90,9 +160,9 @@ const Home = (props: HomeProps) => {
           </View>
         </View>
         {
-          showInfo && <Info/>
+          showInfo && <Info />
         }
-        
+
       </View>
     </SafeAreaView>
   )

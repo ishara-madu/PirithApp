@@ -1,104 +1,58 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { ref, onValue, get, child } from "firebase/database";
-import { database } from "../../firebaseConfig";
-import { useEffect } from 'react';
-import { Value } from '../../node_modules/@firebase/remote-config-types/index.d';
+import * as SQLite from 'expo-sqlite';
+import { useState } from 'react';
 
-interface Item {
-  id: string;
-  name: string;
-  artist: string;
-  status: string;
+export const openDatabase = ()=>{
+  const db = SQLite.openDatabaseSync("db.db");
+
+  db.withTransactionSync(() => {
+    db.runSync(
+      `CREATE TABLE IF NOT EXISTS items (
+        id VARCHAR(255) PRIMARY KEY NOT NULL,
+        url VARCHAR(255) NOT NULL,
+        name VARCHAR(255) DEFAULT 'Unknown',
+        artist VARCHAR(255) DEFAULT 'Unknown artist',
+        playlist VARCHAR(255),
+        isFavorites BOOLEAN DEFAULT false
+      );`
+    );
+  });
+
+  return db;
+};
+
+
+export const insertData = ()=>{
+  const db = openDatabase();
+  db.runSync("INSERT INTO items (id, url, name, artist, playlist, isFavorites) VALUES (?,?,?,?,?,?)", ['id2', 'url 2', 'Song 2', 'Artist 2', 'playlist 2', true]);
+}
+export const dropTable = ()=>{
+  const db = openDatabase();
+  db.runSync("DROP TABLE IF EXISTS items");
+  console.log("dropped successfully");
+}
+
+export const getAllData = (keyword:any,showPlaylist?:any)=>{
+  const db = openDatabase();
+  return db.getAllSync(`SELECT id, url, name, artist, playlist, isFavorites 
+  FROM items 
+  WHERE (name || artist) LIKE ? 
+  ${showPlaylist ? "GROUP BY playlist" : ""}
+  ORDER BY id DESC`, [`%${keyword}%`]);
+}
+
+export const getFovoriteData = (keyword:any)=>{
+  const db = openDatabase();
+  return db.getAllSync("SELECT * FROM items WHERE isFavorites = ? AND (name || artist) LIKE ?", [true, `%${keyword}%`]);
 }
 
 
-export const storeData = async (id: string, name: string, artist: string, status: string) => {
-  // Check if all required fields are provided
-  if (id && status) {
-    const value = {
-  id, 
-  name: name || 'Unnamed',
-  artist: artist || 'Unknown Artist', 
-  status, 
-};
-
-const jsonValue = JSON.stringify(value);
-await AsyncStorage.setItem(id, jsonValue);
-
-  }
-};
-
-export const fetchData = () => {
-  const dbRef = ref(database);
-  
-  // Set up a real-time listener
-  onValue(dbRef, async (snapshot) => {
-    if (snapshot.exists()) {
-      const data = snapshot.val() as Record<string, Item>;
-      const keys = await AsyncStorage.getAllKeys();
-      const valuesNotIn = keys.filter(key => !Object.keys(data).includes(key));
-
-      await Promise.all(valuesNotIn.map(key => AsyncStorage.removeItem(key)));
-
-      await Promise.all(Object.values(data).map(item => 
-        storeData(item.id, item.name, item.artist, item.status)
-      ));
-      
-    } else {
-      await AsyncStorage.clear();
-    }
-  });
-};
+export const getPlaylistData = (playlist:any)=>{
+  const db = openDatabase();
+  return db.getAllSync("SELECT * FROM items WHERE playlist =?", [playlist]);
+}
 
 
-
-
-
-export const clearAllStorage = async () => {
-  try {
-    await AsyncStorage.clear();
-    console.log('All AsyncStorage data cleared');
-  } catch (error) {
-    console.error('Error clearing AsyncStorage:', error);
-  }
-};
-
-
-export const getData = async () => {
-    const keys = await AsyncStorage.getAllKeys();
-    const values = [];
-
-    for (const key of keys) {
-      const value = await AsyncStorage.getItem(key);
-      if (value !== null) {
-        const parsedValue = JSON.parse(value); // Assuming value is stored as JSON
-        values.push({
-          id: parsedValue.id,
-          name: parsedValue.name, 
-          artist: parsedValue.artist,
-          status: parsedValue.status,
-        });
-      }
-    }
-
-    return values; // Return the array of values
-
-};
-
-
-export const displayAllKeys = async () => {
-  try {
-    // Step 1: Retrieve all keys
-    const keys = await AsyncStorage.getAllKeys();
-
-    // Step 2: Display all the keys (IDs)
-    if (keys.length > 0) {
-      console.log('Keys stored in AsyncStorage:', keys);
-    } else {
-      console.log('No keys found in AsyncStorage');
-    }
-  } catch (error) {
-    console.error('Error retrieving keys from AsyncStorage:', error);
-  }
-};
-
+export const updateFavorite = (favorite:boolean,id:any)=>{
+  const db = openDatabase();
+  db.runSync("UPDATE items SET isFavorites = ? WHERE url = ?", [favorite, id]);
+}
