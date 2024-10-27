@@ -45,7 +45,7 @@ export const getAllData = (keyword: any, showPlaylist?: boolean): Item[] => {
     SELECT 
     *
     FROM items 
-    WHERE (name || artist) LIKE ? 
+    WHERE (id || name || artist) LIKE ? 
     ${showPlaylist ? "GROUP BY playlist" : ""}
     ORDER BY id DESC
   `;

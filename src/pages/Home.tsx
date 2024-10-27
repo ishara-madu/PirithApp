@@ -1,6 +1,6 @@
 import { View, Text, SafeAreaView, Image, TouchableOpacity, Alert, Share } from 'react-native'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import Shiffle from '../../assets/svg/Shiffle'
+import Shuffle from '../../assets/svg/Shuffle'
 import SkipPreviews from '../../assets/svg/SkipPreviews'
 import { NavigationContainer, useFocusEffect } from '@react-navigation/native';
 import Play from '../../assets/svg/Play'
@@ -18,22 +18,21 @@ import Slider from '@react-native-community/slider';
 
 const Home: React.FC = () => {
   const [showInfo, setShowInfo] = useState(false);
-  const [isPlay, setIsPlay] = useState(false);
+  const [isPlay, setIsPlay] = useState(true);
   const [selectedPlaylist, setSelectedPlaylist] = useState<any>(null);
   const playerRef = useRef<YoutubeIframeRef>(null);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(100);
-  const [uniqueId,setUniqueId] = useState(0);
-  const { url, name, artist } = selectedPlaylist || {
+  const [uniqueId, setUniqueId] = useState(0);
+  const { url} = selectedPlaylist || {
     url: 'No Url provided',
-    name: 'No Name provided',
-    artist: 'No Artist provided',
   };
   const [isFavorites, setIsFavorites] = useState(false);
   const [showPlaylist, setShowPlaylist] = useState(false)
-  const [urlsPrev,setUrlsPrev] = useState([])
-  const [urls,setUrls] = useState<any>([])
-  
+  const [urls, setUrls] = useState<any>([])
+  const [repeat, setRepeat] = useState("one")
+  const [shuffle, setShuffle] = useState(true)
+
 
   const handlePlayPause = useCallback(() => {
     setIsPlay((prev) => !prev);
@@ -56,11 +55,10 @@ const Home: React.FC = () => {
     });
   };
 
-  const params = (url: any, name: any, artist: any, favorite: boolean, window: boolean,urls:any,uniqueId:any) => {
-    const selectedDetails = { url, name, artist, favorite,uniqueId };
+  const params = (url: any, window: boolean, urls: any, uniqueId: any) => {
+    const selectedDetails = { url, uniqueId };
     setSelectedPlaylist(selectedDetails);
     setShowPlaylist(window);
-    setIsFavorites(favorite);    
     setUrls(urls);
     setUniqueId(uniqueId);
   }
@@ -78,14 +76,15 @@ const Home: React.FC = () => {
     return () => clearInterval(interval); // Clean up interval on unmount
   }, [isPlay]);
 
-useEffect(()=>{
-  if (playerRef.current) {
-    playerRef.current
-      .getDuration()
-      .then(duration => setDuration(duration))
-      .catch(error => console.error("Error fetching duration:", error));
-  }
-}, [isPlay])
+  useEffect(() => {
+    if (playerRef.current) {
+      playerRef.current
+        .getDuration()
+        .then(duration => setDuration(duration))
+        .catch(error => console.error("Error fetching duration:", error));
+    }
+  }, [isPlay])
+
 
 
 
@@ -97,30 +96,22 @@ useEffect(()=>{
     }
   };
 
-  
-  const formatTime = (seconds:number) => {
+
+  const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
     const secs = Math.floor(seconds % 60);
     return `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
   };
-  useEffect(() => {
-    console.log("Using")
-    setUrlsPrev(urls);
-    setUrls(url);
-    setTimeout(() => {
-      setUrls(urlsPrev);
-    }, 1);
-  }, [url]);
 
-  const onStateChange = useCallback((state:any) => {
+
+  const onStateChange = useCallback((state: any) => {
     if (state === "ended") {
-      // Check if it's the last video in the playlist
-      if (uniqueId === urls.length - 1) {
-        Alert.alert("The last video has finished playing!");
-      }
-      // You might want to handle automatic playback of the next video here
+      console.log("ended")
+      setUniqueId(Object.values(urls).indexOf(url) + 1)
     }
   }, []);
+
+
 
   return (
     <SafeAreaView>
@@ -145,16 +136,15 @@ useEffect(()=>{
           <View className='w-[80%] h-[85%] bg-slate-200 rounded-3xl overflow-hidden'>
             {
               <YoutubePlayer
-              ref={playerRef}
-              height={100}
-              play={isPlay}
-              playListStartIndex={uniqueId}
-              playList={urls}
-              useLocalHTML={true}
-              // onChangeState={onStateChange}
+                ref={playerRef}
+                height={100}
+                play={isPlay}
+                videoId={urls[uniqueId]}
+                useLocalHTML={true}
+                onChangeState={onStateChange}
               />
             }
-            
+
             <Image className='flex-1 rounded-3xl' source={{ uri: `https://img.youtube.com/vi/${url}/maxresdefault.jpg` }} />
           </View>
 
@@ -174,10 +164,10 @@ useEffect(()=>{
             </TouchableOpacity>
             <View className='flex items-center gap-3 w-[70%] justify-center'>
               <Text className='text-2xl font-semibold text-white text-center'>
-                {name},{uniqueId}
+                {},{uniqueId}
               </Text>
               <Text className='text-md text-neutral-300'>
-                {artist}
+                {}
               </Text>
             </View>
             <TouchableOpacity onPress={onShare}>
@@ -203,8 +193,14 @@ useEffect(()=>{
           </View>
 
           <View className='w-[70%] flex flex-row justify-between items-center mt-7 mb-10'>
-            <TouchableOpacity>
-              <Shiffle />
+          <TouchableOpacity className='w-5 h-5 relative flex justify-center items-center'>
+            {
+              shuffle? (
+                <Shuffle opacity={1} />
+              ) : (
+                <Shuffle opacity={0.5} />
+              )
+            }
             </TouchableOpacity>
             <TouchableOpacity>
               <SkipPreviews />
@@ -221,8 +217,28 @@ useEffect(()=>{
             <TouchableOpacity>
               <SkipNext />
             </TouchableOpacity>
-            <TouchableOpacity>
-              <Repeat />
+            <TouchableOpacity className='w-5 h-5 relative flex justify-center items-center'>
+              {
+                repeat === "all" ? (
+                  <Repeat opacity={1} />
+                ) : (
+                  repeat === "one" ? (
+                    <>
+                      <Text className='text-white flex text-xs absolute'>1</Text>
+                      <Repeat opacity={1} />
+                    </>
+                  ) : (
+                    <>
+                      <View className='bg-[#fff] opacity-[0.5] font-bold flex w-[2px] h-full absolute rotate-[-28deg]'></View>
+                      <Repeat opacity={0.5}/>
+                    </>
+                  )
+                )
+              }
+              <View className='text-white absolute w-full h-full flex justify-center items-center z-20'>
+                {/* > */}
+
+              </View>
             </TouchableOpacity>
           </View>
         </View>
@@ -231,10 +247,7 @@ useEffect(()=>{
         }
 
       </View>
-      {/* {
-        showPlaylist &&   
 
-      } */}
       <Playlist onSelect={params} showPlaylist={showPlaylist} />
     </SafeAreaView>
   )

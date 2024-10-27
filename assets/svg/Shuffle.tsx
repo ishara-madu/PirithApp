@@ -2,7 +2,7 @@ import * as React from "react"
 import Svg, { Path } from "react-native-svg"
 
 type SvgComponentProps = {
-    fill?: string;
+    opacity?: number;
   
 }
 
@@ -13,13 +13,11 @@ function Shiffle(props : SvgComponentProps) {
       height={18}
       viewBox="0 0 17 18"
       fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      {...props}
     >
       <Path
         d="M11.333 1.5H15.5v4.167M1.333 15.667L15.5 1.5M15.5 12.333V16.5h-4.167M10.5 11.5l5 5M1.333 2.333L5.5 6.5"
         stroke="#fff"
-        strokeOpacity={0.6}
+        strokeOpacity={props.opacity}
         strokeWidth={2}
         strokeLinecap="round"
         strokeLinejoin="round"
