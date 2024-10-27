@@ -22,7 +22,8 @@ const Home: React.FC = () => {
   const [selectedPlaylist, setSelectedPlaylist] = useState<any>(null);
   const playerRef = useRef<YoutubeIframeRef>(null);
   const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(100); // Placeholder for video duration
+  const [duration, setDuration] = useState(100);
+  const [uniqueId,setUniqueId] = useState(0);
   const { url, name, artist } = selectedPlaylist || {
     url: 'No Url provided',
     name: 'No Name provided',
@@ -30,8 +31,9 @@ const Home: React.FC = () => {
   };
   const [isFavorites, setIsFavorites] = useState(false);
   const [showPlaylist, setShowPlaylist] = useState(false)
-  const [urls,setUrls] = useState([])
-
+  const [urlsPrev,setUrlsPrev] = useState([])
+  const [urls,setUrls] = useState<any>([])
+  
 
   const handlePlayPause = useCallback(() => {
     setIsPlay((prev) => !prev);
@@ -52,16 +54,15 @@ const Home: React.FC = () => {
     const result = await Share.share({
       message: `✨ Check out this amazing content! 🌟\n👉 https://music.youtube.com/watch?v=${url}`,
     });
-
-
   };
 
-  const params = (url: any, name: any, artist: any, favorite: boolean, window: boolean,urls:any) => {
-    const selectedDetails = { url, name, artist, favorite };
+  const params = (url: any, name: any, artist: any, favorite: boolean, window: boolean,urls:any,uniqueId:any) => {
+    const selectedDetails = { url, name, artist, favorite,uniqueId };
     setSelectedPlaylist(selectedDetails);
     setShowPlaylist(window);
-    setIsFavorites(favorite);
+    setIsFavorites(favorite);    
     setUrls(urls);
+    setUniqueId(uniqueId);
   }
 
   useEffect(() => {
@@ -102,6 +103,24 @@ useEffect(()=>{
     const secs = Math.floor(seconds % 60);
     return `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
   };
+  useEffect(() => {
+    console.log("Using")
+    setUrlsPrev(urls);
+    setUrls(url);
+    setTimeout(() => {
+      setUrls(urlsPrev);
+    }, 1);
+  }, [url]);
+
+  const onStateChange = useCallback((state:any) => {
+    if (state === "ended") {
+      // Check if it's the last video in the playlist
+      if (uniqueId === urls.length - 1) {
+        Alert.alert("The last video has finished playing!");
+      }
+      // You might want to handle automatic playback of the next video here
+    }
+  }, []);
 
   return (
     <SafeAreaView>
@@ -124,12 +143,18 @@ useEffect(()=>{
 
         <View className='w-full flex-1 justify-center items-center'>
           <View className='w-[80%] h-[85%] bg-slate-200 rounded-3xl overflow-hidden'>
-            <YoutubePlayer
+            {
+              <YoutubePlayer
               ref={playerRef}
               height={100}
               play={isPlay}
+              playListStartIndex={uniqueId}
               playList={urls}
+              useLocalHTML={true}
+              // onChangeState={onStateChange}
               />
+            }
+            
             <Image className='flex-1 rounded-3xl' source={{ uri: `https://img.youtube.com/vi/${url}/maxresdefault.jpg` }} />
           </View>
 
@@ -149,7 +174,7 @@ useEffect(()=>{
             </TouchableOpacity>
             <View className='flex items-center gap-3 w-[70%] justify-center'>
               <Text className='text-2xl font-semibold text-white text-center'>
-                {name}
+                {name},{uniqueId}
               </Text>
               <Text className='text-md text-neutral-300'>
                 {artist}

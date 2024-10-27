@@ -31,14 +31,34 @@ export const dropTable = ()=>{
   console.log("dropped successfully");
 }
 
-export const getAllData = (keyword:any,showPlaylist?:boolean)=>{
-  const db = openDatabase();
-  return db.getAllSync(`SELECT *
-    FROM items 
-    WHERE ${showPlaylist ? "playlist" : "(name || artist)"} LIKE ? 
-    ${showPlaylist ? "GROUP BY playlist" : ""}
-    ORDER BY id DESC`, [`%${keyword}%`]);
+interface Item {
+  id: number;  
+  name: string;
+  artist: string;
+  playlist?: string; 
 }
+
+export const getAllData = (keyword: any, showPlaylist?: boolean): Item[] => {
+  const db = openDatabase();
+
+  const query = `
+    SELECT 
+    *
+    FROM items 
+    WHERE (name || artist) LIKE ? 
+    ${showPlaylist ? "GROUP BY playlist" : ""}
+    ORDER BY id DESC
+  `;
+
+  const results = db.getAllSync(query, [`%${keyword}%`]) as Item[];
+
+    return results.map((item, index) => ({
+      uniqueId: index, 
+      ...item, 
+    }));
+  
+
+};
 
 export const getFovoriteData = (keyword:any)=>{
   const db = openDatabase();

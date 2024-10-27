@@ -11,7 +11,7 @@ import List from '../../assets/svg/List'
 
 
 type PlaylistProps = {
-    onSelect: (url: string, name: string, artist: string, favorite: boolean, window: boolean,urls:any) => void;
+    onSelect: (url: string, name: string, artist: string, favorite: boolean, window: boolean,urls:any,uniqueId:any) => void;
     showPlaylist: boolean
 }
 
@@ -57,11 +57,10 @@ const Playlist = ({ onSelect, ...props }: PlaylistProps) => {
     };
 
 
-    const handlePressed = (url: any, name: any, artist: any, favorite: boolean) => {
+    const handlePressed = (url: any, name: any, artist: any, favorite: boolean,uniqueId:any) => {
         const window = false;
         const urls = capturedValues.map((item:any) => item.url);
-        onSelect(url, name, artist, favorite, window,urls)
-        console.log(urls)
+        onSelect(url, name, artist, favorite, window,urls,uniqueId)
     }
 
     const handlePlaylist = (playlist: any) => {
@@ -137,13 +136,13 @@ const Playlist = ({ onSelect, ...props }: PlaylistProps) => {
                                 data={capturedValues}
                                 showsVerticalScrollIndicator={false}
                                 renderItem={({ item }) => (
-                                    <TouchableOpacity onPress={() => { handlePressed(item.url, truncateString(item.name), item.artist, item.isFavorites) }} key={item.id} className='w-full flex flex-row items-center px-3 h-16 bg-[#00000065] rounded-xl mt-1'>
+                                    <TouchableOpacity onPress={() => { handlePressed(item.url, truncateString(item.name), item.artist, item.isFavorites,item.uniqueId) }} key={item.id} className='w-full flex flex-row items-center px-3 h-16 bg-[#00000065] rounded-xl mt-1'>
                                         <View className='w-11 h-11 rounded-md mr-7 overflow-hidden'>
                                             <Image className='rounded-md flex-1 w-full h-full' source={{ uri: `https://img.youtube.com/vi/${item.url}/default.jpg` }} />
                                         </View>
                                         <View>
                                             <Text className='text-white text-base font-semibold'>{truncateString(item.name)}</Text>
-                                            <Text className='text-white text-xs text-opacity-50'>{item.artist}</Text>
+                                            <Text className='text-white text-xs text-opacity-50'>{item.artist}{item.uniqueId}</Text>
                                         </View>
                                     </TouchableOpacity>
                                 )}
