@@ -11,8 +11,9 @@ import List from '../../assets/svg/List'
 
 
 type PlaylistProps = {
-    onSelect: (url: string, window: boolean,urls:any,uniqueId:any,isFavoritesAll:boolean,nameAll:string,artistAll:string) => void;
-    showPlaylist: boolean
+    onSelect: (url: string, window: boolean, urls: any, uniqueId: any, isFavoritesAll: boolean, nameAll: string, artistAll: string) => void;
+    showPlaylist: boolean;
+    setShowPlaylist: any;
 }
 
 
@@ -25,34 +26,36 @@ const Playlist = ({ onSelect, ...props }: PlaylistProps) => {
     const [insidePlaylist, setInsidePlaylist] = useState(false)
 
 
+
+
     useEffect(() => {
-        const currentPlaylist = async () => {
-        if (listType === "Playlist") {
-            if (insidePlaylist) {
-                const val = getPlaylistData(currentPlaylist);
-                setCapturedValues(val);
+        const currentPlay = async () => {
+            if (listType === "Playlist") {
+                if (insidePlaylist) {
+                    const val = getPlaylistData(currentPlaylist);
+                    setCapturedValues(val);
+                } else {
+                    const val = getAllData(inputValue, true);
+                    setCapturedValues(val);
+                }
+
+            } else if (listType === "Favorite") {
+                const val = getFovoriteData(inputValue);
+                setCapturedValues(val)
             } else {
-                const val = getAllData(inputValue, true);
+                const val = getAllData(inputValue, false);
                 setCapturedValues(val);
             }
-
-        } else if (listType === "Favorite") {
-            const val = getFovoriteData(inputValue);
-            setCapturedValues(val)
-        } else {
-            const val = getAllData(inputValue, false);
-            setCapturedValues(val);
         }
-    }
-    currentPlaylist();
-    }, [listType, inputValue,props.showPlaylist])
+        currentPlay();
+    }, [listType, inputValue, props.showPlaylist])
 
 
     function truncateString(str: string) {
         if (str.length > 27) {
-            return str.slice(0, 27) + '...'; 
+            return str.slice(0, 27) + '...';
         }
-        return str; 
+        return str;
     }
 
     const handleInputChange = (text: any) => {
@@ -60,13 +63,13 @@ const Playlist = ({ onSelect, ...props }: PlaylistProps) => {
     };
 
 
-    const handlePressed = (url: any,uniqueId:any) => {
+    const handlePressed = (url: any, uniqueId: any) => {
         const window = false;
-        const urls = capturedValues.map((item:any) => item.url);
-        const nameAll = capturedValues.map((item:any) => item.name);
-        const artistAll = capturedValues.map((item:any) => item.artist);
-        const isFavoritesAll = capturedValues.map((item:any) => item.isFavorites);
-        onSelect(url, window,urls,uniqueId,isFavoritesAll,nameAll,artistAll)
+        const urls = capturedValues.map((item: any) => item.url);
+        const nameAll = capturedValues.map((item: any) => item.name);
+        const artistAll = capturedValues.map((item: any) => item.artist);
+        const isFavoritesAll = capturedValues.map((item: any) => item.isFavorites);
+        onSelect(url, window, urls, uniqueId, isFavoritesAll, nameAll, artistAll)
     }
 
     const handlePlaylist = (playlist: any) => {
@@ -112,10 +115,17 @@ const Playlist = ({ onSelect, ...props }: PlaylistProps) => {
                 <View className='flex w-[85%] mb-5 flex-row items-center justify-between h-10'>
                     <Text className='text-white text-2xl font-bold'>{listType}</Text>
                     {
-                        listType == "Playlist" && insidePlaylist &&
-                        <TouchableOpacity onPress={handleReturn} className=' p-1'>
-                            <Return />
-                        </TouchableOpacity>}
+                        listType == "Playlist" && insidePlaylist ? (
+                            <TouchableOpacity onPress={handleReturn} className=' p-1'>
+                                <Return />
+                            </TouchableOpacity>) : (
+                            <TouchableOpacity onPress={()=>{
+                                props.setShowPlaylist(false);
+                            }} className=' p-1'>
+                                <Return />
+                            </TouchableOpacity>
+                        )
+                    }
                 </View>
                 <View className='flex-1 w-[90%]'>
                     {
@@ -128,7 +138,7 @@ const Playlist = ({ onSelect, ...props }: PlaylistProps) => {
                                     <TouchableOpacity onPress={() => { handlePlaylist(item.playlist) }} className='w-full flex flex-row items-center px-3 h-16 bg-[#00000065] rounded-xl mt-1'>
                                         <View className='w-11 h-11 rounded-md mr-7 overflow-hidden'>
                                             <View className='flex-1 justify-center items-center'>
-                                            <List/>
+                                                <List />
                                             </View>
                                         </View>
                                         <View>
@@ -142,7 +152,7 @@ const Playlist = ({ onSelect, ...props }: PlaylistProps) => {
                                 data={capturedValues}
                                 showsVerticalScrollIndicator={false}
                                 renderItem={({ item }) => (
-                                    <TouchableOpacity onPress={() => { handlePressed(item.url,item.uniqueId) }} key={item.id} className='w-full flex flex-row items-center px-3 h-16 bg-[#00000065] rounded-xl mt-1'>
+                                    <TouchableOpacity onPress={() => { handlePressed(item.url, item.uniqueId) }} key={item.id} className='w-full flex flex-row items-center px-3 h-16 bg-[#00000065] rounded-xl mt-1'>
                                         <View className='w-11 h-11 rounded-md mr-7 overflow-hidden'>
                                             <Image className='rounded-md flex-1 w-full h-full' source={{ uri: `https://img.youtube.com/vi/${item.url}/default.jpg` }} />
                                         </View>

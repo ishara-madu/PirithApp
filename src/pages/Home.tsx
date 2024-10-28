@@ -37,10 +37,9 @@ const Home: React.FC = () => {
   const [shuffle, setShuffle] = useState(false)
 
 
-  const handlePlayPause = useCallback(() => {
+  const handlePlayPause = () => {
     setIsPlay((prev) => !prev);
-  }, []);
-
+  };
 
   const onShare = async () => {
     const result = await Share.share({
@@ -91,31 +90,26 @@ const Home: React.FC = () => {
   };
 
 
-  const onStateChange = (state: any) => {
-    if (state === "ended") {
-      if (repeat == "one") {
-        setIsPlay(false);
-      setTimeout(() => setIsPlay(true), 5000);
-        console.log("repeat 1")
-      } else if (repeat == "all") {
-        if (uniqueId < (urls.length) - 1) {
-          setUniqueId(uniqueId + 1);
-          setUrl(urls[uniqueId + 1]);
-        } else {
-          setUniqueId(0);
-          setUrl(urls[0]);
-        }
-      }else{
-        if (uniqueId < (urls.length) - 1) {
-          setUniqueId(uniqueId + 1);
-          setUrl(urls[uniqueId + 1]);
-        } else {
-          setUniqueId(uniqueId);
-          setUrl(urls[uniqueId]);
-        }
-      }
+const onStateChange = (state:any) => {
+  if (state === "ended") {
+    if (repeat === "one") {
+      setUniqueId((prevId) => {
+        const newId = prevId + 1;
+        setTimeout(() => {
+          setUniqueId(newId - 1); // Reset back to original uniqueId
+        }, 1);
+        return newId;
+      });
+    } else if (repeat === "all") {
+      setUniqueId((prevId) => (prevId < urls.length - 1 ? prevId + 1 : 0));
+      setUrl(urls[(uniqueId + 1) % urls.length]);
+    } else {
+      setUniqueId((prevId) => (prevId < urls.length - 1 ? prevId + 1 : prevId));
+      setUrl(urls[uniqueId]);
     }
-  };
+  }
+};
+
 
 
   const handleshuffle = () => {
@@ -224,16 +218,15 @@ const Home: React.FC = () => {
             {
               <YoutubePlayer
                 ref={playerRef}
-                height={100}
+                height={300}
                 play={isPlay}
                 videoId={urls[uniqueId]}
                 useLocalHTML={true}
                 onChangeState={onStateChange}
-                initialPlayerParams={{controls: false, loop: true}}
                 />
             }
 
-            <Image className='flex-1 rounded-3xl' source={{ uri: `https://img.youtube.com/vi/${url}/maxresdefault.jpg` }} />
+            {/* <Image className='flex-1 rounded-3xl' source={{ uri: `https://img.youtube.com/vi/${url}/maxresdefault.jpg` }} /> */}
           </View>
 
         </View>
@@ -341,7 +334,7 @@ const Home: React.FC = () => {
 
       </View>
 
-      <Playlist onSelect={params} showPlaylist={showPlaylist} />
+      <Playlist onSelect={params} showPlaylist={showPlaylist} setShowPlaylist={setShowPlaylist} />
     </SafeAreaView>
   )
 }
