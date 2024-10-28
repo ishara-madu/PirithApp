@@ -26,6 +26,7 @@ const Playlist = ({ onSelect, ...props }: PlaylistProps) => {
 
 
     useEffect(() => {
+        const currentPlaylist = async () => {
         if (listType === "Playlist") {
             if (insidePlaylist) {
                 const val = getPlaylistData(currentPlaylist);
@@ -42,6 +43,8 @@ const Playlist = ({ onSelect, ...props }: PlaylistProps) => {
             const val = getAllData(inputValue, false);
             setCapturedValues(val);
         }
+    }
+    currentPlaylist();
     }, [listType, inputValue,props.showPlaylist])
 
 
