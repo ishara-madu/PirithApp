@@ -42,7 +42,7 @@ const Playlist = ({ onSelect, ...props }: PlaylistProps) => {
             const val = getAllData(inputValue, false);
             setCapturedValues(val);
         }
-    }, [listType, inputValue])
+    }, [listType, inputValue,props.showPlaylist])
 
 
     function truncateString(str: string) {
@@ -141,7 +141,7 @@ const Playlist = ({ onSelect, ...props }: PlaylistProps) => {
                                             <Image className='rounded-md flex-1 w-full h-full' source={{ uri: `https://img.youtube.com/vi/${item.url}/default.jpg` }} />
                                         </View>
                                         <View>
-                                            <Text className='text-white text-base font-semibold'>{truncateString(item.name)}</Text>
+                                            <Text className='text-white text-base font-semibold'>{truncateString(item.name)}{item.isFavorites}</Text>
                                             <Text className='text-white text-xs text-opacity-50'>{item.artist}{item.uniqueId}</Text>
                                         </View>
                                     </TouchableOpacity>

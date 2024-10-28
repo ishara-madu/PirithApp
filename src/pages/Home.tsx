@@ -10,28 +10,27 @@ import Info from '../components/Info';
 import Pause from '../../assets/svg/Pause';
 import Heart from '../../assets/svg/Heart';
 import Shar from '../../assets/svg/Share';
-import { dropTable, insertData, updateFavorite } from './Database';
+import { dropTable, getAllData, insertData, updateFavorite } from './Database';
 import YoutubePlayer, { YoutubeIframeRef } from "react-native-youtube-iframe";
 import Playlist from './Playlist';
 import Slider from '@react-native-community/slider';
+import Loading from '../components/Loading';
 
 
 const Home: React.FC = () => {
   const [showInfo, setShowInfo] = useState(false);
   const [isPlay, setIsPlay] = useState(true);
-  const [selectedPlaylist, setSelectedPlaylist] = useState<any>(null);
   const playerRef = useRef<YoutubeIframeRef>(null);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(100);
   const [uniqueId, setUniqueId] = useState(0);
-  const { url} = selectedPlaylist || {
-    url: 'No Url provided',
-  };
   const [isFavorites, setIsFavorites] = useState(false);
   const [showPlaylist, setShowPlaylist] = useState(false)
   const [urls, setUrls] = useState<any>([])
+  const [url, setUrl] = useState('r');
   const [repeat, setRepeat] = useState("one")
   const [shuffle, setShuffle] = useState(true)
+  const [capturedValues, setCapturedValues] = useState<any>();
 
 
   const handlePlayPause = useCallback(() => {
@@ -45,7 +44,6 @@ const Home: React.FC = () => {
     } else {
       setIsFavorites(true);
       updateFavorite(true, url);
-
     }
   }
 
@@ -56,11 +54,10 @@ const Home: React.FC = () => {
   };
 
   const params = (url: any, window: boolean, urls: any, uniqueId: any) => {
-    const selectedDetails = { url, uniqueId };
-    setSelectedPlaylist(selectedDetails);
     setShowPlaylist(window);
     setUrls(urls);
     setUniqueId(uniqueId);
+    setUrl(url)
   }
 
   useEffect(() => {
@@ -106,11 +103,43 @@ const Home: React.FC = () => {
 
   const onStateChange = useCallback((state: any) => {
     if (state === "ended") {
-      console.log("ended")
-      setUniqueId(Object.values(urls).indexOf(url) + 1)
+      if (uniqueId < (urls.length) - 1) {
+        setUniqueId(Object.values(urls).indexOf(url) + 1);
+        setUrl(urls[uniqueId + 1]);
+      } else {
+        setUniqueId(0);
+        setUrl(urls[0]);
+      }
     }
   }, []);
 
+  const hanleNext = () => {
+    if (uniqueId < (urls.length) - 1) {
+      setUniqueId(Object.values(urls).indexOf(url) + 1);
+      setUrl(urls[uniqueId + 1]);
+    } else {
+      setUniqueId(0);
+      setUrl(urls[0]);
+    }
+    
+    
+    
+  }
+
+  const handlePrevious = () => {
+    if (uniqueId > 0) {
+      setUniqueId(uniqueId - 1);
+      setUrl(urls[uniqueId - 1]);
+    } else {
+      setUniqueId(urls.length - 1);
+      setUrl(urls[urls.length - 1]);
+    }
+  }
+
+  useEffect(() => {
+    const val = getAllData(url, false, true);
+    setCapturedValues(val);
+     }, [url])
 
 
   return (
@@ -163,13 +192,22 @@ const Home: React.FC = () => {
               }
             </TouchableOpacity>
             <View className='flex items-center gap-3 w-[70%] justify-center'>
-              <Text className='text-2xl font-semibold text-white text-center'>
-                {},{uniqueId}
-              </Text>
-              <Text className='text-md text-neutral-300'>
-                {}
-              </Text>
-            </View>
+
+              { capturedValues == undefined ? ""
+                :(capturedValues.map((value: any, index: any) => {
+                  return (
+                    <View key={index}>
+                      <Text className='text-2xl font-semibold text-white text-center'>
+                        {value.name}
+                      </Text>
+                      <Text className='text-md text-neutral-300'>
+                        {value.artist}
+                      </Text>
+                    </View>
+                  )
+                }))
+              }
+              </View>
             <TouchableOpacity onPress={onShare}>
               <Shar />
             </TouchableOpacity>
@@ -193,16 +231,16 @@ const Home: React.FC = () => {
           </View>
 
           <View className='w-[70%] flex flex-row justify-between items-center mt-7 mb-10'>
-          <TouchableOpacity className='w-5 h-5 relative flex justify-center items-center'>
-            {
-              shuffle? (
-                <Shuffle opacity={1} />
-              ) : (
-                <Shuffle opacity={0.5} />
-              )
-            }
+            <TouchableOpacity className='w-5 h-5 relative flex justify-center items-center'>
+              {
+                shuffle ? (
+                  <Shuffle opacity={1} />
+                ) : (
+                  <Shuffle opacity={0.5} />
+                )
+              }
             </TouchableOpacity>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={handlePrevious}>
               <SkipPreviews />
             </TouchableOpacity>
             <TouchableOpacity onPress={() => { handlePlayPause() }}>
@@ -214,7 +252,7 @@ const Home: React.FC = () => {
                 )
               }
             </TouchableOpacity>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={hanleNext}>
               <SkipNext />
             </TouchableOpacity>
             <TouchableOpacity className='w-5 h-5 relative flex justify-center items-center'>
@@ -230,7 +268,7 @@ const Home: React.FC = () => {
                   ) : (
                     <>
                       <View className='bg-[#fff] opacity-[0.5] font-bold flex w-[2px] h-full absolute rotate-[-28deg]'></View>
-                      <Repeat opacity={0.5}/>
+                      <Repeat opacity={0.5} />
                     </>
                   )
                 )

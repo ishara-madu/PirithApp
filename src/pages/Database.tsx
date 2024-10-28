@@ -38,31 +38,44 @@ interface Item {
   playlist?: string; 
 }
 
-export const getAllData = (keyword: any, showPlaylist?: boolean): Item[] => {
+export const getAllData = (keyword: string, showPlaylist: boolean = false, home: boolean = false): Item[] => {
   const db = openDatabase();
 
-  const query = `
-    SELECT 
-    *
-    FROM items 
-    WHERE (id || name || artist) LIKE ? 
-    ${showPlaylist ? "GROUP BY playlist" : ""}
-    ORDER BY id DESC
-  `;
+  // Define the base query based on the `home` parameter
+  const query = home
+    ? "SELECT * FROM items WHERE url = ?"
+    : `
+      SELECT 
+        * 
+      FROM 
+        items 
+      WHERE 
+        (name || artist) LIKE ? 
+      ${showPlaylist ? "GROUP BY playlist" : ""}
+      ORDER BY 
+        id DESC
+    `;
 
-  const results = db.getAllSync(query, [`%${keyword}%`]) as Item[];
+  // Execute the query with parameterized input to prevent SQL injection
+  const results = db.getAllSync(query, home ? [keyword] : [`%${keyword}%`]) as Item[];
 
-    return results.map((item, index) => ({
-      uniqueId: index, 
-      ...item, 
-    }));
-  
-
+  // Map results to ensure uniqueId is present
+  return results.map((item, index) => ({
+    ...item,
+    uniqueId: index, // Preserve existing uniqueId or assign index
+  }));
 };
 
-export const getFovoriteData = (keyword:any)=>{
+
+
+export const getFovoriteData = (keyword:any): Item[]=>{
   const db = openDatabase();
-  return db.getAllSync("SELECT * FROM items WHERE isFavorites = ? AND (name || artist) LIKE ?", [true, `%${keyword}%`]);
+  const query = `SELECT * FROM items WHERE isFavorites = true AND (name || artist) LIKE ? ORDER BY id DESC`;
+  const results = db.getAllSync(query, [`%${keyword}%`]) as Item[];
+  return results.map((item, index) => ({
+    uniqueId: index, 
+    ...item, 
+  }));
 }
 
 
