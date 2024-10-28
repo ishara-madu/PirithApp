@@ -33,8 +33,8 @@ const Home: React.FC = () => {
   const [showPlaylist, setShowPlaylist] = useState(false)
   const [urls, setUrls] = useState<any>([])
   const [url, setUrl] = useState('r');
-  const [repeat, setRepeat] = useState("one")
-  const [shuffle, setShuffle] = useState(true)
+  const [repeat, setRepeat] = useState("all")
+  const [shuffle, setShuffle] = useState(false)
 
 
   const handlePlayPause = useCallback(() => {
@@ -93,12 +93,26 @@ const Home: React.FC = () => {
 
   const onStateChange = (state: any) => {
     if (state === "ended") {
-      if (uniqueId < (urls.length) - 1) {
-        setUniqueId(uniqueId + 1);
-        setUrl(urls[uniqueId + 1]);
-      } else {
-        setUniqueId(0);
-        setUrl(urls[0]);
+      if (repeat == "one") {
+        setIsPlay(false);
+      setTimeout(() => setIsPlay(true), 5000);
+        console.log("repeat 1")
+      } else if (repeat == "all") {
+        if (uniqueId < (urls.length) - 1) {
+          setUniqueId(uniqueId + 1);
+          setUrl(urls[uniqueId + 1]);
+        } else {
+          setUniqueId(0);
+          setUrl(urls[0]);
+        }
+      }else{
+        if (uniqueId < (urls.length) - 1) {
+          setUniqueId(uniqueId + 1);
+          setUrl(urls[uniqueId + 1]);
+        } else {
+          setUniqueId(uniqueId);
+          setUrl(urls[uniqueId]);
+        }
       }
     }
   };
@@ -150,7 +164,7 @@ const Home: React.FC = () => {
       });
     }
   }
-  
+
 
   useEffect(() => {
     if (playerRef.current) {
@@ -171,6 +185,17 @@ const Home: React.FC = () => {
 
 
   const handleRepeat = () => {
+    setRepeat((prev) => {
+      if (prev == "all") {
+        return "one"
+      } else if (prev == "one") {
+        return "no"
+      } else if (prev == "no"){
+        return "all"
+      }else{
+        return prev
+      }
+    })
 
   }
 
@@ -204,7 +229,8 @@ const Home: React.FC = () => {
                 videoId={urls[uniqueId]}
                 useLocalHTML={true}
                 onChangeState={onStateChange}
-              />
+                initialPlayerParams={{controls: false, loop: true}}
+                />
             }
 
             <Image className='flex-1 rounded-3xl' source={{ uri: `https://img.youtube.com/vi/${url}/maxresdefault.jpg` }} />
