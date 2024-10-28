@@ -4,13 +4,15 @@ import Svg, { Path } from 'react-native-svg'
 
 type PauseProps = {
   fill?: string;
+  w?: number;
+  h?: number;
 }
 
 const Pause = (props: PauseProps) => {
   return (
     <Svg
-      width={35}
-      height={45}
+      width={props.w}
+      height={props.h}
       viewBox="0 0 35 45"
       fill="none"
       {...props}

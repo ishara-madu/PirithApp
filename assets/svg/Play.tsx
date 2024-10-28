@@ -3,16 +3,17 @@ import Svg, { Path } from "react-native-svg"
 
 type PlayProps = {
     fill?: string;
+    w?: number;
+    h?: number;
 }
 
 function Play(props : PlayProps) {
   return (
     <Svg
-      width={35}
-      height={45}
+      width={props.w}
+      height={props.h}
       viewBox="0 0 35 45"
       fill="none"
-      xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
       <Path

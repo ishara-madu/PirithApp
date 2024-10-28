@@ -21,7 +21,7 @@ export const openDatabase = ()=>{
 };
 
 
-export const insertData = ()=>{
+export const insertData =  ()=>{
   const db = openDatabase();
   db.runSync("INSERT INTO items (id, url, name, artist, playlist, isFavorites) VALUES (?,?,?,?,?,?)", ['id3', 'y8YBkbgw18E', 'Song 3', 'Artist 3', 'playlist 2', false]);
 }
@@ -38,10 +38,9 @@ interface Item {
   playlist?: string; 
 }
 
-export const getAllData = (keyword: string, showPlaylist: boolean = false, home: boolean = false): Item[] => {
+export const getAllData = (keyword: string, showPlaylist: boolean = false, home: boolean = false,playlist:boolean=false): Item[] => {
   const db = openDatabase();
 
-  // Define the base query based on the `home` parameter
   const query = home
     ? "SELECT * FROM items WHERE url = ?"
     : `

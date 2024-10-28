@@ -294,9 +294,9 @@ const onStateChange = (state:any) => {
             <TouchableOpacity onPress={() => { handlePlayPause() }}>
               {
                 isPlay ? (
-                  <Pause />
+                  <Pause w={35} h={45} />
                 ) : (
-                  <Play />
+                  <Play w={35} h={45} />
                 )
               }
             </TouchableOpacity>
@@ -334,7 +334,7 @@ const onStateChange = (state:any) => {
 
       </View>
 
-      <Playlist onSelect={params} showPlaylist={showPlaylist} setShowPlaylist={setShowPlaylist} />
+      <Playlist onSelect={params} showPlaylist={showPlaylist} setShowPlaylist={setShowPlaylist} url={url} isPlay={isPlay}/>
     </SafeAreaView>
   )
 }

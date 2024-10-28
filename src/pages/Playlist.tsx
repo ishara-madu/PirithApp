@@ -8,12 +8,16 @@ import { get, onValue, ref } from 'firebase/database'
 import { useFocusEffect } from '@react-navigation/native'
 import Return from '../../assets/svg/Return'
 import List from '../../assets/svg/List'
+import Play from '../../assets/svg/Play'
+import Pause from '../../assets/svg/Pause'
 
 
 type PlaylistProps = {
     onSelect: (url: string, window: boolean, urls: any, uniqueId: any, isFavoritesAll: boolean, nameAll: string, artistAll: string) => void;
     showPlaylist: boolean;
     setShowPlaylist: any;
+    url: any;
+    isPlay: boolean;
 }
 
 
@@ -29,27 +33,26 @@ const Playlist = ({ onSelect, ...props }: PlaylistProps) => {
 
 
     useEffect(() => {
-        const currentPlay = async () => {
-            if (listType === "Playlist") {
-                if (insidePlaylist) {
-                    const val = getPlaylistData(currentPlaylist);
-                    setCapturedValues(val);
-                } else {
-                    const val = getAllData(inputValue, true);
-                    setCapturedValues(val);
-                }
+        const loadData = async () => {
+            let data: any[];
 
-            } else if (listType === "Favorite") {
-                const val = getFovoriteData(inputValue);
-                setCapturedValues(val)
-            } else {
-                const val = getAllData(inputValue, false);
-                setCapturedValues(val);
+            switch (listType) {
+                case 'Playlist':
+                    data = insidePlaylist ? getPlaylistData(currentPlaylist) :  getAllData(inputValue, true);
+                    break;
+                case 'Favorite':
+                    data = getFovoriteData(inputValue);
+                    break;
+                default:
+                    data = getAllData(inputValue, false);
+                    break;
             }
-        }
-        currentPlay();
-    }, [listType, inputValue, props.showPlaylist])
 
+            setCapturedValues(Array.isArray(data) ? data : []);
+        };
+
+        loadData();
+    }, [listType, inputValue, props.showPlaylist]);
 
     function truncateString(str: string) {
         if (str.length > 27) {
@@ -99,7 +102,7 @@ const Playlist = ({ onSelect, ...props }: PlaylistProps) => {
             </View>
             <View className='flex flex-row w-[90%] justify-between items-center mb-8' >
                 <TouchableOpacity onPress={() => { setListType("Favorite") }} className={`w-[30%] h-28 ${listType == "Favorite" ? "bg-[#ffffff00]" : "bg-[#b7b7b74e]"} rounded-lg flex justify-center items-center`}>
-                    <Image source={require('../../assets/Love.png')} />
+                    <Image source={require('../../assets/Favorite.png')} />
                     <Text className='text-white text-base font-semibold'>Favorites</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => { setListType("Playlist") }} className={`w-[30%] h-28 ${listType == "Playlist" ? "bg-[#ffffff00]" : "bg-[#b7b7b74e]"} rounded-lg flex justify-center items-center`}>
@@ -119,7 +122,7 @@ const Playlist = ({ onSelect, ...props }: PlaylistProps) => {
                             <TouchableOpacity onPress={handleReturn} className=' p-1'>
                                 <Return />
                             </TouchableOpacity>) : (
-                            <TouchableOpacity onPress={()=>{
+                            <TouchableOpacity onPress={() => {
                                 props.setShowPlaylist(false);
                             }} className=' p-1'>
                                 <Return />
@@ -153,8 +156,21 @@ const Playlist = ({ onSelect, ...props }: PlaylistProps) => {
                                 showsVerticalScrollIndicator={false}
                                 renderItem={({ item }) => (
                                     <TouchableOpacity onPress={() => { handlePressed(item.url, item.uniqueId) }} key={item.id} className='w-full flex flex-row items-center px-3 h-16 bg-[#00000065] rounded-xl mt-1'>
-                                        <View className='w-11 h-11 rounded-md mr-7 overflow-hidden'>
+                                        <View className='w-11 h-11 rounded-md mr-7 overflow-hidden relative'>
                                             <Image className='rounded-md flex-1 w-full h-full' source={{ uri: `https://img.youtube.com/vi/${item.url}/default.jpg` }} />
+                                            <View className='absolute flex w-full h-full justify-center items-center'>
+                                                {
+                                                    <>
+                                                        {props.url === item.url ? (
+                                                            props.isPlay ? (
+                                                                <Pause w={20} h={20} />
+                                                            ) : (
+                                                                <Play w={20} h={20} />
+                                                            )
+                                                        ) : null}
+                                                    </>
+                                                }
+                                            </View>
                                         </View>
                                         <View>
                                             <Text className='text-white text-base font-semibold'>{truncateString(item.name)}{item.isFavorites}</Text>
