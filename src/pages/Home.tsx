@@ -28,6 +28,8 @@ const Home: React.FC = () => {
   const [uniqueId, setUniqueId] = useState(0);
   const [isFavorites, setIsFavorites] = useState(false);
   const [isFavoritesAll, setIsFavoritesAll] = useState<any>([]);
+  const [nameAll, setNameAll] = useState<any>([])
+  const [artistAll, setArtistAll] = useState<any>([]);
   const [showPlaylist, setShowPlaylist] = useState(false)
   const [urls, setUrls] = useState<any>([])
   const [url, setUrl] = useState('r');
@@ -46,12 +48,14 @@ const Home: React.FC = () => {
     });
   };
 
-  const params = (url: any, window: boolean, urls: any, uniqueId: any, isFavoritesAll: boolean) => {
+  const params = (url: any, window: boolean, urls: any, uniqueId: any, isFavoritesAll: boolean,nameAll:string,artistAll:string) => {
     setShowPlaylist(window);
     setUrls(urls);
     setUniqueId(uniqueId);
     setUrl(url)
     setIsFavoritesAll(isFavoritesAll);
+    setNameAll(nameAll);
+    setArtistAll(artistAll);
   }
 
   useEffect(() => {
@@ -89,9 +93,6 @@ const Home: React.FC = () => {
 
   const onStateChange = (state: any) => {
     if (state === "ended") {
-      console.log("ended");
-      console.log(urls.length);
-  
       if (uniqueId < (urls.length) - 1) {
         setUniqueId(uniqueId + 1);
         setUrl(urls[uniqueId + 1]);
@@ -207,10 +208,10 @@ const Home: React.FC = () => {
               
                     <View >
                       <Text className='text-2xl font-semibold text-white text-center'>
-                        {}
+                        {nameAll[uniqueId]}
                       </Text>
                       <Text className='text-md text-neutral-300'>
-                        {}
+                        {artistAll[uniqueId]}
                       </Text>
                     </View>
                   
