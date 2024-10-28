@@ -21,7 +21,7 @@ import Loading from '../components/Loading';
 
 const Home: React.FC = () => {
   const [showInfo, setShowInfo] = useState(false);
-  const [isPlay, setIsPlay] = useState(true);
+  const [isPlay, setIsPlay] = useState<boolean>(true);
   const playerRef = useRef<YoutubeIframeRef>(null);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(100);
@@ -58,17 +58,25 @@ const Home: React.FC = () => {
   }
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      if (playerRef.current && isPlay) {
-        playerRef.current
-          .getCurrentTime()
-          .then(currentTime => setCurrentTime(currentTime))
-          .catch(error => console.error("Error fetching time:", error));
+    let interval: NodeJS.Timeout | null = null;
+  
+    if (playerRef.current && isPlay) {
+      interval = setInterval(() => {
+        if (playerRef.current) {
+          playerRef.current
+            .getCurrentTime()
+            .then((currentTime: number) => setCurrentTime(currentTime))
+            .catch((error: any) => console.error("Error fetching time:", error));
+        }
+      }, 1000);
+    }
+  
+    return () => {
+      if (interval) {
+        clearInterval(interval);
       }
-    }, 1000);
-
-    return () => clearInterval(interval); // Clean up interval on unmount
-  }, [isPlay]);
+    };
+  }, [isPlay, playerRef]);
 
 
   const handleTimeChange = (time: any) => {
@@ -91,6 +99,9 @@ const Home: React.FC = () => {
 
 
 const onStateChange = (state:any) => {
+  if(state === 'buffering'){
+    
+  }
   if (state === "ended") {
     if (repeat === "one") {
       setUniqueId((prevId) => {
@@ -219,6 +230,7 @@ const onStateChange = (state:any) => {
               <YoutubePlayer
                 ref={playerRef}
                 height={300}
+                // width={0}
                 play={isPlay}
                 videoId={urls[uniqueId]}
                 useLocalHTML={true}
@@ -226,7 +238,7 @@ const onStateChange = (state:any) => {
                 />
             }
 
-            {/* <Image className='flex-1 rounded-3xl' source={{ uri: `https://img.youtube.com/vi/${url}/maxresdefault.jpg` }} /> */}
+            <Image className='flex-1 rounded-3xl' source={{ uri: `https://img.youtube.com/vi/${url}/maxresdefault.jpg` }} />
           </View>
 
         </View>

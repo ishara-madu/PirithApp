@@ -2,7 +2,7 @@ import { View, Text, SafeAreaView, TextInput, Image, ScrollView, TouchableOpacit
 import React, { useEffect, useState } from 'react'
 import Hmaburger from '../../assets/svg/Hamburger'
 import Search from '../../assets/svg/Search'
-import { dropTable, getAllData, getFovoriteData, getPlaylistData, insertData } from './Database'
+import { dropTable, getAllData, getFovoriteData, insertData } from './Database'
 import { database } from '../../firebaseConfig'
 import { get, onValue, ref } from 'firebase/database'
 import { useFocusEffect } from '@react-navigation/native'
@@ -38,7 +38,7 @@ const Playlist = ({ onSelect, ...props }: PlaylistProps) => {
 
             switch (listType) {
                 case 'Playlist':
-                    data = insidePlaylist ? getPlaylistData(currentPlaylist) :  getAllData(inputValue, true);
+                    data = insidePlaylist ? getAllData(currentPlaylist,false,false,true) :  getAllData(inputValue, true);
                     break;
                 case 'Favorite':
                     data = getFovoriteData(inputValue);
@@ -76,7 +76,7 @@ const Playlist = ({ onSelect, ...props }: PlaylistProps) => {
     }
 
     const handlePlaylist = (playlist: any) => {
-        const val = getPlaylistData(playlist);
+        const val = getAllData(playlist,false,false,true);
         setCurrentPlaylist(playlist);
         setCapturedValues(val);
         setInsidePlaylist(true);

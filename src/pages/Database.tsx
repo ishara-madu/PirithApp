@@ -38,24 +38,17 @@ interface Item {
   playlist?: string; 
 }
 
-export const getAllData = (keyword: string, showPlaylist: boolean = false, home: boolean = false,playlist:boolean=false): Item[] => {
+export const getAllData = (keyword: any, showPlaylist: boolean = false, home: boolean = false,playlist:boolean=false): Item[] => {
   const db = openDatabase();
 
   const query = home
     ? "SELECT * FROM items WHERE url = ?"
-    : `
-      SELECT 
-        * 
-      FROM 
-        items 
-      WHERE 
-        (name || artist) LIKE ? 
-      ${showPlaylist ? "GROUP BY playlist" : ""}
-      ORDER BY 
-        id DESC
-    `;
+    :
+    playlist? 
+    `SELECT * FROM items WHERE playlist = ?  ORDER BY id DESC`
+    :`SELECT * FROM items WHERE (name || artist) LIKE ? ${showPlaylist ? "GROUP BY playlist" : ""} ORDER BY id DESC`;
 
-  const results = db.getAllSync(query, home ? [keyword] : [`%${keyword}%`]) as Item[];
+  const results = db.getAllSync(query, home ? [keyword] :playlist? [keyword] : [`%${keyword}%`]) as Item[];
 
   return results.map((item, index) => ({
     ...item,
@@ -63,15 +56,6 @@ export const getAllData = (keyword: string, showPlaylist: boolean = false, home:
   }));
 };
 
-
-export const getPlaylistData = (playlist:any):Item[]=>{
-  const db = openDatabase();
-  const results = db.getAllSync("SELECT * FROM items WHERE playlist = ?", [playlist]) as Item[];
-  return results.map((item, index) => ({
-    ...item,
-    uniqueId: index, 
-  }));
-}
 
 export const getFovoriteData = (keyword:any): Item[]=>{
   const db = openDatabase();
