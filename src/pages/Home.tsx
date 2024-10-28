@@ -17,6 +17,8 @@ import Slider from '@react-native-community/slider';
 import Loading from '../components/Loading';
 
 
+
+
 const Home: React.FC = () => {
   const [showInfo, setShowInfo] = useState(false);
   const [isPlay, setIsPlay] = useState(true);
@@ -25,27 +27,18 @@ const Home: React.FC = () => {
   const [duration, setDuration] = useState(100);
   const [uniqueId, setUniqueId] = useState(0);
   const [isFavorites, setIsFavorites] = useState(false);
+  const [isFavoritesAll, setIsFavoritesAll] = useState<any>([]);
   const [showPlaylist, setShowPlaylist] = useState(false)
   const [urls, setUrls] = useState<any>([])
   const [url, setUrl] = useState('r');
   const [repeat, setRepeat] = useState("one")
   const [shuffle, setShuffle] = useState(true)
-  const [capturedValues, setCapturedValues] = useState<any>();
 
 
   const handlePlayPause = useCallback(() => {
     setIsPlay((prev) => !prev);
   }, []);
 
-  const handleFavorite = () => {
-    if (isFavorites) {
-      setIsFavorites(false);
-      updateFavorite(false, url);
-    } else {
-      setIsFavorites(true);
-      updateFavorite(true, url);
-    }
-  }
 
   const onShare = async () => {
     const result = await Share.share({
@@ -53,11 +46,12 @@ const Home: React.FC = () => {
     });
   };
 
-  const params = (url: any, window: boolean, urls: any, uniqueId: any) => {
+  const params = (url: any, window: boolean, urls: any, uniqueId: any, isFavoritesAll: boolean) => {
     setShowPlaylist(window);
     setUrls(urls);
     setUniqueId(uniqueId);
     setUrl(url)
+    setIsFavoritesAll(isFavoritesAll);
   }
 
   useEffect(() => {
@@ -68,50 +62,45 @@ const Home: React.FC = () => {
           .then(currentTime => setCurrentTime(currentTime))
           .catch(error => console.error("Error fetching time:", error));
       }
-    }, 1000); // Adjust the interval time as needed
+    }, 1000);
 
     return () => clearInterval(interval); // Clean up interval on unmount
   }, [isPlay]);
 
-  useEffect(() => {
-    if (playerRef.current) {
-      playerRef.current
-        .getDuration()
-        .then(duration => setDuration(duration))
-        .catch(error => console.error("Error fetching duration:", error));
-    }
-  }, [isPlay])
 
-
-
-
-  // Manually skip to a selected time
   const handleTimeChange = (time: any) => {
     setCurrentTime(time);
     if (playerRef.current) {
-      playerRef.current.seekTo(time, true); // true allows seeking ahead
+      playerRef.current.seekTo(time, true);
     }
   };
 
 
-  const formatTime = (seconds: number) => {
+  const formatTime = (seconds?: number) => {
+    if (seconds === undefined) {
+      return "00:00";
+    }
+  
     const minutes = Math.floor(seconds / 60);
     const secs = Math.floor(seconds % 60);
     return `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
   };
+  
 
-
-  const onStateChange = useCallback((state: any) => {
+  const onStateChange = (state: any) => {
     if (state === "ended") {
+      console.log("ended");
+      console.log(urls.length);
+  
       if (uniqueId < (urls.length) - 1) {
-        setUniqueId(Object.values(urls).indexOf(url) + 1);
+        setUniqueId(uniqueId + 1);
         setUrl(urls[uniqueId + 1]);
       } else {
         setUniqueId(0);
         setUrl(urls[0]);
       }
     }
-  }, []);
+  };
 
   const hanleNext = () => {
     if (uniqueId < (urls.length) - 1) {
@@ -121,11 +110,21 @@ const Home: React.FC = () => {
       setUniqueId(0);
       setUrl(urls[0]);
     }
-    
-    
-    
+  }
+  const handleFavorite = () => {
+    if (isFavorites) {
+      setIsFavorites(false);
+      updateFavorite(false, url);
+      isFavoritesAll[uniqueId] = false;
+    } else {
+      setIsFavorites(true);
+      updateFavorite(true, url);
+      isFavoritesAll[uniqueId] = true;
+    }
   }
 
+  
+  
   const handlePrevious = () => {
     if (uniqueId > 0) {
       setUniqueId(uniqueId - 1);
@@ -135,11 +134,23 @@ const Home: React.FC = () => {
       setUrl(urls[urls.length - 1]);
     }
   }
+  
+    useEffect(() => {
+      if (playerRef.current) {
+        playerRef.current
+          .getDuration()
+          .then(duration => setDuration(duration))
+          .catch(error => console.error("Error fetching duration:", error));
+      }
+    }, [showPlaylist,hanleNext,handlePrevious])
+  
 
   useEffect(() => {
-    const val = getAllData(url, false, true);
-    setCapturedValues(val);
-     }, [url])
+
+    setIsFavorites(isFavoritesAll[uniqueId])
+
+  }, [hanleNext, handlePrevious]);
+
 
 
   return (
@@ -193,21 +204,17 @@ const Home: React.FC = () => {
             </TouchableOpacity>
             <View className='flex items-center gap-3 w-[70%] justify-center'>
 
-              { capturedValues == undefined ? ""
-                :(capturedValues.map((value: any, index: any) => {
-                  return (
-                    <View key={index}>
+              
+                    <View >
                       <Text className='text-2xl font-semibold text-white text-center'>
-                        {value.name}
+                        {}
                       </Text>
                       <Text className='text-md text-neutral-300'>
-                        {value.artist}
+                        {}
                       </Text>
                     </View>
-                  )
-                }))
-              }
-              </View>
+                  
+            </View>
             <TouchableOpacity onPress={onShare}>
               <Shar />
             </TouchableOpacity>

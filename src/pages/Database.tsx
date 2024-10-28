@@ -23,7 +23,7 @@ export const openDatabase = ()=>{
 
 export const insertData = ()=>{
   const db = openDatabase();
-  db.runSync("INSERT INTO items (id, url, name, artist, playlist, isFavorites) VALUES (?,?,?,?,?,?)", ['id2', 'dqkxmiI0kYo', 'Song 2', 'Artist 2', 'playlist 1', true]);
+  db.runSync("INSERT INTO items (id, url, name, artist, playlist, isFavorites) VALUES (?,?,?,?,?,?)", ['id3', 'y8YBkbgw18E', 'Song 3', 'Artist 3', 'playlist 2', false]);
 }
 export const dropTable = ()=>{
   const db = openDatabase();
@@ -56,17 +56,23 @@ export const getAllData = (keyword: string, showPlaylist: boolean = false, home:
         id DESC
     `;
 
-  // Execute the query with parameterized input to prevent SQL injection
   const results = db.getAllSync(query, home ? [keyword] : [`%${keyword}%`]) as Item[];
 
-  // Map results to ensure uniqueId is present
   return results.map((item, index) => ({
     ...item,
-    uniqueId: index, // Preserve existing uniqueId or assign index
+    uniqueId: index, 
   }));
 };
 
 
+export const getPlaylistData = (playlist:any):Item[]=>{
+  const db = openDatabase();
+  const results = db.getAllSync("SELECT * FROM items WHERE playlist = ?", [playlist]) as Item[];
+  return results.map((item, index) => ({
+    ...item,
+    uniqueId: index, 
+  }));
+}
 
 export const getFovoriteData = (keyword:any): Item[]=>{
   const db = openDatabase();
@@ -79,10 +85,6 @@ export const getFovoriteData = (keyword:any): Item[]=>{
 }
 
 
-export const getPlaylistData = (playlist:any)=>{
-  const db = openDatabase();
-  return db.getAllSync("SELECT * FROM items WHERE playlist =?", [playlist]);
-}
 
 
 export const updateFavorite = (favorite:boolean,id:any)=>{

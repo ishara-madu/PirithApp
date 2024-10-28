@@ -11,7 +11,7 @@ import List from '../../assets/svg/List'
 
 
 type PlaylistProps = {
-    onSelect: (url: string, window: boolean,urls:any,uniqueId:any) => void;
+    onSelect: (url: string, window: boolean,urls:any,uniqueId:any,isFavoritesAll:boolean) => void;
     showPlaylist: boolean
 }
 
@@ -46,10 +46,10 @@ const Playlist = ({ onSelect, ...props }: PlaylistProps) => {
 
 
     function truncateString(str: string) {
-        if (str.length > 8) {
-            return str.slice(0, 27) + '...';  // Take the first 8 characters and add '...'
+        if (str.length > 27) {
+            return str.slice(0, 27) + '...'; 
         }
-        return str;  // If the string is 8 characters or less, return it as is
+        return str; 
     }
 
     const handleInputChange = (text: any) => {
@@ -60,7 +60,8 @@ const Playlist = ({ onSelect, ...props }: PlaylistProps) => {
     const handlePressed = (url: any,uniqueId:any) => {
         const window = false;
         const urls = capturedValues.map((item:any) => item.url);
-        onSelect(url, window,urls,uniqueId)
+        const isFavoritesAll = capturedValues.map((item:any) => item.isFavorites);
+        onSelect(url, window,urls,uniqueId,isFavoritesAll)
     }
 
     const handlePlaylist = (playlist: any) => {
