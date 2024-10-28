@@ -44,11 +44,11 @@ const Home: React.FC = () => {
 
   const onShare = async () => {
     const result = await Share.share({
-      message: `✨ Check out this amazing content! 🌟\n👉 https://music.youtube.com/watch?v=${url}`,
+      message: `✨ Check out this amazing content! 🌟\n👉 https://music.youtube.com/watch?v=${urls[uniqueId]}`,
     });
   };
 
-  const params = (url: any, window: boolean, urls: any, uniqueId: any, isFavoritesAll: boolean,nameAll:string,artistAll:string) => {
+  const params = (url: any, window: boolean, urls: any, uniqueId: any, isFavoritesAll: boolean, nameAll: string, artistAll: string) => {
     setShowPlaylist(window);
     setUrls(urls);
     setUniqueId(uniqueId);
@@ -84,12 +84,12 @@ const Home: React.FC = () => {
     if (seconds === undefined) {
       return "00:00";
     }
-  
+
     const minutes = Math.floor(seconds / 60);
     const secs = Math.floor(seconds % 60);
     return `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
   };
-  
+
 
   const onStateChange = (state: any) => {
     if (state === "ended") {
@@ -103,14 +103,9 @@ const Home: React.FC = () => {
     }
   };
 
-  const hanleNext = () => {
-    if (uniqueId < (urls.length) - 1) {
-      setUniqueId(Object.values(urls).indexOf(url) + 1);
-      setUrl(urls[uniqueId + 1]);
-    } else {
-      setUniqueId(0);
-      setUrl(urls[0]);
-    }
+
+  const handleshuffle = () => {
+    setShuffle(!shuffle)
   }
   const handleFavorite = () => {
     if (isFavorites) {
@@ -124,34 +119,60 @@ const Home: React.FC = () => {
     }
   }
 
-  
-  
-  const handlePrevious = () => {
-    if (uniqueId > 0) {
-      setUniqueId(uniqueId - 1);
-      setUrl(urls[uniqueId - 1]);
+  const handleNext = () => {
+    if (shuffle) {
+      const randomIndex = Math.floor(Math.random() * urls.length);
+      setUniqueId(randomIndex);
+      setUrl(urls[randomIndex]);
     } else {
-      setUniqueId(urls.length - 1);
-      setUrl(urls[urls.length - 1]);
+      if (uniqueId < urls.length - 1) {
+        const nextId = uniqueId + 1;
+        setUniqueId(nextId);
+        setUrl(urls[nextId]);
+      } else {
+        setUniqueId(0);
+        setUrl(urls[0]);
+      }
+    }
+  };
+
+
+  const handlePrevious = () => {
+    if (shuffle) {
+      const randomIndex = Math.floor(Math.random() * urls.length);
+      setUniqueId(randomIndex);
+      setUrl(urls[randomIndex]);
+    } else {
+      setUniqueId((prevId) => {
+        const newId = (prevId > 0) ? prevId - 1 : urls.length - 1;
+        setUrl(urls[newId]);
+        return newId;
+      });
     }
   }
   
-    useEffect(() => {
-      if (playerRef.current) {
-        playerRef.current
-          .getDuration()
-          .then(duration => setDuration(duration))
-          .catch(error => console.error("Error fetching duration:", error));
-      }
-    }, [showPlaylist,hanleNext,handlePrevious])
-  
+
+  useEffect(() => {
+    if (playerRef.current) {
+      playerRef.current
+        .getDuration()
+        .then(duration => setDuration(duration))
+        .catch(error => console.error("Error fetching duration:", error));
+    }
+  }, [showPlaylist, handleNext, handlePrevious])
+
 
   useEffect(() => {
 
     setIsFavorites(isFavoritesAll[uniqueId])
 
-  }, [hanleNext, handlePrevious]);
+  }, [handleNext, handlePrevious]);
 
+
+
+  const handleRepeat = () => {
+
+  }
 
 
   return (
@@ -205,16 +226,16 @@ const Home: React.FC = () => {
             </TouchableOpacity>
             <View className='flex items-center gap-3 w-[70%] justify-center'>
 
-              
-                    <View >
-                      <Text className='text-2xl font-semibold text-white text-center'>
-                        {nameAll[uniqueId]}
-                      </Text>
-                      <Text className='text-md text-neutral-300'>
-                        {artistAll[uniqueId]}
-                      </Text>
-                    </View>
-                  
+
+              <View >
+                <Text className='text-2xl font-semibold text-white text-center'>
+                  {nameAll[uniqueId]}
+                </Text>
+                <Text className='text-md text-neutral-300'>
+                  {artistAll[uniqueId]}
+                </Text>
+              </View>
+
             </View>
             <TouchableOpacity onPress={onShare}>
               <Shar />
@@ -239,7 +260,7 @@ const Home: React.FC = () => {
           </View>
 
           <View className='w-[70%] flex flex-row justify-between items-center mt-7 mb-10'>
-            <TouchableOpacity className='w-5 h-5 relative flex justify-center items-center'>
+            <TouchableOpacity onPress={handleshuffle} className='w-5 h-5 relative flex justify-center items-center'>
               {
                 shuffle ? (
                   <Shuffle opacity={1} />
@@ -260,10 +281,10 @@ const Home: React.FC = () => {
                 )
               }
             </TouchableOpacity>
-            <TouchableOpacity onPress={hanleNext}>
+            <TouchableOpacity onPress={handleNext}>
               <SkipNext />
             </TouchableOpacity>
-            <TouchableOpacity className='w-5 h-5 relative flex justify-center items-center'>
+            <TouchableOpacity onPress={handleRepeat} className='w-5 h-5 relative flex justify-center items-center'>
               {
                 repeat === "all" ? (
                   <Repeat opacity={1} />
