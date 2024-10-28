@@ -11,7 +11,7 @@ import List from '../../assets/svg/List'
 
 
 type PlaylistProps = {
-    onSelect: (url: string, window: boolean,urls:any,uniqueId:any,isFavoritesAll:boolean) => void;
+    onSelect: (url: string, window: boolean,urls:any,uniqueId:any,isFavoritesAll:boolean,nameAll:string,artistAll:string) => void;
     showPlaylist: boolean
 }
 
@@ -60,8 +60,10 @@ const Playlist = ({ onSelect, ...props }: PlaylistProps) => {
     const handlePressed = (url: any,uniqueId:any) => {
         const window = false;
         const urls = capturedValues.map((item:any) => item.url);
+        const nameAll = capturedValues.map((item:any) => item.name);
+        const artistAll = capturedValues.map((item:any) => item.artist);
         const isFavoritesAll = capturedValues.map((item:any) => item.isFavorites);
-        onSelect(url, window,urls,uniqueId,isFavoritesAll)
+        onSelect(url, window,urls,uniqueId,isFavoritesAll,nameAll,artistAll)
     }
 
     const handlePlaylist = (playlist: any) => {
