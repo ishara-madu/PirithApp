@@ -48,8 +48,7 @@ const Home: React.FC = () => {
     });
   };
 
-  const params = (url: any, window: boolean, urls: any, uniqueId: any, isFavoritesAll: boolean, nameAll: string, artistAll: string) => {
-    setShowPlaylist(window);
+  const params = (url: any, urls: any, uniqueId: any, isFavoritesAll: any, nameAll: string, artistAll: string) => {
     setUrls(urls);
     setUniqueId(uniqueId);
     setUrl(url)

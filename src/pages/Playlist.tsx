@@ -14,7 +14,7 @@ import Flatlist from '../components/Flatlist'
 
 
 type PlaylistProps = {
-    onSelect: (url: string, window: boolean, urls: any, uniqueId: any, isFavoritesAll: boolean, nameAll: string, artistAll: string) => void;
+    onSelect: (url: string, urls: any, uniqueId: any, isFavoritesAll: any, nameAll: string, artistAll: string) => void;
     showPlaylist: boolean;
     setShowPlaylist: any;
     url: any;
@@ -36,7 +36,13 @@ const Playlist = ({ onSelect, ...props }: PlaylistProps) => {
 
 
 
+const handleTransactions = (url: string, urls: any, uniqueId: any, isFavoritesAll: any, nameAll: string, artistAll: string)=>{
 
+    console.log(isFavoritesAll);
+    
+
+    onSelect(url,urls, uniqueId, isFavoritesAll, nameAll,artistAll)
+}
 
     const handleOutPlaylist = useMemo(() => {
         return data.reduce((acc, item) => {
@@ -144,7 +150,7 @@ const Playlist = ({ onSelect, ...props }: PlaylistProps) => {
                                 <Return />
                             </TouchableOpacity>) : (
                             <TouchableOpacity onPress={() => {
-                                handleOutPlaylist()
+                                props.setShowPlaylist(false);
                             }} className=' p-1'>
                                 <Return />
                             </TouchableOpacity>
@@ -154,11 +160,11 @@ const Playlist = ({ onSelect, ...props }: PlaylistProps) => {
                 <View className='flex-1 w-[90%]'>
                     {listType === 'Recent' ?
                         (
-                            <Flatlist listtype={recentData} />
+                            <Flatlist onSelect={handleTransactions} listtype={recentData} />
                         ) : (
                             listType === 'Favorite' ?
                                 (
-                                    <Flatlist listtype={favoriteData} />
+                                    <Flatlist onSelect={handleTransactions} listtype={favoriteData} />
                                 ) : (
                                     listType === 'Playlist' && !insidePlaylist ?
                                         (
@@ -184,7 +190,7 @@ const Playlist = ({ onSelect, ...props }: PlaylistProps) => {
                                         ) : (
                                             listType === 'Playlist' && insidePlaylist &&
                                             (
-                                                <Flatlist listtype={insidePlaylistData} />
+                                                <Flatlist onSelect={handleTransactions} listtype={insidePlaylistData} />
                                             )
                                         )
                                 )
