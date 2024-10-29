@@ -2,7 +2,7 @@ import { View, Text, SafeAreaView, TextInput, Image, ScrollView, TouchableOpacit
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import Hmaburger from '../../assets/svg/Hamburger'
 import Search from '../../assets/svg/Search'
-import { dropTable, getAllData, getFovoriteData, insertData } from './Database'
+// import { dropTable, getAllData, insertData } from './Database'
 import { database } from '../../firebaseConfig'
 import { get, onValue, ref } from 'firebase/database'
 import { useFocusEffect } from '@react-navigation/native'
@@ -11,6 +11,7 @@ import List from '../../assets/svg/List'
 import Play from '../../assets/svg/Play'
 import Pause from '../../assets/svg/Pause'
 import Flatlist from '../components/Flatlist'
+import { getAllData, getData, saveData } from './Database'
 
 
 type PlaylistProps = {
@@ -19,6 +20,7 @@ type PlaylistProps = {
     setShowPlaylist: any;
     url: any;
     isPlay: boolean;
+    isFavorites: boolean
 }
 
 
@@ -36,14 +38,39 @@ const Playlist = ({ onSelect, ...props }: PlaylistProps) => {
 
 
 
-const handleTransactions = (url: string, urls: any, uniqueId: any, isFavoritesAll: any, nameAll: string, artistAll: string)=>{
+    const handleTransactions = (url: string, urls: any, uniqueId: any, isFavoritesAll: any, nameAll: string, artistAll: string, setShowPlaylist: any) => {
+        props.setShowPlaylist(setShowPlaylist);
+        console.log(urls);
 
-    console.log(urls);
-    console.log(uniqueId);
-    
+        onSelect(url, urls, uniqueId, isFavoritesAll, nameAll, artistAll)
+    }
 
-    onSelect(url,urls, uniqueId, isFavoritesAll, nameAll,artistAll)
-}
+
+    const fuzzyMatch = (text: any, search: any) => {
+        let searchIndex = 0;
+        for (let char of text.toLowerCase()) {
+            if (char === search[searchIndex]) {
+                searchIndex++;
+            }
+            if (searchIndex === search.length) {
+                return true;
+            }
+        }
+        return false;
+    };
+    const filterAndSort = (data: any) => {
+        const search = inputValue.toLowerCase();
+        return data
+            .filter((item: any) =>
+                ['name', 'artist', 'playlist'].some(key =>
+                    item[key] && fuzzyMatch(item[key].toLowerCase(), search)
+                )
+            )
+            .sort((a: any, b: any) => parseInt(b.uniqueId) - parseInt(a.uniqueId));
+    };
+
+
+
 
     const handleOutPlaylist = useMemo(() => {
         return data.reduce((acc, item) => {
@@ -54,23 +81,42 @@ const handleTransactions = (url: string, urls: any, uniqueId: any, isFavoritesAl
         }, []);
     }, [data]);
 
-    const handleInPlaylist = useCallback((playlistName:any) => {
+    const handleInPlaylist = useCallback((playlistName: any) => {
         setInsidePlaylist(true);
         const tempInsidePlaylist = data.filter((song) => song.playlist === playlistName)
             .map((song, index) => ({ ...song, uniqueId: index.toString() }));
-            tempInsidePlaylist.sort((a: any, b: any) => parseInt(b.uniqueId) - parseInt(a.uniqueId))
+        tempInsidePlaylist.sort((a: any, b: any) => parseInt(b.uniqueId) - parseInt(a.uniqueId))
         setInsidePlaylistData(tempInsidePlaylist);
     }, [data]);
-    
 
+
+    // useMemo(() => {
+    //     const fetchData = async () => {
+    //         const result = await getAllData();
+    //         setData(result);
+    //     };
+
+    //     fetchData();
+    // }, [props.isFavorites]);
     useMemo(() => {
         const fetchData = async () => {
-            const result = await getAllData();
-            setData(result);
+            try {
+                const users = await getData();
+                setData(users);
+                console.log(users);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
         };
-
         fetchData();
-    }, []);
+
+
+    }, [props.isFavorites]);
+    
+    //   saveData("id1","gRYV3Dgib7g","Song 1","Artist 1","Playlist 1",true)
+    //   saveData("id2","dqkxmiI0kYo","Song 2","Artist 2","Playlist 1",false)
+    //   saveData("id3","y8YBkbgw18E","Song 3","Artist 3","Playlist 2",true)
+
 
 
     const handleRecent = useMemo(() => {
@@ -78,24 +124,27 @@ const handleTransactions = (url: string, urls: any, uniqueId: any, isFavoritesAl
             ...value,
             uniqueId: index
         }));
-    },[data])
+    }, [data])
 
     const handleFavorite = useMemo(() => {
         return data
-            .filter(song => song.isFavorites === 1)
+            .filter(song => song.isFavorites === 1 || song.isFavorites === true)
             .map((song, index) => ({ ...song, uniqueId: index })); // Prefix for unique IDs
-    },[data])
+    }, [data])
 
     useEffect(() => {
-        if(listType === 'Recent'){
-            setRecentData(handleRecent.sort((a, b) => parseInt(b.uniqueId) - parseInt(a.uniqueId)));
-        }else if(listType === 'Favorite'){
-            setFavoriteData(handleFavorite.sort((a, b) => parseInt(b.uniqueId) - parseInt(a.uniqueId)));
-        }else if(listType === 'Playlist'){
-            setOutsidePlaylist(handleOutPlaylist.sort((a, b) => parseInt(b.uniqueId) - parseInt(a.uniqueId)));
+        if (listType === 'Recent') {
+            setRecentData(filterAndSort(handleRecent));
+        } else if (listType === 'Favorite') {
+            setFavoriteData(filterAndSort(handleFavorite));
+        } else if (listType === 'Playlist') {
+            setOutsidePlaylist(filterAndSort(handleOutPlaylist));
         }
-    },[listType])
+    }, [listType, props.showPlaylist, inputValue]);
 
+    const handleInputChange = (text: any) => {
+        setInputValue(text);
+    };
 
     function truncateString(str: string) {
         if (str != null && str.length) {
@@ -107,9 +156,6 @@ const handleTransactions = (url: string, urls: any, uniqueId: any, isFavoritesAl
         }
     }
 
-    const handleInputChange = (text: any) => {
-        setInputValue(text);
-    };
 
 
 

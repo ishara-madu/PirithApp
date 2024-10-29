@@ -21,7 +21,7 @@ import Loading from '../components/Loading';
 
 const Home: React.FC = () => {
   const [showInfo, setShowInfo] = useState(false);
-  const [isPlay, setIsPlay] = useState<boolean>(true);
+  const [isPlay, setIsPlay] = useState<boolean>(false);
   const playerRef = useRef<YoutubeIframeRef>(null);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(100);
@@ -32,7 +32,7 @@ const Home: React.FC = () => {
   const [artistAll, setArtistAll] = useState<any>([]);
   const [showPlaylist, setShowPlaylist] = useState(false)
   const [urls, setUrls] = useState<any>([])
-  const [url, setUrl] = useState('r');
+  const [url, setUrl] = useState('');
   const [repeat, setRepeat] = useState("all")
   const [shuffle, setShuffle] = useState(false)
   const [showLoading, setShowLoading] = useState(true)
@@ -60,23 +60,21 @@ const Home: React.FC = () => {
   useEffect(() => {
     let interval: NodeJS.Timeout | null = null;
   
+    // Only start interval if player is playing
     if (playerRef.current && isPlay) {
       interval = setInterval(() => {
-        if (playerRef.current) {
-          playerRef.current
-            .getCurrentTime()
-            .then((currentTime: number) => setCurrentTime(currentTime))
-            .catch((error: any) => console.error("Error fetching time:", error));
-        }
+        playerRef.current
+          ?.getCurrentTime()
+          .then((currentTime: number) => setCurrentTime(currentTime))
+          .catch((error: any) => console.error("Error fetching time:", error));
       }, 1000);
     }
-  
+
+    // Cleanup interval on component unmount or if `isPlay` changes
     return () => {
-      if (interval) {
-        clearInterval(interval);
-      }
+      if (interval) clearInterval(interval);
     };
-  }, [isPlay, playerRef]);
+  }, [isPlay]);
 
 
   const handleTimeChange = (time: any) => {
@@ -352,7 +350,7 @@ const onStateChange = (state:any) => {
 
       </View>
 
-      <Playlist onSelect={params} showPlaylist={showPlaylist} setShowPlaylist={setShowPlaylist} url={url} isPlay={isPlay}/>
+      <Playlist onSelect={params} isFavorites={isFavorites} showPlaylist={showPlaylist} setShowPlaylist={setShowPlaylist} url={url} isPlay={isPlay}/>
     </SafeAreaView>
   )
 }
