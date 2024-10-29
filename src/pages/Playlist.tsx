@@ -1,5 +1,5 @@
 import { View, Text, SafeAreaView, TextInput, Image, ScrollView, TouchableOpacity, FlatList } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import Hmaburger from '../../assets/svg/Hamburger'
 import Search from '../../assets/svg/Search'
 import { dropTable, getAllData, getFovoriteData, insertData } from './Database'
@@ -35,31 +35,26 @@ const Playlist = ({ onSelect, ...props }: PlaylistProps) => {
 
 
 
-    
-    
-    const handleOutPlaylist = () => {
-        setInsidePlaylist(false);
-        let idCounter = 0;
-        const tempOutsidePlaylist: any[] = [];
-        for (let i = 0; i < data.length; i++) {
-            const playlist = data[i].playlist;
-            if (!tempOutsidePlaylist.some(item => item.playlist === playlist)) {
-                tempOutsidePlaylist.push({ uniqueId: `${idCounter++}`, playlist });
-            }
-        }
-        tempOutsidePlaylist.sort((a, b) => parseInt(b.uniqueId) - parseInt(a.uniqueId));
-        setOutsidePlaylist(tempOutsidePlaylist);
-    }
-    const handleInPlaylist = (playllistName: any) => {
-        setInsidePlaylist(true);
-        const tempInsidePlaylist:any = data
-        .filter(song => song.playlist === playllistName)
-        .map((song:any, index:any) => ({ ...song, uniqueId: index }));
-        setInsidePlaylistData(tempInsidePlaylist);
-        console.log(tempInsidePlaylist);
-        
-    };
 
+
+
+    const handleOutPlaylist = useMemo(() => {
+        return data.reduce((acc, item) => {
+            if (!acc.some(({ playlist }) => playlist === item.playlist)) {
+                acc.push({ uniqueId: acc.length.toString(), playlist: item.playlist });
+            }
+            return acc;
+        }, []);
+    }, [data]);
+
+    const handleInPlaylist = useCallback((playlistName:any) => {
+        setInsidePlaylist(true);
+        const tempInsidePlaylist = data.filter((song) => song.playlist === playlistName)
+            .map((song, index) => ({ ...song, uniqueId: index.toString() }));
+            tempInsidePlaylist.sort((a: any, b: any) => parseInt(b.uniqueId) - parseInt(a.uniqueId))
+        setInsidePlaylistData(tempInsidePlaylist);
+    }, [data]);
+    
 
     useEffect(() => {
         const fetchData = async () => {
@@ -68,27 +63,32 @@ const Playlist = ({ onSelect, ...props }: PlaylistProps) => {
         };
 
         fetchData();
-    }, [props.showPlaylist,handleOutPlaylist,handleInPlaylist]);
+    }, [props.showPlaylist]);
 
 
-
-
-    const handleRecent = () => {
-        const recentData = data.map((value: any, index: any) => ({
+    const handleRecent = useMemo(() => {
+        return data.map((value: any, index: any) => ({
             ...value,
             uniqueId: index
         }));
-        recentData.sort((a: any, b: any) => parseInt(b.uniqueId) - parseInt(a.uniqueId));
-        setRecentData(recentData);
-    }
-    
+    },[data])
 
-    const handleFavorite = () => {
-        const favoriteSongs = data
+    const handleFavorite = useMemo(() => {
+        return data
             .filter(song => song.isFavorites === 1)
             .map((song, index) => ({ ...song, uniqueId: index })); // Prefix for unique IDs
-        setFavoriteData(favoriteSongs);
-    }
+    },[data])
+
+    useEffect(() => {
+        if(listType === 'Recent'){
+            setRecentData(handleRecent.sort((a: any, b: any) => parseInt(b.uniqueId) - parseInt(a.uniqueId)));
+        }else if(listType === 'Favorite'){
+            setFavoriteData(handleFavorite.sort((a: any, b: any) => parseInt(b.uniqueId) - parseInt(a.uniqueId)));
+        }else if(listType === 'Playlist'){
+            setOutsidePlaylist(handleOutPlaylist.sort((a: any, b: any) => parseInt(b.uniqueId) - parseInt(a.uniqueId)))
+        }
+    },[listType])
+
 
     function truncateString(str: string) {
         if (str != null && str.length) {
@@ -138,7 +138,7 @@ const Playlist = ({ onSelect, ...props }: PlaylistProps) => {
                     <Text className='text-white text-2xl font-bold'>{listType}</Text>
                     {
                         listType == "Playlist" && insidePlaylist ? (
-                            <TouchableOpacity onPress={()=>{
+                            <TouchableOpacity onPress={() => {
                                 setInsidePlaylist(false);
                             }} className=' p-1'>
                                 <Return />
@@ -167,7 +167,7 @@ const Playlist = ({ onSelect, ...props }: PlaylistProps) => {
                                                 showsVerticalScrollIndicator={false}
                                                 keyExtractor={(item) => item.uniqueId}
                                                 renderItem={({ item }) => (
-                                                    <TouchableOpacity onPress={()=>{
+                                                    <TouchableOpacity onPress={() => {
                                                         handleInPlaylist(item.playlist)
                                                     }} className='w-full flex flex-row items-center px-3 h-16 bg-[#00000065] rounded-xl mt-1'>
                                                         <View className='w-11 h-11 rounded-md mr-7 overflow-hidden'>
