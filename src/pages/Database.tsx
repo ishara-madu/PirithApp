@@ -31,14 +31,9 @@ export const dropTable = ()=>{
   console.log("dropped successfully");
 }
 
-interface Item {
-  id: number;  
-  name: string;
-  artist: string;
-  playlist?: string; 
-}
 
-export const getAllData = async () => {
+
+export const getAllData = () => {
   const db = openDatabase();
 
   const query = "SELECT * FROM items"
@@ -48,15 +43,7 @@ export const getAllData = async () => {
 };
 
 
-export const getFovoriteData = (keyword:any): Item[]=>{
-  const db = openDatabase();
-  const query = `SELECT * FROM items WHERE isFavorites = true AND (name || artist) LIKE ? ORDER BY id DESC`;
-  const results = db.getAllSync(query, [`%${keyword}%`]) as Item[];
-  return results.map((item, index) => ({
-    uniqueId: index, 
-    ...item, 
-  }));
-}
+
 
 
 

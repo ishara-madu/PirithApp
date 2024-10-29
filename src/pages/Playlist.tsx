@@ -38,7 +38,8 @@ const Playlist = ({ onSelect, ...props }: PlaylistProps) => {
 
 const handleTransactions = (url: string, urls: any, uniqueId: any, isFavoritesAll: any, nameAll: string, artistAll: string)=>{
 
-    console.log(isFavoritesAll);
+    console.log(urls);
+    console.log(uniqueId);
     
 
     onSelect(url,urls, uniqueId, isFavoritesAll, nameAll,artistAll)
@@ -62,14 +63,14 @@ const handleTransactions = (url: string, urls: any, uniqueId: any, isFavoritesAl
     }, [data]);
     
 
-    useEffect(() => {
+    useMemo(() => {
         const fetchData = async () => {
             const result = await getAllData();
             setData(result);
         };
 
         fetchData();
-    }, [props.showPlaylist]);
+    }, []);
 
 
     const handleRecent = useMemo(() => {
@@ -87,11 +88,11 @@ const handleTransactions = (url: string, urls: any, uniqueId: any, isFavoritesAl
 
     useEffect(() => {
         if(listType === 'Recent'){
-            setRecentData(handleRecent.sort((a: any, b: any) => parseInt(b.uniqueId) - parseInt(a.uniqueId)));
+            setRecentData(handleRecent.sort((a, b) => parseInt(b.uniqueId) - parseInt(a.uniqueId)));
         }else if(listType === 'Favorite'){
-            setFavoriteData(handleFavorite.sort((a: any, b: any) => parseInt(b.uniqueId) - parseInt(a.uniqueId)));
+            setFavoriteData(handleFavorite.sort((a, b) => parseInt(b.uniqueId) - parseInt(a.uniqueId)));
         }else if(listType === 'Playlist'){
-            setOutsidePlaylist(handleOutPlaylist.sort((a: any, b: any) => parseInt(b.uniqueId) - parseInt(a.uniqueId)))
+            setOutsidePlaylist(handleOutPlaylist.sort((a, b) => parseInt(b.uniqueId) - parseInt(a.uniqueId)));
         }
     },[listType])
 

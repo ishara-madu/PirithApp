@@ -19,10 +19,10 @@ const Flatlist = ({...props}:FlatlistProps) => {
 
     const handleTransactions = (url: string, uniqueId: any) => {
 
-        const urls = props.listtype.map((item:Items) => item.url).filter((url:Items) => url);
-        const isFavoritesAll = props.listtype.map((item: Items) => item.isFavorites ? 1 : 0);
-        const nameAll = props.listtype.map((item:Items) => item.name).filter((name:Items) => name);
-        const artistAll = props.listtype.map((item:Items) => item.artist).filter((artist:Items) => artist);
+        const urls = props.listtype.map((item:Items) => item.url).filter((url:Items) => url).reverse();;
+        const isFavoritesAll = props.listtype.map((item: Items) => item.isFavorites ? 1 : 0).reverse();;
+        const nameAll = props.listtype.map((item:Items) => item.name).filter((name:Items) => name).reverse();;
+        const artistAll = props.listtype.map((item:Items) => item.artist).filter((artist:Items) => artist).reverse();;
         props.onSelect(url, urls, uniqueId, isFavoritesAll, nameAll, artistAll)
     }
 
