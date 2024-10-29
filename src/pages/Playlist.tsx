@@ -10,10 +10,11 @@ import Return from '../../assets/svg/Return'
 import List from '../../assets/svg/List'
 import Play from '../../assets/svg/Play'
 import Pause from '../../assets/svg/Pause'
+import Flatlist from '../components/Flatlist'
 
 
 type PlaylistProps = {
-    onSelect: (url: string, window: boolean, urls: any, uniqueId: any, isFavoritesAll: any, nameAll: string, artistAll: string) => void;
+    onSelect: (url: string, window: boolean, urls: any, uniqueId: any, isFavoritesAll: boolean, nameAll: string, artistAll: string) => void;
     showPlaylist: boolean;
     setShowPlaylist: any;
     url: any;
@@ -23,68 +24,71 @@ type PlaylistProps = {
 
 
 const Playlist = ({ onSelect, ...props }: PlaylistProps) => {
-    const [capturedValues, setCapturedValues] = useState<any>();
     const [listType, setListType] = useState("Recent");
     const [inputValue, setInputValue] = useState('');
     const [insidePlaylist, setInsidePlaylist] = useState(false)
-    const [recentData, setRecentData] = useState<any>()
-    const [uniquePlaylists, setUniquePlaylists] = useState<any>()
-    const [favoriteData, setFavoriteData] = useState<any>()
-    const [playlistSongs,setPlaylistSongs] = useState<any>()
+    const [data, setData] = useState<any>([]);
+    const [outsidePlaylist, setOutsidePlaylist] = useState<any>()
+    const [insidePlaylistData, setInsidePlaylistData] = useState()
+    const [recentData, setRecentData] = useState()
+    const [favoriteData, setFavoriteData] = useState()
 
 
 
-    useEffect(() => {
-        const values: any = getAllData();
-        setCapturedValues(values);
-        if (capturedValues != null) {
-            const uniquePlaylists:any = [];
-            let idCounter = 0;
-        
-            for (let i = 0; i < capturedValues.length; i++) {
-                const playlist = capturedValues[i].playlist;
-                // Check if the playlist already exists in uniquePlaylists array
-                if (!uniquePlaylists.some(item => item.playlist === playlist)) {
-                    uniquePlaylists.push({ uniqueId: `${idCounter++}`, playlist });
-                }
+    
+    
+    const handleOutPlaylist = () => {
+        setInsidePlaylist(false);
+        let idCounter = 0;
+        const tempOutsidePlaylist: any[] = [];
+        for (let i = 0; i < data.length; i++) {
+            const playlist = data[i].playlist;
+            if (!tempOutsidePlaylist.some(item => item.playlist === playlist)) {
+                tempOutsidePlaylist.push({ uniqueId: `${idCounter++}`, playlist });
             }
-        
-            setUniquePlaylists(uniquePlaylists); // Sets unique playlists with ID
-        
-            const favoriteSongs = capturedValues
-                .filter(song => song.isFavorites === 1)
-                .map((song, index) => ({ ...song, uniqueId: `${index}` })); // Prefix for unique IDs
-            setFavoriteData(favoriteSongs); // Sets favorite songs
-        
-            const recentData = values.map((value, index) => ({
-                ...value,
-                uniqueId: `${index}` // Prefix for unique IDs in recent data
-            }));
-            setRecentData(recentData); // Sets recent data with unique IDs
         }
+        tempOutsidePlaylist.sort((a, b) => parseInt(b.uniqueId) - parseInt(a.uniqueId));
+        setOutsidePlaylist(tempOutsidePlaylist);
+    }
+    const handleInPlaylist = (playllistName: any) => {
+        setInsidePlaylist(true);
+        const tempInsidePlaylist:any = data
+        .filter(song => song.playlist === playllistName)
+        .map((song:any, index:any) => ({ ...song, uniqueId: index }));
+        setInsidePlaylistData(tempInsidePlaylist);
+        console.log(tempInsidePlaylist);
         
-        
-
-
-    }, [props.showPlaylist])
+    };
 
 
     useEffect(() => {
+        const fetchData = async () => {
+            const result = await getAllData();
+            setData(result);
+        };
 
-        switch (listType) {
-            case 'Playlist':
-
-                break;
-            case 'Favorite':
-
-
-                break;
-            default:
-                break;
-        }
+        fetchData();
+    }, [props.showPlaylist,handleOutPlaylist,handleInPlaylist]);
 
 
-    }, [listType, inputValue, props.showPlaylist]);
+
+
+    const handleRecent = () => {
+        const recentData = data.map((value: any, index: any) => ({
+            ...value,
+            uniqueId: index
+        }));
+        recentData.sort((a: any, b: any) => parseInt(b.uniqueId) - parseInt(a.uniqueId));
+        setRecentData(recentData);
+    }
+    
+
+    const handleFavorite = () => {
+        const favoriteSongs = data
+            .filter(song => song.isFavorites === 1)
+            .map((song, index) => ({ ...song, uniqueId: index })); // Prefix for unique IDs
+        setFavoriteData(favoriteSongs);
+    }
 
     function truncateString(str: string) {
         if (str != null && str.length) {
@@ -101,35 +105,6 @@ const Playlist = ({ onSelect, ...props }: PlaylistProps) => {
     };
 
 
-    const handlePressed = (url: any, uniqueId: any) => {
-        const window = false;
-        const urls = [];
-const nameAll = [];
-const artistAll = [];
-const isFavoritesAll = [];
-
-if (capturedValues != null) {
-    for (let i = 0; i < capturedValues.length; i++) {
-        const item = capturedValues[i];
-        urls.push(item.url);
-        nameAll.push(item.name);
-        artistAll.push(item.artist);
-        isFavoritesAll.push(item.isFavorites);
-    }
-}
-        onSelect(url, window, urls, uniqueId, isFavoritesAll, nameAll, artistAll)
-    }
-
-    const handlePlaylist = (playlist: any) => {
-        const playlistSongs = capturedValues
-        .filter(song => song.playlist == playlist)
-        .map((song, index) => ({ ...song, uniqueId: `${index}` })); // Prefix for unique IDs
-setPlaylistSongs(playlistSongs); 
-        setInsidePlaylist(true);
-    }
-    const handleReturn = () => {
-        setInsidePlaylist(false);
-    }
 
     return (
         <View className={`${props.showPlaylist ? "flex" : "hidden"} h-full w-full bg-black items-center absolute`}>
@@ -163,11 +138,13 @@ setPlaylistSongs(playlistSongs);
                     <Text className='text-white text-2xl font-bold'>{listType}</Text>
                     {
                         listType == "Playlist" && insidePlaylist ? (
-                            <TouchableOpacity onPress={handleReturn} className=' p-1'>
+                            <TouchableOpacity onPress={()=>{
+                                setInsidePlaylist(false);
+                            }} className=' p-1'>
                                 <Return />
                             </TouchableOpacity>) : (
                             <TouchableOpacity onPress={() => {
-                                props.setShowPlaylist(false);
+                                handleOutPlaylist()
                             }} className=' p-1'>
                                 <Return />
                             </TouchableOpacity>
@@ -175,118 +152,43 @@ setPlaylistSongs(playlistSongs);
                     }
                 </View>
                 <View className='flex-1 w-[90%]'>
-                    {
-                        listType == "Playlist" ? (
-                            !insidePlaylist ?(
-                            <FlatList
-                                data={uniquePlaylists}
-                                showsVerticalScrollIndicator={false}
-                                keyExtractor={(item) => item.id}
-                                renderItem={({ item }) => (
-                                    <TouchableOpacity onPress={() => { handlePlaylist(item.playlist) }} className='w-full flex flex-row items-center px-3 h-16 bg-[#00000065] rounded-xl mt-1'>
-                                        <View className='w-11 h-11 rounded-md mr-7 overflow-hidden'>
-                                            <View className='flex-1 justify-center items-center'>
-                                                <List />
-                                            </View>
-                                        </View>
-                                        <View>
-                                            <Text className='text-white text-base font-semibold'>{truncateString(item.playlist)}{item.uniqueId}</Text>
-                                        </View>
-                                    </TouchableOpacity>
-                                )}
-                            />):(
-                                <FlatList
-                                    data={playlistSongs}
-                                    showsVerticalScrollIndicator={false}
-                                    renderItem={({ item }) => (
-                                        <TouchableOpacity onPress={() => { handlePressed(item.url, item.uniqueId) }} key={item.id} className='w-full flex flex-row items-center px-3 h-16 bg-[#00000065] rounded-xl mt-1'>
-                                            <View className='w-11 h-11 rounded-md mr-7 overflow-hidden relative'>
-                                                <Image className='rounded-md flex-1 w-full h-full' source={{ uri: `https://img.youtube.com/vi/${item.url}/default.jpg` }} />
-                                                <View className='absolute flex w-full h-full justify-center items-center'>
-                                                    {
-                                                        <>
-                                                            {props.url === item.url ? (
-                                                                props.isPlay ? (
-                                                                    <Pause w={20} h={20} />
-                                                                ) : (
-                                                                    <Play w={20} h={20} />
-                                                                )
-                                                            ) : null}
-                                                        </>
-                                                    }
-                                                </View>
-                                            </View>
-                                            <View>
-                                                <Text className='text-white text-base font-semibold'>{truncateString(item.name)}{item.isFavorites}</Text>
-                                                <Text className='text-white text-xs text-opacity-50'>{item.artist}{item.uniqueId}</Text>
-                                            </View>
-                                        </TouchableOpacity>
-                                    )}
-                                    keyExtractor={(item) => item.id}
-                                />
-                            )
+                    {listType === 'Recent' ?
+                        (
+                            <Flatlist listtype={recentData} />
                         ) : (
-                            listType == "Favorite" ? (
-                                <FlatList
-                                    data={favoriteData}
-                                    showsVerticalScrollIndicator={false}
-                                    renderItem={({ item }) => (
-                                        <TouchableOpacity onPress={() => { handlePressed(item.url, item.uniqueId) }} key={item.id} className='w-full flex flex-row items-center px-3 h-16 bg-[#00000065] rounded-xl mt-1'>
-                                            <View className='w-11 h-11 rounded-md mr-7 overflow-hidden relative'>
-                                                <Image className='rounded-md flex-1 w-full h-full' source={{ uri: `https://img.youtube.com/vi/${item.url}/default.jpg` }} />
-                                                <View className='absolute flex w-full h-full justify-center items-center'>
-                                                    {
-                                                        <>
-                                                            {props.url === item.url ? (
-                                                                props.isPlay ? (
-                                                                    <Pause w={20} h={20} />
-                                                                ) : (
-                                                                    <Play w={20} h={20} />
-                                                                )
-                                                            ) : null}
-                                                        </>
-                                                    }
-                                                </View>
-                                            </View>
-                                            <View>
-                                                <Text className='text-white text-base font-semibold'>{truncateString(item.name)}{item.isFavorites}</Text>
-                                                <Text className='text-white text-xs text-opacity-50'>{item.artist}{item.uniqueId}</Text>
-                                            </View>
-                                        </TouchableOpacity>
-                                    )}
-                                    keyExtractor={(item) => item.id}
-                                />
-                            ) : (
-                                <FlatList
-                                    data={recentData}
-                                    showsVerticalScrollIndicator={false}
-                                    renderItem={({ item }) => (
-                                        <TouchableOpacity onPress={() => { handlePressed(item.url, item.uniqueId) }} key={item.id} className='w-full flex flex-row items-center px-3 h-16 bg-[#00000065] rounded-xl mt-1'>
-                                            <View className='w-11 h-11 rounded-md mr-7 overflow-hidden relative'>
-                                                <Image className='rounded-md flex-1 w-full h-full' source={{ uri: `https://img.youtube.com/vi/${item.url}/default.jpg` }} />
-                                                <View className='absolute flex w-full h-full justify-center items-center'>
-                                                    {
-                                                        <>
-                                                            {props.url === item.url ? (
-                                                                props.isPlay ? (
-                                                                    <Pause w={20} h={20} />
-                                                                ) : (
-                                                                    <Play w={20} h={20} />
-                                                                )
-                                                            ) : null}
-                                                        </>
-                                                    }
-                                                </View>
-                                            </View>
-                                            <View>
-                                                <Text className='text-white text-base font-semibold'>{truncateString(item.name)}{item.isFavorites}</Text>
-                                                <Text className='text-white text-xs text-opacity-50'>{item.artist}{item.uniqueId}</Text>
-                                            </View>
-                                        </TouchableOpacity>
-                                    )}
-                                    keyExtractor={(item) => item.id}
-                                />
-                            ))
+                            listType === 'Favorite' ?
+                                (
+                                    <Flatlist listtype={favoriteData} />
+                                ) : (
+                                    listType === 'Playlist' && !insidePlaylist ?
+                                        (
+                                            <FlatList
+                                                data={outsidePlaylist}
+                                                showsVerticalScrollIndicator={false}
+                                                keyExtractor={(item) => item.uniqueId}
+                                                renderItem={({ item }) => (
+                                                    <TouchableOpacity onPress={()=>{
+                                                        handleInPlaylist(item.playlist)
+                                                    }} className='w-full flex flex-row items-center px-3 h-16 bg-[#00000065] rounded-xl mt-1'>
+                                                        <View className='w-11 h-11 rounded-md mr-7 overflow-hidden'>
+                                                            <View className='flex-1 justify-center items-center'>
+                                                                <List />
+                                                            </View>
+                                                        </View>
+                                                        <View>
+                                                            <Text className='text-white text-base font-semibold'>{item.playlist},{item.uniqueId}</Text>
+                                                        </View>
+                                                    </TouchableOpacity>
+                                                )}
+                                            />
+                                        ) : (
+                                            listType === 'Playlist' && insidePlaylist &&
+                                            (
+                                                <Flatlist listtype={insidePlaylistData} />
+                                            )
+                                        )
+                                )
+                        )
                     }
                 </View>
 

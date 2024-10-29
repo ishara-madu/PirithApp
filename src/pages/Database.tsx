@@ -2,7 +2,7 @@ import * as SQLite from 'expo-sqlite';
 import { useState } from 'react';
 
 export const openDatabase = ()=>{
-  const db = SQLite.openDatabase("db.db");
+  const db = SQLite.openDatabaseSync("db.db");
 
   db.withTransactionSync(() => {
     db.runSync(
@@ -29,7 +29,6 @@ export const dropTable = ()=>{
   const db = openDatabase();
   db.runSync("DROP TABLE IF EXISTS items");
   console.log("dropped successfully");
-  Text.
 }
 
 interface Item {
@@ -40,18 +39,12 @@ interface Item {
 }
 
 export const getAllData = async () => {
-  try{
-    const db = openDatabase();
-  
-    const query = "SELECT * FROM items"
-    const results = db.getAllAsync(query);
-  
-    return results;
-  }catch(err){
-    console.log(err);
-    return [];
-  }
+  const db = openDatabase();
 
+  const query = "SELECT * FROM items"
+  const results = db.getAllAsync(query);
+
+  return results;
 };
 
 
