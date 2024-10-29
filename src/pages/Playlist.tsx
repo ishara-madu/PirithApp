@@ -13,7 +13,7 @@ import Pause from '../../assets/svg/Pause'
 
 
 type PlaylistProps = {
-    onSelect: (url: string, window: boolean, urls: any, uniqueId: any, isFavoritesAll: boolean, nameAll: string, artistAll: string) => void;
+    onSelect: (url: string, window: boolean, urls: any, uniqueId: any, isFavoritesAll: any, nameAll: string, artistAll: string) => void;
     showPlaylist: boolean;
     setShowPlaylist: any;
     url: any;
@@ -25,40 +25,75 @@ type PlaylistProps = {
 const Playlist = ({ onSelect, ...props }: PlaylistProps) => {
     const [capturedValues, setCapturedValues] = useState<any>();
     const [listType, setListType] = useState("Recent");
-    const [currentPlaylist, setCurrentPlaylist] = useState();
     const [inputValue, setInputValue] = useState('');
     const [insidePlaylist, setInsidePlaylist] = useState(false)
-
+    const [recentData, setRecentData] = useState<any>()
+    const [uniquePlaylists, setUniquePlaylists] = useState<any>()
+    const [favoriteData, setFavoriteData] = useState<any>()
+    const [playlistSongs,setPlaylistSongs] = useState<any>()
 
 
 
     useEffect(() => {
-        const loadData = async () => {
-            let data: any[];
-
-            switch (listType) {
-                case 'Playlist':
-                    data = insidePlaylist ? getAllData(currentPlaylist,false,false,true) :  getAllData(inputValue, true);
-                    break;
-                case 'Favorite':
-                    data = getFovoriteData(inputValue);
-                    break;
-                default:
-                    data = getAllData(inputValue, false);
-                    break;
+        const values: any = getAllData();
+        setCapturedValues(values);
+        if (capturedValues != null) {
+            const uniquePlaylists:any = [];
+            let idCounter = 0;
+        
+            for (let i = 0; i < capturedValues.length; i++) {
+                const playlist = capturedValues[i].playlist;
+                // Check if the playlist already exists in uniquePlaylists array
+                if (!uniquePlaylists.some(item => item.playlist === playlist)) {
+                    uniquePlaylists.push({ uniqueId: `${idCounter++}`, playlist });
+                }
             }
+        
+            setUniquePlaylists(uniquePlaylists); // Sets unique playlists with ID
+        
+            const favoriteSongs = capturedValues
+                .filter(song => song.isFavorites === 1)
+                .map((song, index) => ({ ...song, uniqueId: `${index}` })); // Prefix for unique IDs
+            setFavoriteData(favoriteSongs); // Sets favorite songs
+        
+            const recentData = values.map((value, index) => ({
+                ...value,
+                uniqueId: `${index}` // Prefix for unique IDs in recent data
+            }));
+            setRecentData(recentData); // Sets recent data with unique IDs
+        }
+        
+        
 
-            setCapturedValues(Array.isArray(data) ? data : []);
-        };
 
-        loadData();
+    }, [props.showPlaylist])
+
+
+    useEffect(() => {
+
+        switch (listType) {
+            case 'Playlist':
+
+                break;
+            case 'Favorite':
+
+
+                break;
+            default:
+                break;
+        }
+
+
     }, [listType, inputValue, props.showPlaylist]);
 
     function truncateString(str: string) {
-        if (str.length > 27) {
-            return str.slice(0, 27) + '...';
+        if (str != null && str.length) {
+
+            if (str.length > 27) {
+                return str.slice(0, 27) + '...';
+            }
+            return str;
         }
-        return str;
     }
 
     const handleInputChange = (text: any) => {
@@ -68,22 +103,31 @@ const Playlist = ({ onSelect, ...props }: PlaylistProps) => {
 
     const handlePressed = (url: any, uniqueId: any) => {
         const window = false;
-        const urls = capturedValues.map((item: any) => item.url);
-        const nameAll = capturedValues.map((item: any) => item.name);
-        const artistAll = capturedValues.map((item: any) => item.artist);
-        const isFavoritesAll = capturedValues.map((item: any) => item.isFavorites);
+        const urls = [];
+const nameAll = [];
+const artistAll = [];
+const isFavoritesAll = [];
+
+if (capturedValues != null) {
+    for (let i = 0; i < capturedValues.length; i++) {
+        const item = capturedValues[i];
+        urls.push(item.url);
+        nameAll.push(item.name);
+        artistAll.push(item.artist);
+        isFavoritesAll.push(item.isFavorites);
+    }
+}
         onSelect(url, window, urls, uniqueId, isFavoritesAll, nameAll, artistAll)
     }
 
     const handlePlaylist = (playlist: any) => {
-        const val = getAllData(playlist,false,false,true);
-        setCurrentPlaylist(playlist);
-        setCapturedValues(val);
+        const playlistSongs = capturedValues
+        .filter(song => song.playlist == playlist)
+        .map((song, index) => ({ ...song, uniqueId: `${index}` })); // Prefix for unique IDs
+setPlaylistSongs(playlistSongs); 
         setInsidePlaylist(true);
     }
     const handleReturn = () => {
-        const val = getAllData(inputValue, true);
-        setCapturedValues(val);
         setInsidePlaylist(false);
     }
 
@@ -132,9 +176,10 @@ const Playlist = ({ onSelect, ...props }: PlaylistProps) => {
                 </View>
                 <View className='flex-1 w-[90%]'>
                     {
-                        listType == "Playlist" && !insidePlaylist ? (
+                        listType == "Playlist" ? (
+                            !insidePlaylist ?(
                             <FlatList
-                                data={capturedValues}
+                                data={uniquePlaylists}
                                 showsVerticalScrollIndicator={false}
                                 keyExtractor={(item) => item.id}
                                 renderItem={({ item }) => (
@@ -145,42 +190,103 @@ const Playlist = ({ onSelect, ...props }: PlaylistProps) => {
                                             </View>
                                         </View>
                                         <View>
-                                            <Text className='text-white text-base font-semibold'>{truncateString(item.playlist)}</Text>
+                                            <Text className='text-white text-base font-semibold'>{truncateString(item.playlist)}{item.uniqueId}</Text>
                                         </View>
                                     </TouchableOpacity>
                                 )}
-                            />
-                        ) : (
-                            <FlatList
-                                data={capturedValues}
-                                showsVerticalScrollIndicator={false}
-                                renderItem={({ item }) => (
-                                    <TouchableOpacity onPress={() => { handlePressed(item.url, item.uniqueId) }} key={item.id} className='w-full flex flex-row items-center px-3 h-16 bg-[#00000065] rounded-xl mt-1'>
-                                        <View className='w-11 h-11 rounded-md mr-7 overflow-hidden relative'>
-                                            <Image className='rounded-md flex-1 w-full h-full' source={{ uri: `https://img.youtube.com/vi/${item.url}/default.jpg` }} />
-                                            <View className='absolute flex w-full h-full justify-center items-center'>
-                                                {
-                                                    <>
-                                                        {props.url === item.url ? (
-                                                            props.isPlay ? (
-                                                                <Pause w={20} h={20} />
-                                                            ) : (
-                                                                <Play w={20} h={20} />
-                                                            )
-                                                        ) : null}
-                                                    </>
-                                                }
+                            />):(
+                                <FlatList
+                                    data={playlistSongs}
+                                    showsVerticalScrollIndicator={false}
+                                    renderItem={({ item }) => (
+                                        <TouchableOpacity onPress={() => { handlePressed(item.url, item.uniqueId) }} key={item.id} className='w-full flex flex-row items-center px-3 h-16 bg-[#00000065] rounded-xl mt-1'>
+                                            <View className='w-11 h-11 rounded-md mr-7 overflow-hidden relative'>
+                                                <Image className='rounded-md flex-1 w-full h-full' source={{ uri: `https://img.youtube.com/vi/${item.url}/default.jpg` }} />
+                                                <View className='absolute flex w-full h-full justify-center items-center'>
+                                                    {
+                                                        <>
+                                                            {props.url === item.url ? (
+                                                                props.isPlay ? (
+                                                                    <Pause w={20} h={20} />
+                                                                ) : (
+                                                                    <Play w={20} h={20} />
+                                                                )
+                                                            ) : null}
+                                                        </>
+                                                    }
+                                                </View>
                                             </View>
-                                        </View>
-                                        <View>
-                                            <Text className='text-white text-base font-semibold'>{truncateString(item.name)}{item.isFavorites}</Text>
-                                            <Text className='text-white text-xs text-opacity-50'>{item.artist}{item.uniqueId}</Text>
-                                        </View>
-                                    </TouchableOpacity>
-                                )}
-                                keyExtractor={(item) => item.id}
-                            />
-                        )
+                                            <View>
+                                                <Text className='text-white text-base font-semibold'>{truncateString(item.name)}{item.isFavorites}</Text>
+                                                <Text className='text-white text-xs text-opacity-50'>{item.artist}{item.uniqueId}</Text>
+                                            </View>
+                                        </TouchableOpacity>
+                                    )}
+                                    keyExtractor={(item) => item.id}
+                                />
+                            )
+                        ) : (
+                            listType == "Favorite" ? (
+                                <FlatList
+                                    data={favoriteData}
+                                    showsVerticalScrollIndicator={false}
+                                    renderItem={({ item }) => (
+                                        <TouchableOpacity onPress={() => { handlePressed(item.url, item.uniqueId) }} key={item.id} className='w-full flex flex-row items-center px-3 h-16 bg-[#00000065] rounded-xl mt-1'>
+                                            <View className='w-11 h-11 rounded-md mr-7 overflow-hidden relative'>
+                                                <Image className='rounded-md flex-1 w-full h-full' source={{ uri: `https://img.youtube.com/vi/${item.url}/default.jpg` }} />
+                                                <View className='absolute flex w-full h-full justify-center items-center'>
+                                                    {
+                                                        <>
+                                                            {props.url === item.url ? (
+                                                                props.isPlay ? (
+                                                                    <Pause w={20} h={20} />
+                                                                ) : (
+                                                                    <Play w={20} h={20} />
+                                                                )
+                                                            ) : null}
+                                                        </>
+                                                    }
+                                                </View>
+                                            </View>
+                                            <View>
+                                                <Text className='text-white text-base font-semibold'>{truncateString(item.name)}{item.isFavorites}</Text>
+                                                <Text className='text-white text-xs text-opacity-50'>{item.artist}{item.uniqueId}</Text>
+                                            </View>
+                                        </TouchableOpacity>
+                                    )}
+                                    keyExtractor={(item) => item.id}
+                                />
+                            ) : (
+                                <FlatList
+                                    data={recentData}
+                                    showsVerticalScrollIndicator={false}
+                                    renderItem={({ item }) => (
+                                        <TouchableOpacity onPress={() => { handlePressed(item.url, item.uniqueId) }} key={item.id} className='w-full flex flex-row items-center px-3 h-16 bg-[#00000065] rounded-xl mt-1'>
+                                            <View className='w-11 h-11 rounded-md mr-7 overflow-hidden relative'>
+                                                <Image className='rounded-md flex-1 w-full h-full' source={{ uri: `https://img.youtube.com/vi/${item.url}/default.jpg` }} />
+                                                <View className='absolute flex w-full h-full justify-center items-center'>
+                                                    {
+                                                        <>
+                                                            {props.url === item.url ? (
+                                                                props.isPlay ? (
+                                                                    <Pause w={20} h={20} />
+                                                                ) : (
+                                                                    <Play w={20} h={20} />
+                                                                )
+                                                            ) : null}
+                                                        </>
+                                                    }
+                                                </View>
+                                            </View>
+                                            <View>
+                                                <Text className='text-white text-base font-semibold'>{truncateString(item.name)}{item.isFavorites}</Text>
+                                                <Text className='text-white text-xs text-opacity-50'>{item.artist}{item.uniqueId}</Text>
+                                            </View>
+                                        </TouchableOpacity>
+                                    )}
+                                    keyExtractor={(item) => item.id}
+                                />
+                            ))
                     }
                 </View>
 

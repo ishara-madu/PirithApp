@@ -2,7 +2,7 @@ import * as SQLite from 'expo-sqlite';
 import { useState } from 'react';
 
 export const openDatabase = ()=>{
-  const db = SQLite.openDatabaseSync("db.db");
+  const db = SQLite.openDatabase("db.db");
 
   db.withTransactionSync(() => {
     db.runSync(
@@ -29,6 +29,7 @@ export const dropTable = ()=>{
   const db = openDatabase();
   db.runSync("DROP TABLE IF EXISTS items");
   console.log("dropped successfully");
+  Text.
 }
 
 interface Item {
@@ -38,22 +39,19 @@ interface Item {
   playlist?: string; 
 }
 
-export const getAllData = (keyword: any, showPlaylist: boolean = false, home: boolean = false,playlist:boolean=false): Item[] => {
-  const db = openDatabase();
+export const getAllData = async () => {
+  try{
+    const db = openDatabase();
+  
+    const query = "SELECT * FROM items"
+    const results = db.getAllAsync(query);
+  
+    return results;
+  }catch(err){
+    console.log(err);
+    return [];
+  }
 
-  const query = home
-    ? "SELECT * FROM items WHERE url = ?"
-    :
-    playlist? 
-    `SELECT * FROM items WHERE playlist = ?  ORDER BY id DESC`
-    :`SELECT * FROM items WHERE (name || artist) LIKE ? ${showPlaylist ? "GROUP BY playlist" : ""} ORDER BY id DESC`;
-
-  const results = db.getAllSync(query, home ? [keyword] :playlist? [keyword] : [`%${keyword}%`]) as Item[];
-
-  return results.map((item, index) => ({
-    ...item,
-    uniqueId: index, 
-  }));
 };
 
 

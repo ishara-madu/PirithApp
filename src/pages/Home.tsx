@@ -35,6 +35,7 @@ const Home: React.FC = () => {
   const [url, setUrl] = useState('r');
   const [repeat, setRepeat] = useState("all")
   const [shuffle, setShuffle] = useState(false)
+  const [showLoading, setShowLoading] = useState(true)
 
 
   const handlePlayPause = () => {
@@ -99,8 +100,10 @@ const Home: React.FC = () => {
 
 
 const onStateChange = (state:any) => {
-  if(state === 'buffering'){
-    
+  if(state === 'buffering' || state === 'unstarted'){
+    setShowLoading(true);
+  }else{
+    setShowLoading(false);
   }
   if (state === "ended") {
     if (repeat === "one") {
@@ -225,11 +228,11 @@ const onStateChange = (state:any) => {
         </View>
 
         <View className='w-full flex-1 justify-center items-center'>
-          <View className='w-[80%] h-[85%] bg-slate-200 rounded-3xl overflow-hidden'>
+          <View className='w-[80%] h-[85%] bg-slate-200 rounded-3xl overflow-hidden relative'>
             {
               <YoutubePlayer
                 ref={playerRef}
-                height={300}
+                height={0}
                 // width={0}
                 play={isPlay}
                 videoId={urls[uniqueId]}
@@ -237,7 +240,11 @@ const onStateChange = (state:any) => {
                 onChangeState={onStateChange}
                 />
             }
-
+            {
+              showLoading && (
+                <Loading/>
+              )
+            }
             <Image className='flex-1 rounded-3xl' source={{ uri: `https://img.youtube.com/vi/${url}/maxresdefault.jpg` }} />
           </View>
 
