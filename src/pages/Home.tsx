@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, Image, TouchableOpacity, Alert, Share } from 'react-native'
+import { View, Text, Image, TouchableOpacity, Alert, Share, TouchableWithoutFeedback } from 'react-native'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import Shuffle from '../../assets/svg/Shuffle'
 import SkipPreviews from '../../assets/svg/SkipPreviews'
@@ -16,6 +16,7 @@ import Playlist from './Playlist';
 import Slider from '@react-native-community/slider';
 import Loading from '../components/Loading';
 import { useGlobalContext } from '../components/Hooks/GlobalContext';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 
 
@@ -31,14 +32,13 @@ const Home: React.FC = () => {
   const [isFavoritesAll, setIsFavoritesAll] = useState<any>([]);
   const [nameAll, setNameAll] = useState<any>([])
   const [artistAll, setArtistAll] = useState<any>([]);
-  const [showPlaylist, setShowPlaylist] = useState(false)
   const [urls, setUrls] = useState<any>([])
   const [url, setUrl] = useState('');
   const [repeat, setRepeat] = useState("all")
   const [shuffle, setShuffle] = useState(false)
   const [showLoading, setShowLoading] = useState(true)
 
-  const { playbackRate,setUniId,setUris } = useGlobalContext();
+  const { playbackRate,setUniId,setUris,setShowPlaylist,showPlaylist } = useGlobalContext();
 
 
   useEffect(() =>{
@@ -217,12 +217,16 @@ const onStateChange = (state:any) => {
 
 
   return (
+    <>
     <SafeAreaView>
       <View className='w-full h-full flex flex-col items-center bg-black justify-end'>
-        <View className='w-full flex h-20 flex-row justify-around items-center z-20'>
+        <TouchableWithoutFeedback onPress={()=>{setShowInfo(false)}}>
+
+        
+        <View className='w-full flex h-20 flex-row justify-around items-center z-20 bg-gre5'>
           <TouchableOpacity
             className='w-7 h-7 flex justify-center items-center rounded-full'
-            onPress={() => setShowPlaylist(true)}
+            onPress={() => {setShowPlaylist(true);setShowInfo(false);}}
           >
             <Image source={require('../../assets/DownArrow.png')} />
           </TouchableOpacity>
@@ -234,7 +238,7 @@ const onStateChange = (state:any) => {
             <Image source={require('../../assets/More.png')} />
           </TouchableOpacity>
         </View>
-
+        </TouchableWithoutFeedback>
         <View className='w-full flex-1 justify-center items-center'>
           <View className='w-[80%] h-[85%] bg-slate-200 rounded-3xl overflow-hidden relative'>
             {
@@ -356,14 +360,15 @@ const onStateChange = (state:any) => {
             </TouchableOpacity>
           </View>
         </View>
+
         {
           showInfo && <Info />
         }
-
       </View>
 
-      <Playlist onSelect={params} isFavorites={isFavorites} showPlaylist={showPlaylist} setShowPlaylist={setShowPlaylist} url={url} isPlay={isPlay}/>
     </SafeAreaView>
+      <Playlist onSelect={params} isFavorites={isFavorites} url={url} isPlay={isPlay}/>
+    </>
   )
 }
 

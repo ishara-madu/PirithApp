@@ -7,14 +7,19 @@ import Settings from '../../assets/svg/Settings'
 import About from '../../assets/svg/About'
 import Help from '../../assets/svg/Help'
 import Rate from '../../assets/svg/Rate'
+import { useGlobalContext } from '../components/Hooks/GlobalContext'
 
 const Menu = () => {
+  const {showMenu,setShowMenu} = useGlobalContext();
+
   return (
-    <SafeAreaView className='bg-black flex w-full h-full'>
+    <SafeAreaView className='bg-black flex w-full h-full absolute'>
       
       <View className='flex relative h-auto items-center w-full flex-row justify-center mt-8 mb-8'>
         <Text className='text-2xl text-white font-bold'>Menu</Text>
-        <Text className='absolute right-10 text-white'>Done</Text>
+        <TouchableOpacity onPress={()=>{setShowMenu(false)}} className='absolute right-10'>
+        <Text className=' text-white'>Done</Text>
+        </TouchableOpacity>
       </View>
       <View className='w-full flex-1 bg-slate-700 items-center rounded-t-3xl pt-10'>
         <View className='w-[70%] flex-1'>

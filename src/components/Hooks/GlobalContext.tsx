@@ -8,6 +8,10 @@ urls: any;
 uniqueId: any;
 setUniId: (value: any) => void;
 setUris:(value: any) => void;
+showMenu:boolean;
+setShowMenu:(value: any) => void;
+showPlaylist:boolean;
+setShowPlaylist:(value: any) => void;
 };
 
 const GlobalContext = createContext<GlobalContextType | undefined>(undefined);
@@ -16,11 +20,14 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
   const [playbackRate, setPlaybackRate] = useState(1);
   const [urls, setUris] = useState<any>([])
   const [uniqueId, setUniId] = useState(0);
+  const [showMenu, setShowMenu] = useState<boolean>(false)
+  const [showPlaylist, setShowPlaylist] = useState(false)
+
 
 
 
   return (
-    <GlobalContext.Provider value={{ playbackRate, setPlaybackRate,urls, setUris,uniqueId, setUniId}}>
+    <GlobalContext.Provider value={{ playbackRate, setPlaybackRate,urls, setUris,uniqueId, setUniId,showMenu, setShowMenu,showPlaylist, setShowPlaylist}}>
       {children}
     </GlobalContext.Provider>
   );

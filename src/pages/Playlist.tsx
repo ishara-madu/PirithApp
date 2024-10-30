@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, TextInput, Image, ScrollView, TouchableOpacity, FlatList } from 'react-native'
+import { View, Text, TextInput, Image, ScrollView, TouchableOpacity, FlatList } from 'react-native'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import Hmaburger from '../../assets/svg/Hamburger'
 import Search from '../../assets/svg/Search'
@@ -12,12 +12,13 @@ import Play from '../../assets/svg/Play'
 import Pause from '../../assets/svg/Pause'
 import Flatlist from '../components/Flatlist'
 import { getAllData, getData, saveData } from './Database'
+import Menu from './Menu'
+import { useGlobalContext } from '../components/Hooks/GlobalContext'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 
 type PlaylistProps = {
     onSelect: (url: string, urls: any, uniqueId: any, isFavoritesAll: any, nameAll: string, artistAll: string) => void;
-    showPlaylist: boolean;
-    setShowPlaylist: any;
     url: any;
     isPlay: boolean;
     isFavorites: any
@@ -36,10 +37,11 @@ const Playlist = ({ onSelect, ...props }: PlaylistProps) => {
     const [favoriteData, setFavoriteData] = useState()
 
 
+    const {showMenu,setShowMenu,setShowPlaylist,showPlaylist} = useGlobalContext();
 
 
-    const handleTransactions = (url: string, urls: any, uniqueId: any, isFavoritesAll: any, nameAll: string, artistAll: string, setShowPlaylist: any) => {
-        props.setShowPlaylist(setShowPlaylist);
+
+    const handleTransactions = (url: string, urls: any, uniqueId: any, isFavoritesAll: any, nameAll: string, artistAll: string) => {
 
         onSelect(url, urls, uniqueId, isFavoritesAll, nameAll, artistAll)
     }
@@ -72,8 +74,8 @@ const Playlist = ({ onSelect, ...props }: PlaylistProps) => {
 
 
     const handleOutPlaylist = useMemo(() => {
-        return data.reduce((acc, item) => {
-            if (!acc.some(({ playlist }) => playlist === item.playlist)) {
+        return data.reduce((acc:any, item:any) => {
+            if (!acc.some(({ playlist }:any) => playlist === item.playlist)) {
                 acc.push({ uniqueId: acc.length.toString(), playlist: item.playlist });
             }
             return acc;
@@ -82,8 +84,8 @@ const Playlist = ({ onSelect, ...props }: PlaylistProps) => {
 
     const handleInPlaylist = useCallback((playlistName: any) => {
         setInsidePlaylist(true);
-        const tempInsidePlaylist = data.filter((song) => song.playlist === playlistName)
-            .map((song, index) => ({ ...song, uniqueId: index.toString() }));
+        const tempInsidePlaylist = data.filter((song:any) => song.playlist === playlistName)
+            .map((song:any, index:any) => ({ ...song, uniqueId: index.toString() }));
         tempInsidePlaylist.sort((a: any, b: any) => parseInt(b.uniqueId) - parseInt(a.uniqueId))
         setInsidePlaylistData(tempInsidePlaylist);
     }, [data]);
@@ -109,7 +111,7 @@ const Playlist = ({ onSelect, ...props }: PlaylistProps) => {
         fetchData();
 
 
-    }, [props.isFavorites,props.showPlaylist]);
+    }, [props.isFavorites,showPlaylist]);
     
     //   saveData("id1","gRYV3Dgib7g","Song 1","Artist 1","Playlist 1",true)
     //   saveData("id2","dqkxmiI0kYo","Song 2","Artist 2","Playlist 1",false)
@@ -126,8 +128,8 @@ const Playlist = ({ onSelect, ...props }: PlaylistProps) => {
 
     const handleFavorite = useMemo(() => {
         return data
-            .filter(song => song.isFavorites === 1 || song.isFavorites === true)
-            .map((song, index) => ({ ...song, uniqueId: index })); // Prefix for unique IDs
+            .filter((song:any) => song.isFavorites === 1 || song.isFavorites === true)
+            .map((song:any, index:any) => ({ ...song, uniqueId: index })); // Prefix for unique IDs
     }, [data,props.isFavorites])
 
     useEffect(() => {
@@ -138,7 +140,7 @@ const Playlist = ({ onSelect, ...props }: PlaylistProps) => {
         } else if (listType === 'Playlist') {
             setOutsidePlaylist(filterAndSort(handleOutPlaylist));
         }
-    }, [listType, props.showPlaylist, inputValue]);
+    }, [listType, showPlaylist, inputValue]);
 
     const handleInputChange = (text: any) => {
         setInputValue(text);
@@ -157,8 +159,8 @@ const Playlist = ({ onSelect, ...props }: PlaylistProps) => {
 
 
 
-    return (
-        <View className={`${props.showPlaylist ? "flex" : "hidden"} h-full w-full bg-black items-center absolute`}>
+    return (<>
+        <SafeAreaView className={`${showPlaylist ? "flex" : "hidden"} h-full w-full bg-black items-center absolute`}>
             <View className='flex flex-row w-[90%] mt-8 justify-between items-center mb-8'>
                 <View className='flex flex-row bg-[#b7b7b7d2] rounded-full h-11 w-[85%] items-center'>
                     <View className='flex px-3'>
@@ -166,7 +168,7 @@ const Playlist = ({ onSelect, ...props }: PlaylistProps) => {
                     </View>
                     <TextInput onChangeText={handleInputChange} placeholder='Search' value={inputValue} className='text-base text-white' />
                 </View>
-                <TouchableOpacity className='p-1' >
+                <TouchableOpacity onPress={()=>{setShowMenu(true)}} className='p-1' >
                     <Hmaburger fill='white' />
                 </TouchableOpacity>
             </View>
@@ -195,7 +197,7 @@ const Playlist = ({ onSelect, ...props }: PlaylistProps) => {
                                 <Return />
                             </TouchableOpacity>) : (
                             <TouchableOpacity onPress={() => {
-                                props.setShowPlaylist(false);
+                                setShowPlaylist(false);
                             }} className=' p-1'>
                                 <Return />
                             </TouchableOpacity>
@@ -248,7 +250,11 @@ const Playlist = ({ onSelect, ...props }: PlaylistProps) => {
 
 
             </View>
-        </View>
+        </SafeAreaView>
+            {
+                showMenu && <Menu />
+            }
+            </>
     )
 }
 

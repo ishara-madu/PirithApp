@@ -13,7 +13,7 @@ interface Items {
 
 type FlatlistProps = {
     listtype:any;
-    onSelect: (url: string, urls: any, uniqueId: any, isFavoritesAll: any, nameAll: string, artistAll: string,setShowPlaylist:any) => void;
+    onSelect: (url: string, urls: any, uniqueId: any, isFavoritesAll: any, nameAll: string, artistAll: string) => void;
 }
 
 const Flatlist = ({onSelect, ...props}:FlatlistProps) => {    
@@ -24,8 +24,7 @@ const Flatlist = ({onSelect, ...props}:FlatlistProps) => {
         const isFavoritesAll = props.listtype.map((item: Items) => item.isFavorites ? 1 : 0).reverse();;
         const nameAll = props.listtype.map((item:Items) => item.name).filter((name:Items) => name).reverse();;
         const artistAll = props.listtype.map((item:Items) => item.artist).filter((artist:Items) => artist).reverse();
-        const setShowPlaylist = false
-        onSelect(url, urls, uniqueId, isFavoritesAll, nameAll, artistAll,setShowPlaylist)
+        onSelect(url, urls, uniqueId, isFavoritesAll, nameAll, artistAll)
     }
 
     return (
