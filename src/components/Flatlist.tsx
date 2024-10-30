@@ -2,6 +2,7 @@ import { View, Text, FlatList, TouchableOpacity, Image } from 'react-native'
 import React from 'react'
 import Pause from '../../assets/svg/Pause'
 import Play from '../../assets/svg/Play'
+import { useGlobalContext } from './Hooks/GlobalContext';
 
 interface Items {
     url: string; 
@@ -17,6 +18,9 @@ type FlatlistProps = {
 }
 
 const Flatlist = ({onSelect, ...props}:FlatlistProps) => {    
+
+    const {setShowPlaylist} = useGlobalContext();
+
 
     const handleTransactions = (url: string, uniqueId: any) => {
 
@@ -34,6 +38,7 @@ const Flatlist = ({onSelect, ...props}:FlatlistProps) => {
             renderItem={({ item }) => (
                 <TouchableOpacity onPress={()=>{
                     handleTransactions(item.url,item.uniqueId);
+                    setShowPlaylist(false)
                 }} className='w-full flex flex-row items-center px-3 h-16 bg-[#00000065] rounded-xl mt-1'>
                     <View className='w-11 h-11 rounded-md mr-7 overflow-hidden relative'>
                         <Image className='rounded-md flex-1 w-full h-full' source={{ uri: `https://img.youtube.com/vi/${item.url}/default.jpg` }} />
