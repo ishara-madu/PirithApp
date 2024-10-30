@@ -10,11 +10,12 @@ import Info from '../components/Info';
 import Pause from '../../assets/svg/Pause';
 import Heart from '../../assets/svg/Heart';
 import Shar from '../../assets/svg/Share';
-import { dropTable, getAllData, insertData, updateFavorite } from './Database';
-import YoutubePlayer, { YoutubeIframeRef } from "react-native-youtube-iframe";
+import { dropTable, getAllData, updateFavorite } from './Database';
+import YoutubePlayer, { YoutubeIframeRef,getYoutubeMeta } from "react-native-youtube-iframe";
 import Playlist from './Playlist';
 import Slider from '@react-native-community/slider';
 import Loading from '../components/Loading';
+import { useGlobalContext } from '../components/Hooks/GlobalContext';
 
 
 
@@ -36,6 +37,9 @@ const Home: React.FC = () => {
   const [repeat, setRepeat] = useState("all")
   const [shuffle, setShuffle] = useState(false)
   const [showLoading, setShowLoading] = useState(true)
+
+  const { playbackRate } = useGlobalContext();
+
 
 
   const handlePlayPause = () => {
@@ -204,6 +208,13 @@ const onStateChange = (state:any) => {
 
   }
 
+  const meta = ()=>{getYoutubeMeta(urls[uniqueId]).then(meta => {
+    Alert.alert(
+      
+      `${meta.provider_url}`
+    );
+  });}
+
 
   return (
     <SafeAreaView>
@@ -230,11 +241,12 @@ const onStateChange = (state:any) => {
               <YoutubePlayer
                 ref={playerRef}
                 height={0}
-                // width={0}
+                width={0}
                 play={isPlay}
                 videoId={urls[uniqueId]}
                 useLocalHTML={true}
                 onChangeState={onStateChange}
+                playbackRate={playbackRate}
                 />
             }
             {

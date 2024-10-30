@@ -11,7 +11,7 @@ import Menu from './src/pages/Menu';
 import Settings from './src/pages/Settings';
 import About from './src/pages/About';
 import { getAllData } from './src/pages/Database';
-import Video from './src/components/Video';
+import { GlobalProvider } from './src/components/Hooks/GlobalContext';
 
 const Stack = createNativeStackNavigator();
 
@@ -21,6 +21,7 @@ function App() {
 
 
   return (
+    <GlobalProvider>
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">
         <Stack.Screen name="Welcome" component={Welcome} options={{ headerShown: false }} />
@@ -30,6 +31,8 @@ function App() {
         <Stack.Screen name="About" component={About} options={{headerShown:false}}/>
       </Stack.Navigator>
     </NavigationContainer>
+    </GlobalProvider>
+
   );
 }
 

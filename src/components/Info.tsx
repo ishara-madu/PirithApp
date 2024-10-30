@@ -3,12 +3,14 @@ import React, { useEffect, useState } from 'react'
 import About from '../../assets/svg/About'
 import Sleep from './Settings/Sleep'
 import PlaybackSpeed from './Settings/PlaybackSpeed'
+import { useGlobalContext } from './Hooks/GlobalContext'
 
 
 const Info = () => {
     const [activeButton, setActiveButton] = useState(0);
     const [showTimeOptions, setShowTimeOptions] = useState(false);
     const [showspeedOptions, setShowSpeedOptions] = useState(false);
+
 
 
     const handleSleepButton = () => {

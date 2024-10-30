@@ -20,7 +20,7 @@ type PlaylistProps = {
     setShowPlaylist: any;
     url: any;
     isPlay: boolean;
-    isFavorites: boolean
+    isFavorites: any
 }
 
 
@@ -103,7 +103,6 @@ const Playlist = ({ onSelect, ...props }: PlaylistProps) => {
             try {
                 const users = await getData();
                 setData(users);
-                console.log(users);
             } catch (error) {
                 console.error("Error fetching data:", error);
             }
@@ -111,7 +110,7 @@ const Playlist = ({ onSelect, ...props }: PlaylistProps) => {
         fetchData();
 
 
-    }, [props.isFavorites]);
+    }, [props.isFavorites,props.showPlaylist]);
     
     //   saveData("id1","gRYV3Dgib7g","Song 1","Artist 1","Playlist 1",true)
     //   saveData("id2","dqkxmiI0kYo","Song 2","Artist 2","Playlist 1",false)
@@ -130,7 +129,7 @@ const Playlist = ({ onSelect, ...props }: PlaylistProps) => {
         return data
             .filter(song => song.isFavorites === 1 || song.isFavorites === true)
             .map((song, index) => ({ ...song, uniqueId: index })); // Prefix for unique IDs
-    }, [data])
+    }, [data,props.isFavorites])
 
     useEffect(() => {
         if (listType === 'Recent') {
