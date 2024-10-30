@@ -1,6 +1,6 @@
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text, TouchableOpacity, SafeAreaView } from 'react-native'
 import React, { useState } from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
+// import { SafeAreaView } from 'react-native-safe-area-context'
 import Home from '../../assets/svg/Home'
 import Playlist from '../../assets/svg/Playlist'
 import Setting from '../../assets/svg/Settings'
@@ -12,6 +12,7 @@ import PlayerStyle from '../components/Settings/PlayerStyle'
 import PlaybackSpeed from '../components/Settings/PlaybackSpeed'
 import Theme from '../components/Settings/Theme'
 import BackgroundPlay from '../components/Settings/BackgroundPlay'
+import { useGlobalContext } from '../components/Hooks/GlobalContext'
 
 const Settings = () => {
   const [activeButton, setActiveButton] = useState(0);
@@ -20,6 +21,8 @@ const Settings = () => {
   const [showspeedOptions, setShowSpeedOptions] = useState(false);
   const [showThemeOptions, setShowThemeOptions] = useState(false);
   const [showBackgroundPlayOptions, setShowBackgroundPlayOptions] = useState(false);
+
+  const { setShowSettings } = useGlobalContext();
 
 
   const handleSleepButton = () => {
@@ -59,10 +62,12 @@ const Settings = () => {
     setShowThemeOptions(false);
   }
   return (
-    <SafeAreaView className='bg-black flex w-full h-full'>
+    <SafeAreaView className='bg-black flex w-full h-full absolute'>
       <View className='flex relative h-auto items-center w-full flex-row justify-center mt-8 mb-8'>
         <Text className='text-2xl text-white font-bold'>Settings</Text>
-        <Text className='absolute right-10 text-white'>Done</Text>
+        <TouchableOpacity onPress={()=>{setShowSettings(false)}} className='absolute right-10'>
+          <Text className=' text-white'>Done</Text>
+        </TouchableOpacity>
       </View>
       <View className='w-full flex-1 bg-slate-700 items-center rounded-t-3xl pt-10'>
         <View className='w-[80%] flex-1'>
@@ -70,16 +75,16 @@ const Settings = () => {
             <Sleep showTimeOptions={showTimeOptions} handleSleepButton={handleSleepButton} />
           </TouchableOpacity>
           <TouchableOpacity onPress={handleStyleButton} className={`h-16 px-3 ${activeButton == 2 ? "bg-[#0000002f] z-10" : ""} rounded-xl w-full flex flex-row items-center`}>
-            <PlayerStyle showTypeOptions={showTypeOptions} handleStyleButton={handleStyleButton}/>
+            <PlayerStyle showTypeOptions={showTypeOptions} handleStyleButton={handleStyleButton} />
           </TouchableOpacity>
           <TouchableOpacity onPress={handlePlaybackButton} className={`h-16 px-3 ${activeButton == 3 ? "bg-[#0000002f] z-10" : ""} rounded-xl w-full flex flex-row items-center`}>
-            <PlaybackSpeed showspeedOptions={showspeedOptions} handlePlaybackButton={handlePlaybackButton}/>
+            <PlaybackSpeed showspeedOptions={showspeedOptions} handlePlaybackButton={handlePlaybackButton} />
           </TouchableOpacity>
           <TouchableOpacity onPress={handleThemeButton} className={`h-16 px-3 ${activeButton == 4 ? "bg-[#0000002f] z-10" : ""} rounded-xl w-full flex flex-row items-center`}>
-            <Theme showThemeOptions={showThemeOptions} handleThemeButton={handleThemeButton}/>
+            <Theme showThemeOptions={showThemeOptions} handleThemeButton={handleThemeButton} />
           </TouchableOpacity>
           <TouchableOpacity onPress={handleBackgroundPlayButton} className={`h-16 px-3 ${activeButton == 5 ? "bg-[#0000002f] z-10" : ""} rounded-xl w-full flex flex-row items-center`}>
-            <BackgroundPlay showBackgroundPlayOptions={showBackgroundPlayOptions} handleBackgroundPlayButton={handleBackgroundPlayButton}/>
+            <BackgroundPlay showBackgroundPlayOptions={showBackgroundPlayOptions} handleBackgroundPlayButton={handleBackgroundPlayButton} />
           </TouchableOpacity>
         </View>
       </View>

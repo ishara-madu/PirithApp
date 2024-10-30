@@ -1,14 +1,18 @@
-import { View, Text } from 'react-native'
+import { View, Text, TouchableOpacity,SafeAreaView } from 'react-native'
 import React from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
+// import { SafeAreaView } from 'react-native-safe-area-context'
+import { useGlobalContext } from '../components/Hooks/GlobalContext';
 
 const About = () => {
+  const { setShowAbout } = useGlobalContext();
+
   return (
-    <SafeAreaView className='bg-green-400 flex w-full h-full'>
-      
+    <SafeAreaView className='bg-green-400 flex w-full h-full absolute'>
       <View className='flex relative h-auto items-center w-full flex-row justify-center mt-8 mb-8'>
         <Text className='text-2xl text-white font-bold'>About</Text>
-        <Text className='absolute right-10 text-white'>Done</Text>
+        <TouchableOpacity onPress={() => { setShowAbout(false) }} className='absolute right-10'>
+          <Text className=' text-white'>Done</Text>
+        </TouchableOpacity>
       </View>
       <View className='w-full flex-1 bg-slate-700 items-center rounded-t-3xl pt-10'>
         <View className='w-[80%] flex-1'>
