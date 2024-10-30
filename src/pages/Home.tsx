@@ -38,8 +38,13 @@ const Home: React.FC = () => {
   const [shuffle, setShuffle] = useState(false)
   const [showLoading, setShowLoading] = useState(true)
 
-  const { playbackRate } = useGlobalContext();
+  const { playbackRate,setUniId,setUris } = useGlobalContext();
 
+
+  useEffect(() =>{
+    setUniId(uniqueId);
+    setUris(urls);
+  },[uniqueId])
 
 
   const handlePlayPause = () => {
@@ -208,12 +213,7 @@ const onStateChange = (state:any) => {
 
   }
 
-  const meta = ()=>{getYoutubeMeta(urls[uniqueId]).then(meta => {
-    Alert.alert(
-      
-      `${meta.provider_url}`
-    );
-  });}
+
 
 
   return (
