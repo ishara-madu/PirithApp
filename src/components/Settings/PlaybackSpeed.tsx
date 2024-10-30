@@ -11,7 +11,7 @@ type PlaybackProps = {
 
 const PlaybackSpeed = ({ handlePlaybackButton, ...props }: PlaybackProps) => {
     const [showspeedOptions, setShowSpeedOptions] = useState(false);
-    const [playbackSpeed, setPlaybackSpeed] = useState("Default");
+    const [playbackSpeed, setPlaybackSpeed] = useState<any>("Default");
     const { playbackRate, setPlaybackRate } = useGlobalContext();
 
 
@@ -25,24 +25,24 @@ const PlaybackSpeed = ({ handlePlaybackButton, ...props }: PlaybackProps) => {
 
     const speedOptions = [0.5, 0.75, 1, 1.25, 1.5, 2];
 
-    const speedSet = (speeds: number) => {
+    const speedSet = (speedOption: number) => {
         let val;
-        speeds == 0.5 ? (
+        speedOption == 0.5 ? (
             val = "0.5x"
         ) : (
-            speeds == 0.75 ? (
+            speedOption == 0.75 ? (
                 val = "0.75x"
             ) : (
-                speeds == 1 ? (
+                speedOption == 1 ? (
                     val = "Default"
                 ) : (
-                    speeds == 1.25 ? (
+                    speedOption == 1.25 ? (
                         val = "1.25x"
                     ):(
-                        speeds == 1.5? (
+                        speedOption == 1.5? (
                             val = "1.5x"
                         ) : (
-                            speeds == 2 && (
+                            speedOption == 2 && (
                                 val = "2x"
                             )
                         )
