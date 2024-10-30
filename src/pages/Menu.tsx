@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity,SafeAreaView } from 'react-native'
+import { View, Text, TouchableOpacity,SafeAreaView, Linking } from 'react-native'
 import React from 'react'
 // import { SafeAreaView } from 'react-native-safe-area-context'
 import Home from '../../assets/svg/Home'
@@ -35,7 +35,7 @@ const Menu = () => {
             <Settings />
             <Text className='text-white text-lg ml-8'>Settings</Text>
           </TouchableOpacity>
-          <TouchableOpacity className='h-14 active:bg-[#0000002f] rounded-xl w-full flex flex-row items-center pl-5'>
+          <TouchableOpacity onPress={()=>{Linking.openURL("")}} className='h-14 active:bg-[#0000002f] rounded-xl w-full flex flex-row items-center pl-5'>
             <Rate />
             <Text className='text-white text-lg ml-8'>Rate Us</Text>
           </TouchableOpacity>
