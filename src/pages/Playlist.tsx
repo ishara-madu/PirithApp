@@ -40,7 +40,6 @@ const Playlist = ({ onSelect, ...props }: PlaylistProps) => {
 
     const handleTransactions = (url: string, urls: any, uniqueId: any, isFavoritesAll: any, nameAll: string, artistAll: string, setShowPlaylist: any) => {
         props.setShowPlaylist(setShowPlaylist);
-        console.log(urls);
 
         onSelect(url, urls, uniqueId, isFavoritesAll, nameAll, artistAll)
     }

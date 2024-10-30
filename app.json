@@ -31,8 +31,6 @@
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
-      "expo-font",
-      "./react-native-mmkv-plugin.js"
-    ]
+      "expo-font"    ]
   }
 }
