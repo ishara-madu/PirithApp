@@ -1,21 +1,21 @@
-// firebaseConfig.ts
-
 import { initializeApp } from "firebase/app";
-import { getDatabase } from "firebase/database";
+import { getFirestore } from "firebase/firestore";
 
+// Your Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyA6Tk-aNP_pxUWIB3Rrk8mfpjs_bKV0AyQ",
-  authDomain: "pirith-app-d3289.firebaseapp.com",
-  databaseURL: "https://pirith-app-d3289-default-rtdb.asia-southeast1.firebasedatabase.app", // Updated database URL
-  projectId: "pirith-app-d3289",
-  storageBucket: "pirith-app-d3289.appspot.com",
-  messagingSenderId: "502680967547",
-  appId: "1:502680967547:web:815630ef7908d553f785de",
-  measurementId: "G-CTDPWZ1KTP",
+  apiKey: "AIzaSyBt0cgSTJkAmmIbsi6g3FPNKK7OljETZk0",
+  authDomain: "pirith-6fb06.firebaseapp.com",
+  projectId: "pirith-6fb06",
+  storageBucket: "pirith-6fb06.firebasestorage.app",
+  messagingSenderId: "799214750008",
+  appId: "1:799214750008:web:98e9abb50f8158e2a199cd",
+  measurementId: "G-8RGQ69DG09"
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const database = getDatabase(app); // Initialize Realtime Database
 
-export { database }; // Export the database instance
+// Initialize Firestore
+const db = getFirestore(app);
+
+export {db}
