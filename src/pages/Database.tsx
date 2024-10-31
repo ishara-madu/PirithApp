@@ -20,7 +20,14 @@ export const saveData = async (group:any,id:any,url:any,name:any,artist:any,play
   }
 }
 
-
+export const saveDataVariable = async (id:any,data:any) =>{
+try {
+  await AsyncStorage.setItem(`${id}`,JSON.stringify(data));
+} catch (error) {
+  console.log(error);
+  
+}
+}
 
 export const getData = async (group:any) => {
   try {

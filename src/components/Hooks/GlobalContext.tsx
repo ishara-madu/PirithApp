@@ -1,5 +1,6 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { getYoutubeMeta } from 'react-native-youtube-iframe';
+import { saveData } from '../../pages/Database';
 
 type GlobalContextType = {
   playbackRate: number;
@@ -51,7 +52,9 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
   const [playerStyle,setPlayerStyle] = useState<any>("Classic");
 
 
-
+  useEffect(()=>{
+    
+  },[theme])
 
 
 
