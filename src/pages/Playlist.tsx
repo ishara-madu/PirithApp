@@ -11,7 +11,7 @@ import List from '../../assets/svg/List'
 import Play from '../../assets/svg/Play'
 import Pause from '../../assets/svg/Pause'
 import Flatlist from '../components/Flatlist'
-import { getAllData, getData, saveData } from './Database'
+import {  getData, saveData } from './Database'
 import Menu from './Menu'
 import { darkStyles, lightStyles, useGlobalContext } from '../components/Hooks/GlobalContext'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -89,7 +89,7 @@ const Playlist = (props: PlaylistProps) => {
     useMemo(() => {
         const fetchData = async () => {
             try {
-                const users = await getData();
+                const users = await getData("item");
                 setData(users);
             } catch (error) {
                 console.error("Error fetching data:", error);

@@ -28,7 +28,7 @@ export const getData = async (group:any) => {
     const userKeys = keys.filter(key => key.startsWith(`${group}-`));
     const userValues = await AsyncStorage.multiGet(userKeys);
 
-    return userValues.map(([key, value]) => ({
+    return userValues.map(([key, value]:any) => ({
       key,  // Retain key for reference
       ...JSON.parse(value)  // Spread parsed data directly
     }));
@@ -39,19 +39,19 @@ export const getData = async (group:any) => {
 
 
 
-export const updateFavorite = async (favorite,url) => {
+export const updateFavorite = async (favorite:any,url:any) => {
   try {
     const keys = await AsyncStorage.getAllKeys();
         const itemKeys = keys.filter(key => key.startsWith("item-"));
         const items = await AsyncStorage.multiGet(itemKeys);
     
-    const itemToUpdate = items.find(([key, value]) => {
+    const itemToUpdate = items.find(([key, value]:any) => {
       const data = JSON.parse(value);
       return data.url === url;
     });
     
     if (itemToUpdate) {
-      const [key, value] = itemToUpdate;
+      const [key, value]:any = itemToUpdate;
       const data = JSON.parse(value);
       
       data.isFavorites = favorite;
