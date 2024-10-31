@@ -44,7 +44,7 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
   const [showPlaylist, setShowPlaylist] = useState(false)
   const [showAbout, setShowAbout] = useState<boolean>(false);
   const [showSettings, setShowSettings] = useState<boolean>(false);
-  const [theme, setTheme] = useState("Ligh");
+  const [theme, setTheme] = useState("Light");
   const [isPlay, setIsPlay] = useState<boolean>(false);
 
 
