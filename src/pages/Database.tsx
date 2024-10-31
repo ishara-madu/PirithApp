@@ -28,6 +28,17 @@ try {
   
 }
 }
+export const getDataVariable = async (id: any) => {
+  try {
+    const value = await AsyncStorage.getItem(id);
+    return value !== null ? value : "Light"; // Explicitly return null if value is not found
+  } catch (error) {
+    console.log("Error fetching data:", error);
+    return null; // Return null in case of an error
+  }
+};
+
+
 
 export const getData = async (group:any) => {
   try {

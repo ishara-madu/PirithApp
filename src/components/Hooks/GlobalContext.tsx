@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { getYoutubeMeta } from 'react-native-youtube-iframe';
-import { saveData } from '../../pages/Database';
+import { getData, getDataVariable, saveData, saveDataVariable } from '../../pages/Database';
 
 type GlobalContextType = {
   playbackRate: number;
@@ -53,9 +53,12 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
 
 
   useEffect(()=>{
-    
+    saveDataVariable("theme",theme);
   },[theme])
 
+  useEffect(()=>{    
+
+  },[])
 
 
 
