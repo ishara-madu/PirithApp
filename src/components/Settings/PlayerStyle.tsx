@@ -11,10 +11,10 @@ type SleepProps = {
 }
 
 const PlayerStyle = ({ handleStyleButton, ...props }: SleepProps) => {
+    const { theme,playerStyle,setPlayerStyle } = useGlobalContext();
     const [showTypeOptions, setShowTypeOptions] = useState(false);
-    const [selectedType, setSelectedType] = useState("Classic");
+    const [selectedType, setSelectedType] = useState(playerStyle);
 
-    const { theme } = useGlobalContext();
     const currentStyles = theme === 'Light' ? lightStyles : darkStyles;
 
     const timeOptions = ["Simple","Classic","Advanced"]
@@ -25,6 +25,10 @@ const PlayerStyle = ({ handleStyleButton, ...props }: SleepProps) => {
     useEffect(() => {
         setShowTypeOptions(props.showTypeOptions)
     }, [props.showTypeOptions])
+
+    useEffect(() => {
+        setPlayerStyle(selectedType);
+    },[selectedType])
 
 
     return (

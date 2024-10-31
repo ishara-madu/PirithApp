@@ -65,7 +65,7 @@ const Flatlist = (props: FlatlistProps) => {
                         </View>
                     </View>
                     <View>
-                        <Text className={`${currentStyles.tx_1} text-base font-semibold`}>{item.name},{item.uniqueId}</Text>
+                        <Text className={`${currentStyles.tx_1} text-base font-semibold`}>{item.name}</Text>
                         <Text className={`${currentStyles.tx_2} text-xs`}>{item.artist}</Text>
                     </View>
                 </TouchableOpacity>

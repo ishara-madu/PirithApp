@@ -225,7 +225,7 @@ const Playlist = (props: PlaylistProps) => {
                                                             </View>
                                                         </View>
                                                         <View>
-                                                            <Text className={`${currentStyles.tx_1} text-base font-semibold`}>{item.playlist},{item.uniqueId}</Text>
+                                                            <Text className={`${currentStyles.tx_1} text-base font-semibold`}>{item.playlist}</Text>
                                                         </View>
                                                     </TouchableOpacity>
                                                 )}

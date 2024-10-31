@@ -28,6 +28,8 @@ type GlobalContextType = {
   setNameAll: (value: any) => void;
   artistAll: any;
   setArtistAll: (value: any) => void;
+  playerStyle: any;
+  setPlayerStyle: (value: any) => void;
 };
 
 const GlobalContext = createContext<GlobalContextType | undefined>(undefined);
@@ -46,6 +48,7 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
   const [showSettings, setShowSettings] = useState<boolean>(false);
   const [theme, setTheme] = useState("Light");
   const [isPlay, setIsPlay] = useState<boolean>(false);
+  const [playerStyle,setPlayerStyle] = useState<any>("Classic");
 
 
 
@@ -54,7 +57,7 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
 
 
   return (
-    <GlobalContext.Provider value={{ playbackRate, setPlaybackRate, urls, setUrls, uniqueId, setUniqueId, showMenu, setShowMenu, showPlaylist, setShowPlaylist, showAbout, setShowAbout, showSettings, setShowSettings, theme, setTheme, isPlay, setIsPlay,url, setUrl,isFavoritesAll, setIsFavoritesAll,nameAll, setNameAll,artistAll, setArtistAll }}>
+    <GlobalContext.Provider value={{ playbackRate, setPlaybackRate, urls, setUrls, uniqueId, setUniqueId, showMenu, setShowMenu, showPlaylist, setShowPlaylist, showAbout, setShowAbout, showSettings, setShowSettings, theme, setTheme, isPlay, setIsPlay,url, setUrl,isFavoritesAll, setIsFavoritesAll,nameAll, setNameAll,artistAll, setArtistAll,playerStyle,setPlayerStyle }}>
       {children}
     </GlobalContext.Provider>
   );
@@ -85,8 +88,8 @@ export const lightStyles = {
   tx_3: 'text-[#415a77]',
   tx_4: 'text-[#778da9]',
   tx_5: 'text-[#e0e1dd]',
-  tx_6: 'text-[#FFD700]',
-  tx_7: 'text-[#1E90FF]',
+  tx_6: 'text-[#e6c81f]',
+  tx_7: 'text-[#2b29aa]',
   tx_8: 'text-[#32CD32]',
   tx_white: 'text-[#e0e1dd]',
 

@@ -97,7 +97,7 @@ const Info = () => {
                             </Text>
 
                             <Text className={`${currentStyles.tx_2} text-sm mb-4`}>
-                                Click the link above to dive deeper into the amazing content created by <Text className='font-semibold text-[#FFD700]'>{author}</Text>! 🎉
+                                Click the link above to dive deeper into the amazing content created by <Text className={`font-semibold ${currentStyles.tx_6}`}>{author}</Text>! 🎉
                             </Text>
 
                             <Text className={`${currentStyles.tx_8} text-sm font-semibold mb-2`}> {/* Lime green for positivity */}

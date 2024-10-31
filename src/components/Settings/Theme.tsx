@@ -12,10 +12,10 @@ type SleepProps = {
 }
 
 const Theme = ({ handleThemeButton, ...props }: SleepProps) => {
+    const { theme,setTheme } = useGlobalContext();
     const [showThemeOptions, setShowThemeOptions] = useState(false);
-    const [selectedTheme, setSelectedTheme] = useState("Light");
+    const [selectedTheme, setSelectedTheme] = useState(theme);
 
-    const { theme } = useGlobalContext();
     const currentStyles = theme === 'Light' ? lightStyles : darkStyles;
 
     const timeOptions = ["Light", "Dark",]
@@ -26,6 +26,10 @@ const Theme = ({ handleThemeButton, ...props }: SleepProps) => {
     useEffect(() => {
         setShowThemeOptions(props.showThemeOptions)
     }, [props.showThemeOptions])
+
+    useEffect(() => {
+        setTheme(selectedTheme);
+    },[selectedTheme])
 
 
     return (

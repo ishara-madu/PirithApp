@@ -14,12 +14,12 @@ type SleepProps = {
 
 const BackgroundPlay = ({ handleBackgroundPlayButton, ...props }: SleepProps) => {
     const [showBackgroundPlayOptions, setShowBackgroundPlayOptions] = useState(false);
-    const [selectedBackgroundPlay, setSelectedBackgroundPlay] = useState("Light");
+    const [selectedBackgroundPlay, setSelectedBackgroundPlay] = useState("On");
 
     const { theme } = useGlobalContext();
     const currentStyles = theme === 'Light' ? lightStyles : darkStyles;
 
-    const bacgroundOptions = ["off", "on",]
+    const bacgroundOptions = ["Off", "On",]
 
     const handleBackground = () => {
         setShowBackgroundPlayOptions(true)

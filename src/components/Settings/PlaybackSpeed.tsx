@@ -10,10 +10,10 @@ type PlaybackProps = {
 }
 
 const PlaybackSpeed = ({ handlePlaybackButton, ...props }: PlaybackProps) => {
-    const [showspeedOptions, setShowSpeedOptions] = useState(false);
-    const [playbackSpeed, setPlaybackSpeed] = useState<any>("Default");
-
     const { playbackRate, setPlaybackRate,theme } = useGlobalContext();
+    const [showspeedOptions, setShowSpeedOptions] = useState(false);
+    const [playbackSpeed, setPlaybackSpeed] = useState<any>(playbackRate);
+
 
     const currentStyles = theme === 'Light' ? lightStyles : darkStyles;
 
@@ -70,14 +70,14 @@ const PlaybackSpeed = ({ handlePlaybackButton, ...props }: PlaybackProps) => {
                             showspeedOptions ?
                                 (speedOptions.map((speedOption, id) => {
                                     return (
-                                        <TouchableOpacity key={id} onPress={() => { setPlaybackSpeed(speedSet(speedOption)); setPlaybackRate(speedOption); setShowSpeedOptions(false) }} className='flex flex-row items-center justify-start w-full py-2'>
-                                            <Text className={currentStyles.tx_white}>{speedOption}</Text>
+                                        <TouchableOpacity key={id} onPress={() => { setPlaybackSpeed(speedOption); setPlaybackRate(speedOption); setShowSpeedOptions(false) }} className='flex flex-row items-center justify-start w-full py-2'>
+                                            <Text className={currentStyles.tx_white}>{speedSet(speedOption)}</Text>
                                         </TouchableOpacity>
                                     )
                                 })) :
                                 ( 
                                     <View className='flex flex-row items-center justify-between w-full py-2'>
-                                        <Text className={currentStyles.tx_white}>{playbackSpeed} </Text>
+                                        <Text className={currentStyles.tx_white}>{speedSet(playbackSpeed)} </Text>
                                         <DownArrow fill={currentStyles.svg_white} width={14} height={14} />
                                     </View>
                                 )
