@@ -3,6 +3,7 @@ import React from 'react'
 import Pause from '../../assets/svg/Pause'
 import Play from '../../assets/svg/Play'
 import { darkStyles, lightStyles, useGlobalContext } from './Hooks/GlobalContext';
+import { saveDataVariable } from '../pages/Database';
 
 interface Items {
     url: string;
@@ -26,9 +27,16 @@ const Flatlist = (props: FlatlistProps) => {
     const handleTransactions = () => {
 
         setUrls(props.listtype.map((item: Items) => item.url).filter((url: Items) => url).reverse());
+        saveDataVariable("urls", props.listtype.map((item: Items) => item.url).filter((url: Items) => url).reverse());
+
         setIsFavoritesAll(props.listtype.map((item: Items) => item.isFavorites ? 1 : 0).reverse());
+        saveDataVariable("isFavoritesAll",props.listtype.map((item: Items) => item.isFavorites ? 1 : 0).reverse());
+
         setNameAll(props.listtype.map((item: Items) => item.name).filter((name: Items) => name).reverse());
+        saveDataVariable("nameAll",props.listtype.map((item: Items) => item.name).filter((name: Items) => name).reverse());
+
         setArtistAll(props.listtype.map((item: Items) => item.artist).filter((artist: Items) => artist).reverse());
+        saveDataVariable("artistAll",props.listtype.map((item: Items) => item.artist).filter((artist: Items) => artist).reverse());
     }
 
     return (
@@ -39,8 +47,9 @@ const Flatlist = (props: FlatlistProps) => {
                 <TouchableOpacity onPress={() => {
                     handleTransactions();
                     setUniqueId(item.uniqueId);
-                    
+                    saveDataVariable("uniqueId", item.uniqueId);
                     setUrl(item.url)
+                    saveDataVariable("url", item.url);
                     setShowPlaylist(false)
                 }} className={`w-full flex flex-row items-center px-3 h-16 ${currentStyles.bg_7} rounded-xl mt-1`}>
                     <View className='w-11 h-11 rounded-md mr-7 overflow-hidden relative'>

@@ -58,8 +58,20 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
     const fetchData = async () => {
       const theme = await getDataVariable("theme");
       const playerStyle = await getDataVariable("playerStyle");
+      const uniqueId = await getDataVariable("uniqueId");
+      const url = await getDataVariable("url");
+      const urls = await getDataVariable("urls");
+      const isFavoritesAll = await getDataVariable("isFavoritesAll");
+      const nameAll = await getDataVariable("nameAll");
+      const artistAll = await getDataVariable("artistAll");
       setTheme(theme ?? "Light");      
-      setPlayerStyle(playerStyle ?? "Classic");          
+      setPlayerStyle(playerStyle ?? "Classic"); 
+      setUniqueId(uniqueId ?? setShowPlaylist(true));
+      setUrl(url ?? setShowPlaylist(true));
+      setUrls(urls ?? setShowPlaylist(true));
+      setIsFavoritesAll(isFavoritesAll ?? setShowPlaylist(true));
+      setNameAll(nameAll ?? setShowPlaylist(true));
+      setArtistAll(artistAll ?? setShowPlaylist(true));
     };
     fetchData();
   }, []);

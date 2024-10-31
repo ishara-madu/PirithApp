@@ -10,8 +10,9 @@ import Playlist from './src/pages/Playlist';
 import Menu from './src/pages/Menu';
 import Settings from './src/pages/Settings';
 import About from './src/pages/About';
-import { getAllData } from './src/pages/Database';
 import { GlobalProvider } from './src/components/Hooks/GlobalContext';
+import { Alert, BackHandler } from 'react-native';
+import ExitAlert from './src/components/ExitAlert';
 
 const Stack = createNativeStackNavigator();
 
@@ -20,17 +21,19 @@ const Stack = createNativeStackNavigator();
 function App() {
 
 
+
   return (
     <GlobalProvider>
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="Welcome" component={Welcome} options={{ headerShown: false }} />
-        <Stack.Screen name="Home" component={Home} options={{headerShown:false}}/>
-        <Stack.Screen name="Menu" component={Menu} options={{headerShown:false}}/>
-        <Stack.Screen name="Settings" component={Settings} options={{headerShown:false}}/>
-        <Stack.Screen name="About" component={About} options={{headerShown:false}}/>
-      </Stack.Navigator>
-    </NavigationContainer>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Home">
+          <Stack.Screen name="Welcome" component={Welcome} options={{ headerShown: false }} />
+          <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
+          <Stack.Screen name="Menu" component={Menu} options={{ headerShown: false }} />
+          <Stack.Screen name="Settings" component={Settings} options={{ headerShown: false }} />
+          <Stack.Screen name="About" component={About} options={{ headerShown: false }} />
+        </Stack.Navigator>
+      </NavigationContainer>
+        <ExitAlert />
     </GlobalProvider>
 
   );
