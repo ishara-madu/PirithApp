@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import Timer from '../../../assets/svg/Timer';
 import DownArrow from '../../../assets/svg/DownArrow';
 import Player from '../../../assets/svg/Player';
+import { darkStyles, lightStyles, useGlobalContext } from '../Hooks/GlobalContext';
 
 type SleepProps = {
     handleStyleButton?: any;
@@ -13,6 +14,8 @@ const PlayerStyle = ({ handleStyleButton, ...props }: SleepProps) => {
     const [showTypeOptions, setShowTypeOptions] = useState(false);
     const [selectedType, setSelectedType] = useState("Classic");
 
+    const { theme } = useGlobalContext();
+    const currentStyles = theme === 'Light' ? lightStyles : darkStyles;
 
     const timeOptions = ["Simple","Classic","Advanced"]
 
@@ -27,11 +30,11 @@ const PlayerStyle = ({ handleStyleButton, ...props }: SleepProps) => {
     return (
         <View className='flex flex-row justify-between items-center w-full h-full'>
             <View className='flex flex-row items-center gap-x-3 h-full'>
-                <Player />
-                <Text className='text-white text-md font-semibold'>Player Style</Text>
+                <Player str={currentStyles.svg_1}/>
+                <Text className={`${currentStyles.tx_1} text-md font-semibold`}>Player Style</Text>
             </View>
             <View className='flex flex-row items-center h-full gap-1 relative'>
-                <TouchableOpacity className='absolute right-2 flex h-auto items-center justify-center px-2 w-28 flex-row rounded-md bg-[#b7b7b7d2]'
+                <TouchableOpacity className={`absolute right-2 flex h-auto items-center justify-center px-2 w-28 flex-row rounded-md ${currentStyles.bg_6}`}
                     onPress={() => { handleStyle(); handleStyleButton(); }}
                 >
                     <View className='flex justify-center items-center'>
@@ -42,14 +45,14 @@ const PlayerStyle = ({ handleStyleButton, ...props }: SleepProps) => {
                                 (timeOptions.map((timeOption, id) => {
                                     return (
                                         <TouchableOpacity key={id} onPress={() => { setSelectedType(timeOption); setShowTypeOptions(false) }} className='flex flex-row items-center justify-start py-2 w-full'>
-                                            <Text>{timeOption}</Text>
+                                            <Text className={`${currentStyles.tx_white}`}>{timeOption}</Text>
                                         </TouchableOpacity>
                                     )
                                 })) :
                                 (
                                     <View className='flex flex-row items-center justify-between w-full py-2'>
-                                        <Text className=''>{selectedType}</Text>
-                                        <DownArrow fill='black' width={14} height={14} />
+                                        <Text className={`${currentStyles.tx_white}`}>{selectedType}</Text>
+                                        <DownArrow fill={currentStyles.svg_white} width={14} height={14} />
                                     </View>
                                 )
                         }

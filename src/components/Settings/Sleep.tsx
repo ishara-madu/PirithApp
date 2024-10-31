@@ -46,14 +46,14 @@ const Sleep = ({ handleSleepButton, ...props }: SleepProps) => {
                                 (timeOptions.map((timeOption, id) => {
                                     return (
                                         <TouchableOpacity key={id} onPress={() => { setSelectedTime(timeOption); setShowTimeOptions(false) }} className='flex flex-row items-center justify-start py-2 w-full'>
-                                            <Text className={currentStyles.tx_1}>{timeOption} {timeOption === "off" ? "" : "Minutes"}</Text>
+                                            <Text className={currentStyles.tx_white}>{timeOption} {timeOption === "off" ? "" : "Minutes"}</Text>
                                         </TouchableOpacity>
                                     )
                                 })) :
                                 (
                                     <View className='flex flex-row items-center justify-between w-full py-2'>
-                                        <Text className={currentStyles.tx_1}>{selectedTime} {selectedTime === "off" ? "" : "Minutes"} </Text>
-                                        <DownArrow fill={currentStyles.svg_1} width={14} height={14} />
+                                        <Text className={currentStyles.tx_white}>{selectedTime} {selectedTime === "off" ? "" : "Minutes"} </Text>
+                                        <DownArrow fill={currentStyles.svg_white} width={14} height={14} />
                                     </View>
                                 )
                         }

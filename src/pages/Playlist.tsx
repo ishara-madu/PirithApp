@@ -154,7 +154,8 @@ const Playlist = (props: PlaylistProps) => {
 
 
 
-    return (<>
+    return (
+    <>
         <SafeAreaView className={`${showPlaylist ? "flex" : "hidden"} h-full w-full ${currentStyles.bg_1} items-center absolute`}>
             <View className='flex flex-row w-[90%] mt-8 justify-between items-center mb-8'>
                 <View className={`flex flex-row ${currentStyles.bg_2} rounded-full h-11 w-[85%] items-center`}>

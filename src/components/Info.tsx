@@ -54,7 +54,7 @@ const Info = () => {
                 </TouchableOpacity>
                 <TouchableOpacity onPress={handleAboutButton} className={`w-[100%] ${activeButton == 3 ? `${currentStyles.bg_7} z-10` : ""} h-14 px-5 rounded-xl flex flex-row justify-between items-center`}>
                     <View className='flex flex-row items-center gap-x-3 h-full'>
-                        <About wh={40} />
+                        <About wh={40} fill={currentStyles.svg_1}/>
                         <Text className={`${currentStyles.tx_1} text-md font-semibold`}>About Track</Text>
                     </View>
                 </TouchableOpacity>

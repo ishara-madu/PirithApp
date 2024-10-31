@@ -78,6 +78,7 @@ export const lightStyles = {
   bg_5: 'bg-[#051014]',
   bg_6: 'bg-[#00000087]',
   bg_7: 'bg-[#0000002f]',
+  bg_active_7: 'active:bg-[#0000002f]',
 
   tx_1: 'text-[#051014]',
   tx_2: 'text-[#1b263b]',
@@ -87,12 +88,14 @@ export const lightStyles = {
   tx_6: 'text-[#FFD700]',
   tx_7: 'text-[#1E90FF]',
   tx_8: 'text-[#32CD32]',
+  tx_white: 'text-[#e0e1dd]',
 
   svg_1: '#051014',
   svg_2: '#1b263b',
   svg_3: '#415a77',
   svg_4: '#778da9',
   svg_5: '#e0e1dd',
+  svg_white: '#e0e1dd'
 };
 
 export const darkStyles = {
@@ -103,6 +106,8 @@ export const darkStyles = {
   bg_5: 'bg-[#e0e1dd]', // Opposite of lightStyles bg_5
   bg_6: 'bg-[#00000087]',
   bg_7: 'bg-[#0000002f]',
+  bg_active_7: 'active:bg-[#0000002f]',
+
 
   tx_1: 'text-[#e0e1dd]', // Opposite of lightStyles tx_1
   tx_2: 'text-[#778da9]', // Opposite of lightStyles tx_2
@@ -112,10 +117,13 @@ export const darkStyles = {
   tx_6: 'text-[#FFD700]',
   tx_7: 'text-[#1E90FF]',
   tx_8: 'text-[#32CD32]',
+  tx_white: 'text-[#e0e1dd]',
 
   svg_1: '#e0e1dd', // Opposite of lightStyles svg_1
   svg_2: '#778da9', // Opposite of lightStyles svg_2
   svg_3: '#415a77', // Opposite of lightStyles svg_3
   svg_4: '#1b263b', // Opposite of lightStyles svg_4
   svg_5: '#051014', // Opposite of lightStyles svg_5
+  svg_white: '#e0e1dd'
+
 };

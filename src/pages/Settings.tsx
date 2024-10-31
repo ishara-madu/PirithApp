@@ -12,7 +12,7 @@ import PlayerStyle from '../components/Settings/PlayerStyle'
 import PlaybackSpeed from '../components/Settings/PlaybackSpeed'
 import Theme from '../components/Settings/Theme'
 import BackgroundPlay from '../components/Settings/BackgroundPlay'
-import { useGlobalContext } from '../components/Hooks/GlobalContext'
+import { darkStyles, lightStyles, useGlobalContext } from '../components/Hooks/GlobalContext'
 
 const Settings = () => {
   const [activeButton, setActiveButton] = useState(0);
@@ -22,7 +22,9 @@ const Settings = () => {
   const [showThemeOptions, setShowThemeOptions] = useState(false);
   const [showBackgroundPlayOptions, setShowBackgroundPlayOptions] = useState(false);
 
-  const { setShowSettings } = useGlobalContext();
+  const { setShowSettings,theme } = useGlobalContext();
+  const currentStyles = theme === 'Light' ? lightStyles : darkStyles;
+
 
 
   const handleSleepButton = () => {
@@ -62,14 +64,14 @@ const Settings = () => {
     setShowThemeOptions(false);
   }
   return (
-    <SafeAreaView className='bg-black flex w-full h-full absolute'>
+    <SafeAreaView className={`${currentStyles.bg_1} flex w-full h-full absolute`}>
       <View className='flex relative h-auto items-center w-full flex-row justify-center mt-8 mb-8'>
-        <Text className='text-2xl text-white font-bold'>Settings</Text>
+        <Text className={`text-2xl ${currentStyles.tx_1} font-bold`}>Settings</Text>
         <TouchableOpacity onPress={()=>{setShowSettings(false)}} className='absolute right-10'>
-          <Text className=' text-white'>Done</Text>
+          <Text className={`${currentStyles.tx_1}`}>Done</Text>
         </TouchableOpacity>
       </View>
-      <View className='w-full flex-1 bg-slate-700 items-center rounded-t-3xl pt-10'>
+      <View className={`w-full flex-1 ${currentStyles.bg_2} items-center rounded-t-3xl pt-10`}>
         <View className='w-[80%] flex-1'>
           <TouchableOpacity onPress={handleSleepButton} className={`h-16 px-3 ${activeButton == 1 ? "bg-[#0000002f] z-10" : ""} rounded-xl w-full flex flex-row items-center`}>
             <Sleep showTimeOptions={showTimeOptions} handleSleepButton={handleSleepButton} />

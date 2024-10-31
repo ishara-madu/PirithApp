@@ -58,7 +58,7 @@ const PlaybackSpeed = ({ handlePlaybackButton, ...props }: PlaybackProps) => {
     return (
         <View className='flex flex-row justify-between items-center w-full h-full'>
             <View className='flex flex-row items-center gap-x-3 h-full'>
-                <Play />
+                <Play str={currentStyles.svg_1} />
                 <Text className={`${currentStyles.tx_1} text-md font-semibold`}>Playback Speed</Text>
             </View>
             <View className='flex flex-row items-center h-full gap-1 relative'>
@@ -71,14 +71,14 @@ const PlaybackSpeed = ({ handlePlaybackButton, ...props }: PlaybackProps) => {
                                 (speedOptions.map((speedOption, id) => {
                                     return (
                                         <TouchableOpacity key={id} onPress={() => { setPlaybackSpeed(speedSet(speedOption)); setPlaybackRate(speedOption); setShowSpeedOptions(false) }} className='flex flex-row items-center justify-start w-full py-2'>
-                                            <Text className={currentStyles.tx_1}>{speedOption}</Text>
+                                            <Text className={currentStyles.tx_white}>{speedOption}</Text>
                                         </TouchableOpacity>
                                     )
                                 })) :
                                 ( 
                                     <View className='flex flex-row items-center justify-between w-full py-2'>
-                                        <Text className={currentStyles.tx_1}>{playbackSpeed} </Text>
-                                        <DownArrow fill={currentStyles.svg_1} width={14} height={14} />
+                                        <Text className={currentStyles.tx_white}>{playbackSpeed} </Text>
+                                        <DownArrow fill={currentStyles.svg_white} width={14} height={14} />
                                     </View>
                                 )
                         }

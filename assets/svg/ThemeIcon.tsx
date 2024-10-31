@@ -4,6 +4,7 @@ import Svg, { Path } from 'react-native-svg';
 
 type ThemeIconProps ={
     fill?: string;
+    str: string;
   
 }
 
@@ -18,7 +19,7 @@ const ThemeIcon = (props : ThemeIconProps) => {
   >
     <Path
       d="M14.25 4.75a4.75 4.75 0 109.5 0h4.319l5.181 7.773-4.534 3.887v16.84H9.284V16.409L4.75 12.523 9.932 4.75h4.318z"
-      stroke="#fff"
+      stroke={props.str}
       strokeWidth={1.5}
       strokeLinejoin="round"
     />

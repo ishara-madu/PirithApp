@@ -52,11 +52,11 @@ const Flatlist = (props: FlatlistProps) => {
                                         isPlay ?
                                             (
                                                 <>
-                                                    <Pause fill={"white"} w={20} h={20} />
+                                                    <Pause fill={currentStyles.svg_white} w={20} h={20} />
                                                 </>
                                             ) : (
                                                 <>
-                                                    <Play fill={"white"} w={20} h={20} />
+                                                    <Play fill={currentStyles.svg_white} w={20} h={20} />
                                                 </>
                                             )
                                     }
