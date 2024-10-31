@@ -66,12 +66,12 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
       const artistAll = await getDataVariable("artistAll");
       setTheme(theme ?? "Light");      
       setPlayerStyle(playerStyle ?? "Classic"); 
-      setUniqueId(uniqueId ?? setShowPlaylist(true));
-      setUrl(url ?? setShowPlaylist(true));
-      setUrls(urls ?? setShowPlaylist(true));
-      setIsFavoritesAll(isFavoritesAll ?? setShowPlaylist(true));
-      setNameAll(nameAll ?? setShowPlaylist(true));
-      setArtistAll(artistAll ?? setShowPlaylist(true));
+      setUniqueId(uniqueId ?? 0);
+      setUrl(url ?? '');
+      setUrls(urls ?? []);
+      setIsFavoritesAll(isFavoritesAll ?? []);
+      setNameAll(nameAll ?? []);
+      setArtistAll(artistAll ?? []);
     };
     fetchData();
   }, []);
