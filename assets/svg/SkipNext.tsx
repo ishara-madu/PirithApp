@@ -11,20 +11,19 @@ function SkipNext(props : SkipNextProps) {
       height={22}
       viewBox="0 0 20 22"
       fill="none"
-      xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
       <Path
         d="M1.25 21l12.5-10L1.25 1v20z"
-        fill="#fff"
-        stroke="#fff"
+        fill={props.fill}
+        stroke={props.fill}
         strokeWidth={2}
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <Path
         d="M18.75 19.75V2.25"
-        stroke="#fff"
+        stroke={props.fill}
         strokeWidth={2}
         strokeLinecap="round"
         strokeLinejoin="round"

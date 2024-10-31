@@ -12,20 +12,19 @@ function SkipPreviews(props : SkipPreviewsProps) {
       height={22}
       viewBox="0 0 20 22"
       fill="none"
-      xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
       <Path
         d="M18.75 21L6.25 11l12.5-10v20z"
-        fill="#fff"
-        stroke="#fff"
+        fill={props.fill}
+        stroke={props.fill}
         strokeWidth={2}
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <Path
         d="M1.25 19.75V2.25"
-        stroke="#fff"
+        stroke={props.fill}
         strokeWidth={2}
         strokeLinecap="round"
         strokeLinejoin="round"

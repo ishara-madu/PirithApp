@@ -17,7 +17,7 @@ const Pause = (props: PauseProps) => {
       fill="none"
       {...props}
     >
-      <Path d="M0 0h5.833v45H0V0zm29.167 0H35v45h-5.833V0z" fill="#fff" />
+      <Path d="M0 0h5.833v45H0V0zm29.167 0H35v45h-5.833V0z" fill={props.fill} />
     </Svg>
   )
 }

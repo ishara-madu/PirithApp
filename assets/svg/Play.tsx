@@ -18,8 +18,8 @@ function Play(props : PlayProps) {
     >
       <Path
         d="M1 43.168V1.832L33.15 22.5 1 43.168z"
-        fill="#fff"
-        stroke="#fff"
+        fill={props.fill}
+        stroke={props.fill}
         strokeWidth={2}
         strokeLinecap="round"
         strokeLinejoin="round"

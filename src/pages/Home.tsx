@@ -1,4 +1,4 @@
-import { View, Text, Image, TouchableOpacity, Alert, Share, TouchableWithoutFeedback } from 'react-native'
+import { View, Text, Image, TouchableOpacity, Alert, Share, TouchableWithoutFeedback,StatusBar } from 'react-native'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import Shuffle from '../../assets/svg/Shuffle'
 import SkipPreviews from '../../assets/svg/SkipPreviews'
@@ -15,9 +15,10 @@ import YoutubePlayer, { YoutubeIframeRef,getYoutubeMeta } from "react-native-you
 import Playlist from './Playlist';
 import Slider from '@react-native-community/slider';
 import Loading from '../components/Loading';
-import { useGlobalContext } from '../components/Hooks/GlobalContext';
+import { darkStyles, lightStyles, useGlobalContext } from '../components/Hooks/GlobalContext';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
+import DownArrow from '../../assets/svg/DownArrow';
+import More from '../../assets/svg/More';
 
 
 
@@ -38,8 +39,10 @@ const Home: React.FC = () => {
   const [shuffle, setShuffle] = useState(false)
   const [showLoading, setShowLoading] = useState(true)
 
-  const { playbackRate,setUniId,setUris,setShowPlaylist,showPlaylist } = useGlobalContext();
 
+  const { playbackRate,setUniId,setUris,setShowPlaylist,showPlaylist,theme } = useGlobalContext();
+
+  const currentStyles = theme === 'Light' ? lightStyles : darkStyles;
 
   useEffect(() =>{
     setUniId(uniqueId);
@@ -218,8 +221,9 @@ const onStateChange = (state:any) => {
 
   return (
     <>
+    <StatusBar barStyle={"default"}/>
     <SafeAreaView>
-      <View className='w-full h-full flex flex-col items-center bg-black justify-end'>
+      <View className={`w-full h-full flex flex-col items-center ${currentStyles.bg_1} justify-end`}>
         <TouchableWithoutFeedback onPress={()=>{setShowInfo(false)}}>
 
         
@@ -228,19 +232,19 @@ const onStateChange = (state:any) => {
             className='w-7 h-7 flex justify-center items-center rounded-full'
             onPress={() => {setShowPlaylist(true);setShowInfo(false);}}
           >
-            <Image source={require('../../assets/DownArrow.png')} />
+            <DownArrow fill={currentStyles.svg_1} width={22} height={12}/>
           </TouchableOpacity>
-          <Text className='text-white text-xl font-semibold'>Now Playing</Text>
+          <Text className={`${currentStyles.tx_1} text-xl font-semibold`}>Now Playing</Text>
           <TouchableOpacity
             className=' w-7 h-7 flex justify-center items-center rounded-full'
             onPress={() => { showInfo ? setShowInfo(false) : setShowInfo(true) }}
           >
-            <Image source={require('../../assets/More.png')} />
+            <More fill={currentStyles.svg_1}/>
           </TouchableOpacity>
         </View>
         </TouchableWithoutFeedback>
         <View className='w-full flex-1 justify-center items-center'>
-          <View className='w-[80%] h-[85%] bg-slate-200 rounded-3xl overflow-hidden relative'>
+          <View className={`w-[80%] h-[85%] ${currentStyles.bg_3} rounded-3xl overflow-hidden relative`}>
             {
               <YoutubePlayer
                 ref={playerRef}
@@ -264,14 +268,14 @@ const onStateChange = (state:any) => {
         </View>
 
 
-        <View className='w-full bg-[#ffffff36] rounded-3xl flex items-center'>
+        <View className={`w-full ${currentStyles.bg_2} rounded-t-3xl flex items-center`}>
           <View className='w-full flex flex-row justify-center items-center mt-5'>
             <TouchableOpacity onPress={handleFavorite}>
               {
                 isFavorites ? (
                   <Heart fill={"red"} fillStr={"red"} />
                 ) : (
-                  <Heart fill={"none"} fillStr={"white"} />
+                  <Heart fill={"none"} fillStr={currentStyles.svg_1} />
                 )
               }
             </TouchableOpacity>
@@ -279,17 +283,17 @@ const onStateChange = (state:any) => {
 
 
               <View >
-                <Text className='text-2xl font-semibold text-white text-center'>
+                <Text className={`text-2xl font-semibold ${currentStyles.tx_1} text-center`}>
                   {nameAll[uniqueId]}
                 </Text>
-                <Text className='text-md text-neutral-300'>
+                <Text className={`text-md ${currentStyles.tx_2} opacity-60 text-center`}>
                   {artistAll[uniqueId]}
                 </Text>
               </View>
 
             </View>
             <TouchableOpacity onPress={onShare}>
-              <Shar />
+              <Shar str={currentStyles.svg_1}/>
             </TouchableOpacity>
           </View>
           <View className='w-[70%] flex mt-10'>
@@ -299,14 +303,14 @@ const onStateChange = (state:any) => {
                 maximumValue={duration}
                 value={currentTime}
                 onValueChange={handleTimeChange}
-                minimumTrackTintColor="#1EB1FC"
-                maximumTrackTintColor="#8B8B8B"
-                thumbTintColor="#1EB1FC" // Large, vibrant thumb color
+                minimumTrackTintColor={currentStyles.svg_3}
+                maximumTrackTintColor={currentStyles.svg_3}
+                thumbTintColor={currentStyles.svg_2} 
               />
             </View>
             <View className='flex flex-row justify-between mt-2'>
-              <Text className='text-white'>{formatTime(currentTime)}</Text>
-              <Text className='text-white'>{formatTime(duration)}</Text>
+              <Text className={`${currentStyles.tx_1}`}>{formatTime(currentTime)}</Text>
+              <Text className={`${currentStyles.tx_1}`}>{formatTime(duration)}</Text>
             </View>
           </View>
 
@@ -314,41 +318,41 @@ const onStateChange = (state:any) => {
             <TouchableOpacity onPress={handleshuffle} className='w-5 h-5 relative flex justify-center items-center'>
               {
                 shuffle ? (
-                  <Shuffle opacity={1} />
+                  <Shuffle str={currentStyles.svg_1} opacity={1} />
                 ) : (
-                  <Shuffle opacity={0.5} />
+                  <Shuffle str={currentStyles.svg_2} opacity={0.5} />
                 )
               }
             </TouchableOpacity>
             <TouchableOpacity onPress={handlePrevious}>
-              <SkipPreviews />
+              <SkipPreviews fill={currentStyles.svg_1} />
             </TouchableOpacity>
             <TouchableOpacity onPress={() => { handlePlayPause() }}>
               {
                 isPlay ? (
-                  <Pause w={35} h={45} />
+                  <Pause fill={currentStyles.svg_1} w={35} h={45} />
                 ) : (
-                  <Play w={35} h={45} />
+                  <Play fill={currentStyles.svg_1} w={35} h={45} />
                 )
               }
             </TouchableOpacity>
             <TouchableOpacity onPress={handleNext}>
-              <SkipNext />
+              <SkipNext fill={currentStyles.svg_1}/>
             </TouchableOpacity>
             <TouchableOpacity onPress={handleRepeat} className='w-5 h-5 relative flex justify-center items-center'>
               {
                 repeat === "all" ? (
-                  <Repeat opacity={1} />
+                  <Repeat stroke={currentStyles.svg_1} opacity={1} />
                 ) : (
                   repeat === "one" ? (
                     <>
-                      <Text className='text-white flex text-xs absolute'>1</Text>
-                      <Repeat opacity={1} />
+                      <Text className={`${currentStyles.tx_1} flex text-xs absolute`}>1</Text>
+                      <Repeat stroke={currentStyles.svg_1} opacity={1} />
                     </>
                   ) : (
                     <>
-                      <View className='bg-[#fff] opacity-[0.5] font-bold flex w-[2px] h-full absolute rotate-[-28deg]'></View>
-                      <Repeat opacity={0.5} />
+                      <View className={`${currentStyles.bg_4} opacity-[0.5] font-bold flex w-[2px] h-full absolute rotate-[-28deg]`}></View>
+                      <Repeat stroke={currentStyles.svg_2} opacity={0.5} />
                     </>
                   )
                 )

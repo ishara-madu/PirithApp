@@ -1,6 +1,6 @@
-import { View, Text, TouchableOpacity, SafeAreaView } from 'react-native'
+import { View, Text, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
-// import { SafeAreaView } from 'react-native-safe-area-context'
+import { SafeAreaView } from 'react-native-safe-area-context'
 import Home from '../../assets/svg/Home'
 import Playlist from '../../assets/svg/Playlist'
 import Setting from '../../assets/svg/Settings'
