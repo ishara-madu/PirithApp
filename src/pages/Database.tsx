@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
-export const saveData = async (id:any,url:any,name:any,artist:any,playlist:any,isFavorites:any)=>{
+export const saveData = async (group:any,id:any,url:any,name:any,artist:any,playlist:any,isFavorites:any)=>{
   try {
     const data = {
       url,
@@ -13,17 +13,19 @@ export const saveData = async (id:any,url:any,name:any,artist:any,playlist:any,i
       playlist,
       isFavorites
     }
-    await AsyncStorage.setItem(`item-${id}`,JSON.stringify(data));
+    await AsyncStorage.setItem(`${group}-${id}`,JSON.stringify(data));
   } catch (error) {
     console.log(error);
     
   }
 }
 
-export const getData = async () => {
+
+
+export const getData = async (group:any) => {
   try {
     const keys = await AsyncStorage.getAllKeys();
-    const userKeys = keys.filter(key => key.startsWith("item-"));
+    const userKeys = keys.filter(key => key.startsWith(`${group}-`));
     const userValues = await AsyncStorage.multiGet(userKeys);
 
     return userValues.map(([key, value]) => ({
