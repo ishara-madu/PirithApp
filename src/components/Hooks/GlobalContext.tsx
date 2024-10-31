@@ -52,13 +52,17 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
   const [playerStyle,setPlayerStyle] = useState<any>("Classic");
 
 
-  useEffect(()=>{
-    saveDataVariable("theme",theme);
-  },[theme])
 
-  useEffect(()=>{    
 
-  },[])
+  useEffect(() => {    
+    const fetchData = async () => {
+      const theme = await getDataVariable("theme");
+      const playerStyle = await getDataVariable("playerStyle");
+      setTheme(theme ?? "Light");      
+      setPlayerStyle(playerStyle ?? "Classic");          
+    };
+    fetchData();
+  }, []);
 
 
 

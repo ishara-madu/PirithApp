@@ -5,6 +5,7 @@ import DownArrow from '../../../assets/svg/DownArrow';
 import Player from '../../../assets/svg/Player';
 import ThemeIcon from '../../../assets/svg/ThemeIcon';
 import { darkStyles, lightStyles, useGlobalContext } from '../Hooks/GlobalContext';
+import { saveDataVariable } from '../../pages/Database';
 
 type SleepProps = {
     handleThemeButton?: any;
@@ -32,6 +33,7 @@ const Theme = ({ handleThemeButton, ...props }: SleepProps) => {
     },[selectedTheme])
 
 
+
     return (
         <View className='flex flex-row justify-between items-center w-full h-full'>
             <View className='flex flex-row items-center gap-x-3 h-full'>
@@ -49,7 +51,7 @@ const Theme = ({ handleThemeButton, ...props }: SleepProps) => {
                             showThemeOptions ?
                                 (timeOptions.map((timeOption, id) => {
                                     return (
-                                        <TouchableOpacity key={id} onPress={() => { setSelectedTheme(timeOption); setShowThemeOptions(false) }} className='flex flex-row items-center justify-start py-2 w-full'>
+                                        <TouchableOpacity key={id} onPress={() => { setSelectedTheme(timeOption); setShowThemeOptions(false);saveDataVariable("theme", timeOption); }} className='flex flex-row items-center justify-start py-2 w-full'>
                                             <Text className={currentStyles.tx_white}>{timeOption}</Text>
                                         </TouchableOpacity>
                                     )

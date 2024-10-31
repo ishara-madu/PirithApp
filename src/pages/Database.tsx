@@ -30,8 +30,8 @@ try {
 }
 export const getDataVariable = async (id: any) => {
   try {
-    const value = await AsyncStorage.getItem(id);
-    return value !== null ? value : "Light"; // Explicitly return null if value is not found
+    const value:any = await AsyncStorage.getItem(id);
+    return JSON.parse(value)
   } catch (error) {
     console.log("Error fetching data:", error);
     return null; // Return null in case of an error

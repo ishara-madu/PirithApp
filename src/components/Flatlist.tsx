@@ -39,6 +39,7 @@ const Flatlist = (props: FlatlistProps) => {
                 <TouchableOpacity onPress={() => {
                     handleTransactions();
                     setUniqueId(item.uniqueId);
+                    
                     setUrl(item.url)
                     setShowPlaylist(false)
                 }} className={`w-full flex flex-row items-center px-3 h-16 ${currentStyles.bg_7} rounded-xl mt-1`}>

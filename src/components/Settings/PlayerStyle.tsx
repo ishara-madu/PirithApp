@@ -4,6 +4,7 @@ import Timer from '../../../assets/svg/Timer';
 import DownArrow from '../../../assets/svg/DownArrow';
 import Player from '../../../assets/svg/Player';
 import { darkStyles, lightStyles, useGlobalContext } from '../Hooks/GlobalContext';
+import { saveDataVariable } from '../../pages/Database';
 
 type SleepProps = {
     handleStyleButton?: any;
@@ -48,7 +49,7 @@ const PlayerStyle = ({ handleStyleButton, ...props }: SleepProps) => {
                             showTypeOptions ?
                                 (timeOptions.map((timeOption, id) => {
                                     return (
-                                        <TouchableOpacity key={id} onPress={() => { setSelectedType(timeOption); setShowTypeOptions(false) }} className='flex flex-row items-center justify-start py-2 w-full'>
+                                        <TouchableOpacity key={id} onPress={() => { setSelectedType(timeOption); setShowTypeOptions(false);saveDataVariable("playerStyle", timeOption); }} className='flex flex-row items-center justify-start py-2 w-full'>
                                             <Text className={`${currentStyles.tx_white}`}>{timeOption}</Text>
                                         </TouchableOpacity>
                                     )
