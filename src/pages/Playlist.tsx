@@ -86,14 +86,6 @@ const Playlist = (props: PlaylistProps) => {
     }, [data]);
 
 
-    // useMemo(() => {
-    //     const fetchData = async () => {
-    //         const result = await getAllData();
-    //         setData(result);
-    //     };
-
-    //     fetchData();
-    // }, [props.isFavorites]);
     useMemo(() => {
         const fetchData = async () => {
             try {
