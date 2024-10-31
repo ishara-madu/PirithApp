@@ -100,9 +100,7 @@ const Playlist = (props: PlaylistProps) => {
 
     }, [props.isFavorites,showPlaylist]);
     
-    //   saveData("id1","gRYV3Dgib7g","Song 1","Artist 1","Playlist 1",true)
-    //   saveData("id2","dqkxmiI0kYo","Song 2","Artist 2","Playlist 1",false)
-    //   saveData("id3","y8YBkbgw18E","Song 3","Artist 3","Playlist 2",true)
+
 
 
 
