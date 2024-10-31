@@ -24,34 +24,24 @@ import More from '../../assets/svg/More';
 
 const Home: React.FC = () => {
   const [showInfo, setShowInfo] = useState(false);
-  const [isPlay, setIsPlay] = useState<boolean>(false);
   const playerRef = useRef<YoutubeIframeRef>(null);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(100);
-  const [uniqueId, setUniqueId] = useState(0);
   const [isFavorites, setIsFavorites] = useState(false);
-  const [isFavoritesAll, setIsFavoritesAll] = useState<any>([]);
-  const [nameAll, setNameAll] = useState<any>([])
-  const [artistAll, setArtistAll] = useState<any>([]);
-  const [urls, setUrls] = useState<any>([])
-  const [url, setUrl] = useState('');
   const [repeat, setRepeat] = useState("all")
   const [shuffle, setShuffle] = useState(false)
   const [showLoading, setShowLoading] = useState(true)
 
 
-  const { playbackRate,setUniId,setUris,setShowPlaylist,showPlaylist,theme } = useGlobalContext();
+  const { playbackRate,setUniqueId,uniqueId,setUrls,urls,setShowPlaylist,showPlaylist,theme,isPlay, setIsPlay,url,setUrl,isFavoritesAll, setIsFavoritesAll,nameAll, setNameAll,artistAll, setArtistAll } = useGlobalContext();
 
   const currentStyles = theme === 'Light' ? lightStyles : darkStyles;
 
-  useEffect(() =>{
-    setUniId(uniqueId);
-    setUris(urls);
-  },[uniqueId])
+
 
 
   const handlePlayPause = () => {
-    setIsPlay((prev) => !prev);
+    setIsPlay((prev:any) => !prev);
   };
 
   const onShare = async () => {
@@ -60,14 +50,7 @@ const Home: React.FC = () => {
     });
   };
 
-  const params = (url: any, urls: any, uniqueId: any, isFavoritesAll: any, nameAll: string, artistAll: string) => {
-    setUrls(urls);
-    setUniqueId(uniqueId);
-    setUrl(url)
-    setIsFavoritesAll(isFavoritesAll);
-    setNameAll(nameAll);
-    setArtistAll(artistAll);
-  }
+
 
   useEffect(() => {
     let interval: NodeJS.Timeout | null = null;
@@ -116,7 +99,7 @@ const onStateChange = (state:any) => {
   }
   if (state === "ended") {
     if (repeat === "one") {
-      setUniqueId((prevId) => {
+      setUniqueId((prevId:any) => {
         const newId = prevId + 1;
         setTimeout(() => {
           setUniqueId(newId - 1); // Reset back to original uniqueId
@@ -124,10 +107,10 @@ const onStateChange = (state:any) => {
         return newId;
       });
     } else if (repeat === "all") {
-      setUniqueId((prevId) => (prevId < urls.length - 1 ? prevId + 1 : 0));
+      setUniqueId((prevId:any) => (prevId < urls.length - 1 ? prevId + 1 : 0));
       setUrl(urls[(uniqueId + 1) % urls.length]);
     } else {
-      setUniqueId((prevId) => (prevId < urls.length - 1 ? prevId + 1 : prevId));
+      setUniqueId((prevId:any) => (prevId < urls.length - 1 ? prevId + 1 : prevId));
       setUrl(urls[uniqueId]);
     }
   }
@@ -174,7 +157,7 @@ const onStateChange = (state:any) => {
       setUniqueId(randomIndex);
       setUrl(urls[randomIndex]);
     } else {
-      setUniqueId((prevId) => {
+      setUniqueId((prevId:any) => {
         const newId = (prevId > 0) ? prevId - 1 : urls.length - 1;
         setUrl(urls[newId]);
         return newId;
@@ -371,7 +354,7 @@ const onStateChange = (state:any) => {
       </View>
 
     </SafeAreaView>
-      <Playlist onSelect={params} isFavorites={isFavorites} url={url} isPlay={isPlay}/>
+      <Playlist isFavorites={isFavorites}/>
     </>
   )
 }

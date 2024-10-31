@@ -45,14 +45,14 @@ const Info = () => {
     return (
         <View className={`w-full h-[88%] ${currentStyles.bg_2} inset-0 backdrop-blur-md absolute rounded-t-3xl flex justify-center items-center flex-row`}>
             <View className='w-[80%] h-[80%] flex items-center gap-y-2'>
-                <TouchableOpacity onPress={handleSleepButton} className={`w-[100%] ${activeButton == 1 ? `${currentStyles.bg_6} z-10` : ""} h-14 px-5 rounded-xl flex flex-row justify-between items-center`}>
+                <TouchableOpacity onPress={handleSleepButton} className={`w-[100%] ${activeButton == 1 ? `${currentStyles.bg_7} z-10` : ""} h-14 px-5 rounded-xl flex flex-row justify-between items-center`}>
                     <Sleep handleSleepButton={handleSleepButton} showTimeOptions={showTimeOptions} />
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={handlePlaybackButton} className={`w-[100%] ${activeButton == 2 ? `${currentStyles.bg_6} z-10` : ""} h-14 px-5 rounded-xl flex flex-row justify-between items-center`}>
+                <TouchableOpacity onPress={handlePlaybackButton} className={`w-[100%] ${activeButton == 2 ? `${currentStyles.bg_7} z-10` : ""} h-14 px-5 rounded-xl flex flex-row justify-between items-center`}>
                     <PlaybackSpeed handlePlaybackButton={handlePlaybackButton} showspeedOptions={showspeedOptions} />
                 </TouchableOpacity>
-                <TouchableOpacity onPress={handleAboutButton} className={`w-[100%] ${activeButton == 3 ? `${currentStyles.bg_6} z-10` : ""} h-14 px-5 rounded-xl flex flex-row justify-between items-center`}>
+                <TouchableOpacity onPress={handleAboutButton} className={`w-[100%] ${activeButton == 3 ? `${currentStyles.bg_7} z-10` : ""} h-14 px-5 rounded-xl flex flex-row justify-between items-center`}>
                     <View className='flex flex-row items-center gap-x-3 h-full'>
                         <About wh={40} />
                         <Text className={`${currentStyles.tx_1} text-md font-semibold`}>About Track</Text>

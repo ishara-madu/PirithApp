@@ -75,7 +75,7 @@ const PlaybackSpeed = ({ handlePlaybackButton, ...props }: PlaybackProps) => {
                                         </TouchableOpacity>
                                     )
                                 })) :
-                                (
+                                ( 
                                     <View className='flex flex-row items-center justify-between w-full py-2'>
                                         <Text className={currentStyles.tx_1}>{playbackSpeed} </Text>
                                         <DownArrow fill={currentStyles.svg_1} width={14} height={14} />

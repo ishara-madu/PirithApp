@@ -13,20 +13,17 @@ import Pause from '../../assets/svg/Pause'
 import Flatlist from '../components/Flatlist'
 import { getAllData, getData, saveData } from './Database'
 import Menu from './Menu'
-import { useGlobalContext } from '../components/Hooks/GlobalContext'
+import { darkStyles, lightStyles, useGlobalContext } from '../components/Hooks/GlobalContext'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 
 type PlaylistProps = {
-    onSelect: (url: string, urls: any, uniqueId: any, isFavoritesAll: any, nameAll: string, artistAll: string) => void;
-    url: any;
-    isPlay: boolean;
     isFavorites: any
 }
 
 
 
-const Playlist = ({ onSelect, ...props }: PlaylistProps) => {
+const Playlist = (props: PlaylistProps) => {
     const [listType, setListType] = useState("Recent");
     const [inputValue, setInputValue] = useState('');
     const [insidePlaylist, setInsidePlaylist] = useState(false)
@@ -37,14 +34,12 @@ const Playlist = ({ onSelect, ...props }: PlaylistProps) => {
     const [favoriteData, setFavoriteData] = useState()
 
 
-    const {showMenu,setShowMenu,setShowPlaylist,showPlaylist} = useGlobalContext();
+    const {showMenu,setShowMenu,setShowPlaylist,showPlaylist,theme} = useGlobalContext();
+
+    const currentStyles = theme === 'Light' ? lightStyles : darkStyles;
 
 
 
-    const handleTransactions = (url: string, urls: any, uniqueId: any, isFavoritesAll: any, nameAll: string, artistAll: string) => {
-
-        onSelect(url, urls, uniqueId, isFavoritesAll, nameAll, artistAll)
-    }
 
 
     const fuzzyMatch = (text: any, search: any) => {
@@ -160,46 +155,46 @@ const Playlist = ({ onSelect, ...props }: PlaylistProps) => {
 
 
     return (<>
-        <SafeAreaView className={`${showPlaylist ? "flex" : "hidden"} h-full w-full bg-black items-center absolute`}>
+        <SafeAreaView className={`${showPlaylist ? "flex" : "hidden"} h-full w-full ${currentStyles.bg_1} items-center absolute`}>
             <View className='flex flex-row w-[90%] mt-8 justify-between items-center mb-8'>
-                <View className='flex flex-row bg-[#b7b7b7d2] rounded-full h-11 w-[85%] items-center'>
+                <View className={`flex flex-row ${currentStyles.bg_2} rounded-full h-11 w-[85%] items-center`}>
                     <View className='flex px-3'>
-                        <Search />
+                        <Search fill={currentStyles.svg_1} />
                     </View>
-                    <TextInput onChangeText={handleInputChange} placeholder='Search' value={inputValue} className='text-base text-white' />
+                    <TextInput onChangeText={handleInputChange} placeholder='Search' placeholderTextColor={currentStyles.svg_2} value={inputValue} className={`text-base ${currentStyles.tx_1}`} />
                 </View>
                 <TouchableOpacity onPress={()=>{setShowMenu(true)}} className='p-1' >
-                    <Hmaburger fill='white' />
+                    <Hmaburger fill={currentStyles.svg_1} />
                 </TouchableOpacity>
             </View>
             <View className='flex flex-row w-[90%] justify-between items-center mb-8' >
-                <TouchableOpacity onPress={() => { setListType("Favorite") }} className={`w-[30%] h-28 ${listType == "Favorite" ? "bg-[#ffffff00]" : "bg-[#b7b7b74e]"} rounded-lg flex justify-center items-center`}>
+                <TouchableOpacity onPress={() => { setListType("Favorite") }} className={`w-[30%] h-28 ${listType == "Favorite" ? `${currentStyles.bg_2}` : `${currentStyles.bg_7}`} rounded-lg flex justify-center items-center`}>
                     <Image source={require('../../assets/Favorite.png')} />
-                    <Text className='text-white text-base font-semibold'>Favorites</Text>
+                    <Text className={`${currentStyles.tx_1} text-base font-semibold`}>Favorites</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => { setListType("Playlist") }} className={`w-[30%] h-28 ${listType == "Playlist" ? "bg-[#ffffff00]" : "bg-[#b7b7b74e]"} rounded-lg flex justify-center items-center`}>
+                <TouchableOpacity onPress={() => { setListType("Playlist") }} className={`w-[30%] h-28 ${listType == "Playlist" ? `${currentStyles.bg_2}` : `${currentStyles.bg_7}`} rounded-lg flex justify-center items-center`}>
                     <Image source={require('../../assets/Playlist.png')} />
-                    <Text className='text-white text-base font-semibold'>Playlists</Text>
+                    <Text className={`${currentStyles.tx_1} text-base font-semibold`}>Playlists</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => { setListType("Recent") }} className={`w-[30%] h-28 ${listType == "Recent" ? "bg-[#ffffff00]" : "bg-[#b7b7b74e]"} rounded-lg flex justify-center items-center`}>
+                <TouchableOpacity onPress={() => { setListType("Recent") }} className={`w-[30%] h-28 ${listType == "Recent" ? `${currentStyles.bg_2}` : `${currentStyles.bg_7}`} rounded-lg flex justify-center items-center`}>
                     <Image source={require('../../assets/Recent.png')} />
-                    <Text className='text-white text-base font-semibold'>Recent</Text>
+                    <Text className={`${currentStyles.tx_1} text-base font-semibold`}>Recent</Text>
                 </TouchableOpacity>
             </View>
-            <View className='flex-1 w-full bg-[#b7b7b74e] rounded-t-3xl items-center pt-5'>
+            <View className={`flex-1 w-full ${currentStyles.bg_2} rounded-t-3xl items-center pt-5`}>
                 <View className='flex w-[85%] mb-5 flex-row items-center justify-between h-10'>
-                    <Text className='text-white text-2xl font-bold'>{listType}</Text>
+                    <Text className={`${currentStyles.tx_1} text-2xl font-bold`}>{listType}</Text>
                     {
                         listType == "Playlist" && insidePlaylist ? (
                             <TouchableOpacity onPress={() => {
                                 setInsidePlaylist(false);
                             }} className=' p-1'>
-                                <Return />
+                                <Return fill={currentStyles.svg_1}/>
                             </TouchableOpacity>) : (
                             <TouchableOpacity onPress={() => {
                                 setShowPlaylist(false);
                             }} className=' p-1'>
-                                <Return />
+                                <Return fill={currentStyles.svg_1}/>
                             </TouchableOpacity>
                         )
                     }
@@ -207,11 +202,11 @@ const Playlist = ({ onSelect, ...props }: PlaylistProps) => {
                 <View className='flex-1 w-[90%]'>
                     {listType === 'Recent' ?
                         (
-                            <Flatlist onSelect={handleTransactions} listtype={recentData} />
+                            <Flatlist listtype={recentData} />
                         ) : (
                             listType === 'Favorite' ?
                                 (
-                                    <Flatlist onSelect={handleTransactions} listtype={favoriteData} />
+                                    <Flatlist listtype={favoriteData} />
                                 ) : (
                                     listType === 'Playlist' && !insidePlaylist ?
                                         (
@@ -222,14 +217,14 @@ const Playlist = ({ onSelect, ...props }: PlaylistProps) => {
                                                 renderItem={({ item }) => (
                                                     <TouchableOpacity onPress={() => {
                                                         handleInPlaylist(item.playlist)
-                                                    }} className='w-full flex flex-row items-center px-3 h-16 bg-[#00000065] rounded-xl mt-1'>
+                                                    }} className={`w-full flex flex-row items-center px-3 h-16 ${currentStyles.bg_7} rounded-xl mt-1`}>
                                                         <View className='w-11 h-11 rounded-md mr-7 overflow-hidden'>
                                                             <View className='flex-1 justify-center items-center'>
-                                                                <List />
+                                                                <List str={currentStyles.svg_1} />
                                                             </View>
                                                         </View>
                                                         <View>
-                                                            <Text className='text-white text-base font-semibold'>{item.playlist},{item.uniqueId}</Text>
+                                                            <Text className={`${currentStyles.tx_1} text-base font-semibold`}>{item.playlist},{item.uniqueId}</Text>
                                                         </View>
                                                     </TouchableOpacity>
                                                 )}
@@ -237,7 +232,7 @@ const Playlist = ({ onSelect, ...props }: PlaylistProps) => {
                                         ) : (
                                             listType === 'Playlist' && insidePlaylist &&
                                             (
-                                                <Flatlist onSelect={handleTransactions} listtype={insidePlaylistData} />
+                                                <Flatlist listtype={insidePlaylistData} />
                                             )
                                         )
                                 )

@@ -15,7 +15,7 @@ function Search(props: SearchProps) {
         >
             <Path
                 d="M11 19a8 8 0 100-16 8 8 0 000 16zM21 21l-4.35-4.35"
-                stroke="#fff"
+                stroke={props.fill}
                 strokeWidth={2}
                 strokeLinecap="round"
                 strokeLinejoin="round"
