@@ -22,8 +22,6 @@ export const saveData = async (group: any, url: any, name: any, artist: any, pla
 
 
 const fetchData = async () => {
-  console.log("runinh");
-
   try {
     const tempIdsFirebase: any = [];
     let tempIdsAsync: any = [];
@@ -41,12 +39,12 @@ const fetchData = async () => {
           console.log('asyncStorage removed successfully');
         }
       }
-      );
+      );  
       tempIdsFirebase.map(async (value: any, index: any) => {
+        querySnapshot.forEach(async(doc) => {
         const result = tempIdsAsync.includes(value);
         if (result) {
-          //update here
-          querySnapshot.forEach(async(doc) => {
+          if(doc.id === value){
             const items: any = await AsyncStorage.getItem(value);
             const data = JSON.parse(items);
             data.name = doc.data().name;
@@ -54,17 +52,16 @@ const fetchData = async () => {
             data.playlist = doc.data().playlist;
             await AsyncStorage.setItem(value, JSON.stringify(data));
             console.log('firebase updated successfully');
+          }
             
-          });
 
         } else {
-          querySnapshot.forEach((doc) => {
-            doc.id == value && (
+            if(doc.id == value){
               saveData("item", doc.data().url, doc.data().name, doc.data().artist, doc.data().playlist)
-            );
-            console.log('firebase added successfully');
-          });
-        }
+              console.log('firebase added successfully');
+            } 
+        } 
+      })
       })
 
       // const userValues = await AsyncStorage.multiGet(userKeys);
