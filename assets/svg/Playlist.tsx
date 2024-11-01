@@ -8,8 +8,8 @@ type PlaylistProps = {
 function Playlist(props : PlaylistProps) {
   return (
     <Svg
-      width={30}
-      height={30}
+      width={23}
+      height={223}
       viewBox="0 0 30 30"
       fill="none"
     >

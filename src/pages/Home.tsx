@@ -317,7 +317,7 @@ const Home: React.FC = () => {
 
                 <View >
                   <Text className={`text-sm font-semibold ${currentStyles.tx_1} text-center`}>
-                    {truncateString(nameAll[uniqueId], 60)}{uniqueId}
+                    {truncateString(nameAll[uniqueId], 60)}
                   </Text>
                   <Text className={`text-xs ${currentStyles.tx_1} opacity-60 text-center mt-3`}>
                     {truncateString(artistAll[uniqueId], 20)}

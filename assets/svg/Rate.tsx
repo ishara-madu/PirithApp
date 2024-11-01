@@ -8,8 +8,8 @@ type RateProps = {
 function Rate(props: RateProps) {
     return (
         <Svg
-            width={28}
-            height={27}
+            width={23}
+            height={22}
             viewBox="0 0 28 27"
             fill="none"
         >

@@ -7,8 +7,8 @@ type HelpProps = {
 function Help(props: HelpProps) {
     return (
         <Svg
-            width={28}
-            height={28}
+            width={23}
+            height={23}
             viewBox="0 0 28 28"
             fill="none"
         >

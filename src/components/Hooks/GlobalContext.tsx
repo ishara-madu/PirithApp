@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect, useMemo } from 'react';
-import { getYoutubeMeta } from 'react-native-youtube-iframe';
 import { getData, getDataVariable, saveData, saveDataVariable } from '../../pages/Database';
 
 type GlobalContextType = {

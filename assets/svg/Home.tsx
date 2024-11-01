@@ -8,8 +8,8 @@ type HomeProps = {
 function Home(props : HomeProps) {
   return (
     <Svg
-      width={27}
-      height={27}
+      width={20}
+      height={20}
       viewBox="0 0 27 27"
       fill="none"
     >

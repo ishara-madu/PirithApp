@@ -8,8 +8,8 @@ type SettingsProps = {
 function Settings(props : SettingsProps) {
   return (
     <Svg
-      width={28}
-      height={28}
+      width={22}
+      height={22}
       viewBox="0 0 28 28"
       fill="none"
     >

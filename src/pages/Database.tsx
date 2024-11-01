@@ -1,5 +1,3 @@
-import * as SQLite from 'expo-sqlite';
-import { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../../firebaseConfig';
