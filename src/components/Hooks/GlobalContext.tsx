@@ -34,6 +34,8 @@ type GlobalContextType = {
   setIsFavorites: (value: boolean) => void;
   data: any;
   setData: (value: any) => void;
+  isClickedOutside: boolean;
+  setIsClickedOutside: (value: boolean) => void;
 };
 
 const GlobalContext = createContext<GlobalContextType | undefined>(undefined);
@@ -55,6 +57,7 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
   const [playerStyle,setPlayerStyle] = useState<any>("Classic");
   const [isFavorites, setIsFavorites] = useState(false);
   const [data, setData] = useState<any>([]);
+  const [isClickedOutside, setIsClickedOutside] = useState<boolean>(false);
 
 
 
@@ -97,7 +100,7 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
 }, [isFavorites,isFavoritesAll]);
 
   return (
-    <GlobalContext.Provider value={{ playbackRate, setPlaybackRate, urls, setUrls, uniqueId, setUniqueId, showMenu, setShowMenu, showPlaylist, setShowPlaylist, showAbout, setShowAbout, showSettings, setShowSettings, theme, setTheme, isPlay, setIsPlay,url, setUrl,isFavoritesAll, setIsFavoritesAll,nameAll, setNameAll,artistAll, setArtistAll,playerStyle,setPlayerStyle,isFavorites, setIsFavorites,data, setData }}>
+    <GlobalContext.Provider value={{ playbackRate, setPlaybackRate, urls, setUrls, uniqueId, setUniqueId, showMenu, setShowMenu, showPlaylist, setShowPlaylist, showAbout, setShowAbout, showSettings, setShowSettings, theme, setTheme, isPlay, setIsPlay,url, setUrl,isFavoritesAll, setIsFavoritesAll,nameAll, setNameAll,artistAll, setArtistAll,playerStyle,setPlayerStyle,isFavorites, setIsFavorites,data, setData,isClickedOutside, setIsClickedOutside }}>
       {children}
     </GlobalContext.Provider>
   );

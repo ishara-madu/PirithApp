@@ -66,26 +66,26 @@ const Settings = () => {
   return (
     <SafeAreaView className={`${currentStyles.bg_1} flex w-full h-full absolute`}>
       <View className='flex relative h-auto items-center w-full flex-row justify-center mt-8 mb-8'>
-        <Text className={`text-2xl ${currentStyles.tx_1} font-bold`}>Settings</Text>
+        <Text className={`text-xl ${currentStyles.tx_1} font-bold`}>Settings</Text>
         <TouchableOpacity onPress={()=>{setShowSettings(false)}} className='absolute right-10'>
-          <Text className={`${currentStyles.tx_1}`}>Done</Text>
+          <Text className={`${currentStyles.tx_1} text-xs`}>Done</Text>
         </TouchableOpacity>
       </View>
       <View className={`w-full flex-1 ${currentStyles.bg_2} items-center rounded-t-3xl pt-10`}>
-        <View className='w-[80%] flex-1'>
-          <TouchableOpacity onPress={handleSleepButton} className={`h-16 px-3 ${activeButton == 1 ? "bg-[#0000002f] z-10" : ""} rounded-xl w-full flex flex-row items-center`}>
+        <View className='w-[90%] flex-1'>
+          <TouchableOpacity onPress={handleSleepButton} className={`h-14 px-2 ${activeButton == 1 ? `${currentStyles.bg_7} z-10` : ""} rounded-xl w-full flex flex-row items-center`}>
             <Sleep showTimeOptions={showTimeOptions} handleSleepButton={handleSleepButton} />
           </TouchableOpacity>
-          <TouchableOpacity onPress={handleStyleButton} className={`h-16 px-3 ${activeButton == 2 ? "bg-[#0000002f] z-10" : ""} rounded-xl w-full flex flex-row items-center`}>
+          <TouchableOpacity onPress={handleStyleButton} className={`h-14 px-2 ${activeButton == 2 ? `${currentStyles.bg_7} z-10` : ""} rounded-xl w-full flex flex-row items-center`}>
             <PlayerStyle showTypeOptions={showTypeOptions} handleStyleButton={handleStyleButton} />
           </TouchableOpacity>
-          <TouchableOpacity onPress={handlePlaybackButton} className={`h-16 px-3 ${activeButton == 3 ? "bg-[#0000002f] z-10" : ""} rounded-xl w-full flex flex-row items-center`}>
+          <TouchableOpacity onPress={handlePlaybackButton} className={`h-14 px-2 ${activeButton == 3 ? `${currentStyles.bg_7} z-10` : ""} rounded-xl w-full flex flex-row items-center`}>
             <PlaybackSpeed showspeedOptions={showspeedOptions} handlePlaybackButton={handlePlaybackButton} />
           </TouchableOpacity>
-          <TouchableOpacity onPress={handleThemeButton} className={`h-16 px-3 ${activeButton == 4 ? "bg-[#0000002f] z-10" : ""} rounded-xl w-full flex flex-row items-center`}>
+          <TouchableOpacity onPress={handleThemeButton} className={`h-14 px-2 ${activeButton == 4 ? `${currentStyles.bg_7} z-10` : ""} rounded-xl w-full flex flex-row items-center`}>
             <Theme showThemeOptions={showThemeOptions} handleThemeButton={handleThemeButton} />
           </TouchableOpacity>
-          <TouchableOpacity onPress={handleBackgroundPlayButton} className={`h-16 px-3 ${activeButton == 5 ? "bg-[#0000002f] z-10" : ""} rounded-xl w-full flex flex-row items-center`}>
+          <TouchableOpacity onPress={handleBackgroundPlayButton} className={`h-14 px-2 ${activeButton == 5 ? `${currentStyles.bg_7} z-10` : ""} rounded-xl w-full flex flex-row items-center`}>
             <BackgroundPlay showBackgroundPlayOptions={showBackgroundPlayOptions} handleBackgroundPlayButton={handleBackgroundPlayButton} />
           </TouchableOpacity>
         </View>

@@ -7,8 +7,8 @@ type BackgroundPlayIconProps = {
 function BackgroundPlayIcon(props : BackgroundPlayIconProps) {
   return (
     <Svg
-      width={38}
-      height={38}
+      width={32}
+      height={32}
       viewBox="0 0 38 38"
       fill="none"
       {...props}

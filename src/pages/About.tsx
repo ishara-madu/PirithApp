@@ -13,7 +13,7 @@ const AboutUs = () => {
 
       <View className={`flex-1 ${currentStyles.bg_1}`}>
         {/* Header Section */}
-        <View className='flex relative h-auto items-center w-full flex-row justify-center mt-8'>
+        <View className='flex absolute h-auto items-center w-full flex-row justify-center mt-8 z-20'>
           <Text className={`text-xl ${currentStyles.tx_1} font-bold`}>About Me</Text>
           <TouchableOpacity onPress={() => { setShowAbout(false) }} className='absolute right-10'>
             <Text className={`${currentStyles.tx_1} text-xs`}>Done</Text>
@@ -21,20 +21,20 @@ const AboutUs = () => {
         </View>
 
         {/* Profile Image Section */}
-        <View className={`mt-8 mb-6`}>
+        <View className={`mt-10`}>
           <Image
-            source={require('../../assets/aboutUs.jpg')}
-            className={`w-40 h-40 rounded-full mx-auto`}
-            resizeMode="cover"
+            source={require('../../assets/about-us.png')}
+            className={`w-full rounded-full mx-auto`}
+            resizeMode="contain"
           />
         </View>
 
         {/* Introduction Section */}
-        <View className={`flex-1 ${currentStyles.bg_2} rounded-t-3xl px-4 pt-4`}>
+        <View className={`flex-1 ${currentStyles.bg_7} rounded-t-3xl px-5 pt-4 `}>
           <ScrollView className={`flex-1`}>
             <View className={``}>
               <Text className={`text-base ${currentStyles.tx_1} font-semibold`}>
-                Hi there, I’m <Text className={`${currentStyles.tx_6}`}>Ishara Madhusanka</Text> 👨‍💻
+                Hi there, I’m <Text className={`${currentStyles.tx_8}`}>Ishara Madhusanka</Text> 👨‍💻
               </Text>
               <Text className={`${currentStyles.tx_2} mt-2 leading-6 text-xs`}>
                 I’m an ICT diploma student (NVQ Level 5) passionate about technology and programming 🚀. I enjoy learning and building projects that bring value to others. My goal is to keep growing in the tech world and contribute to innovative solutions 🌐.

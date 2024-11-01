@@ -16,7 +16,7 @@ const Info = () => {
     const [title, setTitle] = useState('');
     const [thumbnail, setThumbnail] = useState('');
 
-    const { urls, uniqueId, theme } = useGlobalContext();
+    const { urls, uniqueId, theme,isClickedOutside, setIsClickedOutside } = useGlobalContext();
     const currentStyles = theme === 'Light' ? lightStyles : darkStyles;
 
     const meta = () => {
@@ -31,15 +31,21 @@ const Info = () => {
     const handleSleepButton = () => {
         setActiveButton(1);
         setShowSpeedOptions(false);
+        setIsClickedOutside(true);
+        console.log('outside click');
+        
     }
     const handlePlaybackButton = () => {
         setActiveButton(2);
         setShowTimeOptions(false);
+        setIsClickedOutside(true);
+
     }
     const handleAboutButton = () => {
         setActiveButton(3);
         setShowTimeOptions(false);
         setShowSpeedOptions(false);
+        setIsClickedOutside(true);
         meta();
     }
     return (

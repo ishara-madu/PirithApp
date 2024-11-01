@@ -97,8 +97,10 @@ const Home: React.FC = () => {
   const onStateChange = (state: any) => {
     if (state === 'buffering' || state === 'unstarted') {
       setShowLoading(true);
-      setDuration(0);
-      setCurrentTime(0)
+      if(state === 'unstarted'){
+        setDuration(0);
+        setCurrentTime(0)
+      }
     } else {
       setShowLoading(false);
       if (playerRef.current) {

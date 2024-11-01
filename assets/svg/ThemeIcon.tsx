@@ -11,8 +11,8 @@ type ThemeIconProps ={
 const ThemeIcon = (props : ThemeIconProps) => {
   return (
     <Svg
-    width={38}
-    height={38}
+    width={34}
+    height={34}
     viewBox="0 0 38 38"
     fill="none"
     {...props}
