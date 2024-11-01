@@ -10,7 +10,7 @@ function Shiffle(props : SvgComponentProps) {
   return (
     <Svg
       width={17}
-      height={18}
+      height={15}
       viewBox="0 0 17 18"
       fill="none"
     >

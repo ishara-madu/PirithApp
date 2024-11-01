@@ -36,7 +36,7 @@ const Home: React.FC = () => {
   const [intervalId, setIntervalId] = useState<any>();
   const [btnPress, setBtnPress] = useState<boolean>(false)
 
-  const { playbackRate, setUniqueId, uniqueId, setUrls, urls, setShowPlaylist, showPlaylist, theme, isPlay, setIsPlay, url, setUrl, isFavoritesAll, nameAll, artistAll, playerStyle,isFavorites, setIsFavorites } = useGlobalContext();
+  const { playbackRate, setUniqueId, uniqueId, setUrls, urls, setShowPlaylist, showPlaylist, theme, isPlay, setIsPlay, url, setUrl, isFavoritesAll, nameAll, artistAll, playerStyle, isFavorites, setIsFavorites } = useGlobalContext();
 
   const currentStyles = theme === 'Light' ? lightStyles : darkStyles;
 
@@ -127,7 +127,7 @@ const Home: React.FC = () => {
         setUrl(urls[uniqueId]);
         saveDataVariable("uniqueId", uniqueId);
       }
-    }    
+    }
   };
 
 
@@ -135,7 +135,7 @@ const Home: React.FC = () => {
   const handleshuffle = () => {
     setShuffle(!shuffle)
   }
-  
+
   const handleFavorite = () => {
     if (isFavorites) {
       setIsFavorites(false);
@@ -253,14 +253,14 @@ const Home: React.FC = () => {
           <TouchableWithoutFeedback onPress={() => { setShowInfo(false) }}>
 
 
-            <View className='w-full flex h-20 flex-row justify-around items-center z-20 bg-gre5'>
+            <View className='w-full flex h-10 flex-row justify-around items-end z-20 bg-gre5'>
               <TouchableOpacity
                 className='w-7 h-7 flex justify-center items-center rounded-full'
                 onPress={() => { setShowPlaylist(true); setShowInfo(false); }}
               >
                 <DownArrow fill={currentStyles.svg_1} width={22} height={12} />
               </TouchableOpacity>
-              <Text className={`${currentStyles.tx_1} text-xl font-semibold`}>Now Playing</Text>
+              <Text className={`${currentStyles.tx_1} text-sm font-semibold`}>Now Playing</Text>
               <TouchableOpacity
                 className=' w-7 h-7 flex justify-center items-center rounded-full'
                 onPress={() => { showInfo ? setShowInfo(false) : setShowInfo(true) }}
@@ -270,7 +270,7 @@ const Home: React.FC = () => {
             </View>
           </TouchableWithoutFeedback>
           <View className='w-full flex-1 justify-center items-center'>
-            <View className={`w-[80%] h-[85%] ${currentStyles.bg_3} rounded-3xl overflow-hidden relative`}>
+            <View className={`w-[90%] h-[90%] ${currentStyles.bg_3} rounded-3xl overflow-hidden relative`}>
               {
                 <YoutubePlayer
                   ref={playerRef}
@@ -294,13 +294,13 @@ const Home: React.FC = () => {
           </View>
 
 
-          <View className={`w-full ${currentStyles.bg_2} rounded-t-3xl flex items-center`}>
+          <View className={`w-full ${currentStyles.bg_2} h-[40%] rounded-t-3xl flex items-center`}>
             <View className='w-full flex flex-row justify-center items-center mt-5'>
               {
                 playerStyle === "Simple" ? (
                   ""
                 ) : (
-                  <TouchableOpacity onPress={handleFavorite}>
+                  <TouchableOpacity className='absolute bottom-0 left-8' onPress={handleFavorite}>
                     {
                       isFavoritesAll[uniqueId] ? (
                         <Heart fill={"red"} fillStr={"red"} />
@@ -312,14 +312,14 @@ const Home: React.FC = () => {
                 )
               }
 
-              <View className={`flex items-center ${playerStyle === "Simple" ? "w-[90%]" : "w-[70%]"} justify-center`}>
+              <View className={`flex items-center w-[90%] h-16 justify-center`}>
 
 
                 <View >
-                  <Text className={`text-2xl font-semibold ${currentStyles.tx_1} text-center`}>
-                    {truncateString(nameAll[uniqueId], 40)}{uniqueId}
+                  <Text className={`text-sm font-semibold ${currentStyles.tx_1} text-center`}>
+                    {truncateString(nameAll[uniqueId], 60)}{uniqueId}
                   </Text>
-                  <Text className={`text-md ${currentStyles.tx_1} opacity-60 text-center mt-3`}>
+                  <Text className={`text-xs ${currentStyles.tx_1} opacity-60 text-center mt-3`}>
                     {truncateString(artistAll[uniqueId], 20)}
                   </Text>
                 </View>
@@ -329,14 +329,14 @@ const Home: React.FC = () => {
                 playerStyle === "Simple" ? (
                   ""
                 ) : (
-                  <TouchableOpacity onPress={onShare}>
+                  <TouchableOpacity className='absolute bottom-0 right-8' onPress={onShare}>
                     <Shar str={currentStyles.svg_1} />
                   </TouchableOpacity>
                 )
               }
 
             </View>
-            <View className='w-[70%] flex mt-7'>
+            <View className='w-[70%] flex mt-5'>
               <View className='w-full flex'>
                 <Slider
                   minimumValue={0}
@@ -349,12 +349,12 @@ const Home: React.FC = () => {
                 />
               </View>
               <View className='flex flex-row justify-between mt-2'>
-                <Text className={`${currentStyles.tx_1}`}>{formatTime(currentTime)}</Text>
-                <Text className={`${currentStyles.tx_1}`}>{formatTime(duration)}</Text>
+                <Text className={`${currentStyles.tx_1} text-xs`}>{formatTime(currentTime)}</Text>
+                <Text className={`${currentStyles.tx_1} text-xs`}>{formatTime(duration)}</Text>
               </View>
             </View>
 
-            <View className={`${playerStyle === "Advanced" ? "w-[85%]" : "w-[70%]"} flex flex-row ${playerStyle === "Simple" ? "justify-around" : "justify-between"} items-center mt-7 mb-10`}>
+            <View className={`${playerStyle === "Advanced" ? "w-[85%]" : "w-[70%]"} flex flex-row ${playerStyle === "Simple" ? "justify-around" : "justify-between"} items-center mt-5 mb-7`}>
               {
                 playerStyle != "Simple" && (
                   <TouchableOpacity onPress={handleshuffle} className='w-5 h-5 relative flex justify-center items-center'>
@@ -383,9 +383,9 @@ const Home: React.FC = () => {
               <TouchableOpacity onPress={() => { handlePlayPause() }}>
                 {
                   isPlay ? (
-                    <Pause fill={currentStyles.svg_1} w={35} h={45} />
+                    <Pause fill={currentStyles.svg_1} w={30} h={35} />
                   ) : (
-                    <Play fill={currentStyles.svg_1} w={35} h={45} />
+                    <Play fill={currentStyles.svg_1} w={30} h={35} />
                   )
                 }
               </TouchableOpacity>
@@ -420,8 +420,6 @@ const Home: React.FC = () => {
                         )
                       )
                     }
-                    <View className='text-white absolute w-full h-full flex justify-center items-center z-20'>
-                    </View>
                   </TouchableOpacity>
                 )
               }

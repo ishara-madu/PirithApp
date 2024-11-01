@@ -8,8 +8,8 @@ type SkipPreviewsProps ={
 function SkipPreviews(props : SkipPreviewsProps) {
   return (
     <Svg
-      width={20}
-      height={22}
+      width={16}
+      height={18}
       viewBox="0 0 20 22"
       fill="none"
       {...props}

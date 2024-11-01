@@ -7,8 +7,8 @@ type SkipNextProps = {
 function SkipNext(props : SkipNextProps) {
   return (
     <Svg
-      width={20}
-      height={22}
+      width={16}
+      height={18}
       viewBox="0 0 20 22"
       fill="none"
       {...props}

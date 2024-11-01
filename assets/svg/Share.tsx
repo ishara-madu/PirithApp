@@ -10,7 +10,7 @@ const Share = (props : ShareProps) => {
   return (
     <Svg
       width={20}
-      height={22}
+      height={19}
       viewBox="0 0 20 22"
       fill="none"
       {...props}

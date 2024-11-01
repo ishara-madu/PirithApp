@@ -57,12 +57,12 @@ const PlaybackSpeed = ({ handlePlaybackButton, ...props }: PlaybackProps) => {
 
     return (
         <View className='flex flex-row justify-between items-center w-full h-full'>
-            <View className='flex flex-row items-center gap-x-3 h-full'>
+            <View className='flex flex-row items-center gap-x-2 h-full'>
                 <Play str={currentStyles.svg_1} />
-                <Text className={`${currentStyles.tx_1} text-md font-semibold`}>Playback Speed</Text>
+                <Text className={`${currentStyles.tx_1} text-xs font-semibold`}>Playback Speed</Text>
             </View>
             <View className='flex flex-row items-center h-full gap-1 relative'>
-                <TouchableOpacity className={`absolute right-2 flex h-auto items-center justify-start px-2 w-20 flex-row rounded-md ${currentStyles.bg_6}`}
+                <TouchableOpacity className={`absolute right-1 flex h-auto items-center justify-start px-2 w-28 flex-row rounded-md ${currentStyles.bg_6}`}
                     onPress={() => { handlePlaybackSpeed(); handlePlaybackButton(); }}
                 >
                     <View className='flex justify-center items-center'>
@@ -70,14 +70,14 @@ const PlaybackSpeed = ({ handlePlaybackButton, ...props }: PlaybackProps) => {
                             showspeedOptions ?
                                 (speedOptions.map((speedOption, id) => {
                                     return (
-                                        <TouchableOpacity key={id} onPress={() => { setPlaybackSpeed(speedOption); setPlaybackRate(speedOption); setShowSpeedOptions(false) }} className='flex flex-row items-center justify-start w-full py-2'>
-                                            <Text className={currentStyles.tx_white}>{speedSet(speedOption)}</Text>
+                                        <TouchableOpacity key={id} onPress={() => { setPlaybackSpeed(speedOption); setPlaybackRate(speedOption); setShowSpeedOptions(false) }} className='flex flex-row items-center justify-start w-full py-1'>
+                                            <Text className={`${currentStyles.tx_white} text-xs`}>{speedSet(speedOption)}</Text>
                                         </TouchableOpacity>
                                     )
                                 })) :
                                 ( 
-                                    <View className='flex flex-row items-center justify-between w-full py-2'>
-                                        <Text className={currentStyles.tx_white}>{speedSet(playbackSpeed)} </Text>
+                                    <View className='flex flex-row items-center justify-between w-full py-1'>
+                                        <Text className={`${currentStyles.tx_white} text-xs`}>{speedSet(playbackSpeed)} </Text>
                                         <DownArrow fill={currentStyles.svg_white} width={14} height={14} />
                                     </View>
                                 )

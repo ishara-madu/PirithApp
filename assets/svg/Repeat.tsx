@@ -10,8 +10,8 @@ type RepeatProps = {
 function Repeat(props: RepeatProps) {
   return (
     <Svg
-      width={18}
-      height={22}
+      width={17}
+      height={18}
       viewBox="0 0 18 22"
       fill="none"
     >

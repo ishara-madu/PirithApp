@@ -13,7 +13,7 @@ const Heart = (props: HeartProps) => {
 
     return (
         <Svg
-            width={23}
+            width={20}
             height={21}
             viewBox="0 0 23 21"
             fill="none"

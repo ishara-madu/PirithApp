@@ -9,8 +9,8 @@ type PlaybackProps = {
 function Playback(props : PlaybackProps) {
   return (
     <Svg
-      width={38}
-      height={38}
+      width={30}
+      height={30}
       viewBox="0 0 38 38"
       fill="none"
       {...props}
