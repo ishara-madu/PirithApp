@@ -35,6 +35,7 @@ const Home: React.FC = () => {
   const [shuffle, setShuffle] = useState(false)
   const [showLoading, setShowLoading] = useState(true)
   const [intervalId, setIntervalId] = useState<any>();
+  const [btnPress, setBtnPress] = useState<boolean>(false)
 
   const { playbackRate, setUniqueId, uniqueId, setUrls, urls, setShowPlaylist, showPlaylist, theme, isPlay, setIsPlay, url, setUrl, isFavoritesAll, nameAll, artistAll, playerStyle } = useGlobalContext();
 
@@ -97,8 +98,15 @@ const Home: React.FC = () => {
   const onStateChange = (state: any) => {
     if (state === 'buffering' || state === 'unstarted') {
       setShowLoading(true);
+      setDuration(0);
     } else {
       setShowLoading(false);
+      if (playerRef.current) {
+        playerRef.current
+          .getDuration()
+          .then(duration => setDuration(duration))
+          .catch(error => console.error("Error fetching duration:", error));
+      }
     }
     if (state === "ended") {
       if (repeat === "one") {
@@ -107,17 +115,18 @@ const Home: React.FC = () => {
           setTimeout(() => {
             setUniqueId(newId - 1); // Reset back to original uniqueId
           }, 1);
+          saveDataVariable("uniqueId", newId);
           return newId;
         });
       } else if (repeat === "all") {
         setUniqueId((prevId: any) => (prevId < urls.length - 1 ? prevId + 1 : 0));
         setUrl(urls[(uniqueId + 1) % urls.length]);
+        saveDataVariable("uniqueId", uniqueId + 1);
       } else {
         setUniqueId((prevId: any) => (prevId < urls.length - 1 ? prevId + 1 : prevId));
         setUrl(urls[uniqueId]);
+        saveDataVariable("uniqueId", uniqueId);
       }
-      console.log(uniqueId);
-      
     }
   };
 
@@ -142,23 +151,21 @@ const Home: React.FC = () => {
     if (shuffle) {
       const randomIndex = Math.floor(Math.random() * urls.length);
       setUniqueId(randomIndex);
+      saveDataVariable("uniqueId", randomIndex);
       setUrl(urls[randomIndex]);
     } else {
       if (uniqueId < urls.length - 1) {
         const nextId = uniqueId + 1;
         setUniqueId(nextId);
         setUrl(urls[nextId]);
-        saveDataVariable("uniqueId",uniqueId+1);
-        console.log(uniqueId+1);
+        saveDataVariable("uniqueId", nextId);
       } else {
         setUniqueId(0);
         setUrl(urls[0]);
-        saveDataVariable("uniqueId",0);
-        console.log(0);
+        saveDataVariable("uniqueId", 0);
       }
     }
-
-
+    setBtnPress(true);
   };
 
 
@@ -166,30 +173,26 @@ const Home: React.FC = () => {
     if (shuffle) {
       const randomIndex = Math.floor(Math.random() * urls.length);
       setUniqueId(randomIndex);
+      saveDataVariable("uniqueId", randomIndex);
       setUrl(urls[randomIndex]);
     } else {
       setUniqueId((prevId: any) => {
         const newId = (prevId > 0) ? prevId - 1 : urls.length - 1;
         setUrl(urls[newId]);
+        saveDataVariable("uniqueId", newId);
         return newId;
       });
     }
+    setBtnPress(true);
   }
 
 
-  useEffect(() => {
-    if (playerRef.current) {
-      playerRef.current
-        .getDuration()
-        .then(duration => setDuration(duration))
-        .catch(error => console.error("Error fetching duration:", error));
-    }
-  }, [showPlaylist, handleNext, handlePrevious])
 
 
   useEffect(() => {
     setIsFavorites(isFavoritesAll[uniqueId])
-  }, [handleNext, handlePrevious]);
+    setBtnPress(false);
+  }, [btnPress]);
 
 
 
@@ -239,6 +242,8 @@ const Home: React.FC = () => {
     }
   }
 
+
+
   return (
     <>
       <StatusBar barStyle={"default"} />
@@ -282,7 +287,7 @@ const Home: React.FC = () => {
                   <Loading />
                 )
               }
-              <Image className='flex-1 rounded-3xl' source={{ uri: `https://img.youtube.com/vi/${url}/maxresdefault.jpg` }} />
+              <Image className='flex-1 rounded-3xl' source={{ uri: `https://img.youtube.com/vi/${urls[uniqueId]}/maxresdefault.jpg` }} />
             </View>
 
           </View>
