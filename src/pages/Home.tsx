@@ -10,7 +10,7 @@ import Info from '../components/Info';
 import Pause from '../../assets/svg/Pause';
 import Heart from '../../assets/svg/Heart';
 import Shar from '../../assets/svg/Share';
-import { updateFavorite } from './Database';
+import { saveDataVariable, updateFavorite } from './Database';
 import YoutubePlayer, { YoutubeIframeRef, getYoutubeMeta } from "react-native-youtube-iframe";
 import Playlist from './Playlist';
 import Slider from '@react-native-community/slider';
@@ -116,6 +116,8 @@ const Home: React.FC = () => {
         setUniqueId((prevId: any) => (prevId < urls.length - 1 ? prevId + 1 : prevId));
         setUrl(urls[uniqueId]);
       }
+      console.log(uniqueId);
+      
     }
   };
 
@@ -146,11 +148,17 @@ const Home: React.FC = () => {
         const nextId = uniqueId + 1;
         setUniqueId(nextId);
         setUrl(urls[nextId]);
+        saveDataVariable("uniqueId",uniqueId+1);
+        console.log(uniqueId+1);
       } else {
         setUniqueId(0);
         setUrl(urls[0]);
+        saveDataVariable("uniqueId",0);
+        console.log(0);
       }
     }
+
+
   };
 
 
@@ -180,9 +188,7 @@ const Home: React.FC = () => {
 
 
   useEffect(() => {
-
     setIsFavorites(isFavoritesAll[uniqueId])
-
   }, [handleNext, handlePrevious]);
 
 
@@ -262,8 +268,8 @@ const Home: React.FC = () => {
               {
                 <YoutubePlayer
                   ref={playerRef}
-                  height={300}
-                  // width={0}
+                  height={0}
+                  width={0}
                   play={isPlay}
                   videoId={urls[uniqueId]}
                   useLocalHTML={true}
@@ -290,7 +296,7 @@ const Home: React.FC = () => {
                 ) : (
                   <TouchableOpacity onPress={handleFavorite}>
                     {
-                      isFavorites ? (
+                      isFavoritesAll[uniqueId] ? (
                         <Heart fill={"red"} fillStr={"red"} />
                       ) : (
                         <Heart fill={"none"} fillStr={currentStyles.svg_1} />
@@ -305,7 +311,7 @@ const Home: React.FC = () => {
 
                 <View >
                   <Text className={`text-2xl font-semibold ${currentStyles.tx_1} text-center`}>
-                    {truncateString(nameAll[uniqueId], 40)}
+                    {truncateString(nameAll[uniqueId], 40)}{uniqueId}
                   </Text>
                   <Text className={`text-md ${currentStyles.tx_1} opacity-60 text-center mt-3`}>
                     {truncateString(artistAll[uniqueId], 20)}

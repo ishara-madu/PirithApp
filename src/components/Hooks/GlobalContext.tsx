@@ -67,6 +67,7 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
       setTheme(theme ?? "Light");      
       setPlayerStyle(playerStyle ?? "Classic"); 
       setUniqueId(uniqueId ?? 0);
+      console.log(uniqueId);
       setUrl(url ?? '');
       setUrls(urls ?? []);
       setIsFavoritesAll(isFavoritesAll ?? []);
