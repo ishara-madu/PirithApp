@@ -12,7 +12,6 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 
 
 type PlaylistProps = {
-    isFavorites: any
 }
 
 
@@ -21,14 +20,13 @@ const Playlist = (props: PlaylistProps) => {
     const [listType, setListType] = useState("Recent");
     const [inputValue, setInputValue] = useState('');
     const [insidePlaylist, setInsidePlaylist] = useState(false)
-    const [data, setData] = useState<any>([]);
     const [outsidePlaylist, setOutsidePlaylist] = useState<any>()
     const [insidePlaylistData, setInsidePlaylistData] = useState()
     const [recentData, setRecentData] = useState()
     const [favoriteData, setFavoriteData] = useState()
 
 
-    const { showMenu, setShowMenu, setShowPlaylist, showPlaylist, theme } = useGlobalContext();
+    const { showMenu, setShowMenu, setShowPlaylist, showPlaylist, theme,isFavorites, setIsFavorites,data } = useGlobalContext();
 
     const currentStyles = theme === 'Light' ? lightStyles : darkStyles;
 
@@ -80,19 +78,7 @@ const Playlist = (props: PlaylistProps) => {
     }, [data]);
 
 
-    useMemo(() => {
-        const fetchData = async () => {
-            try {
-                const users = await getData("item");
-                setData(users);
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            }
-        };
-        fetchData();
 
-
-    }, [props.isFavorites, showPlaylist]);
 
 
 
@@ -109,7 +95,7 @@ const Playlist = (props: PlaylistProps) => {
         return data
             .filter((song: any) => song.isFavorites === 1 || song.isFavorites === true)
             .map((song: any, index: any) => ({ ...song, uniqueId: index })); // Prefix for unique IDs
-    }, [data, props.isFavorites])
+    },[data,isFavorites])
 
     useEffect(() => {
         if (listType === 'Recent') {

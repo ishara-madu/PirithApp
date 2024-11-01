@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useEffect, useMemo } from 'react';
 import { getYoutubeMeta } from 'react-native-youtube-iframe';
 import { getData, getDataVariable, saveData, saveDataVariable } from '../../pages/Database';
 
@@ -31,6 +31,10 @@ type GlobalContextType = {
   setArtistAll: (value: any) => void;
   playerStyle: any;
   setPlayerStyle: (value: any) => void;
+  isFavorites: boolean;
+  setIsFavorites: (value: boolean) => void;
+  data: any;
+  setData: (value: any) => void;
 };
 
 const GlobalContext = createContext<GlobalContextType | undefined>(undefined);
@@ -50,6 +54,9 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
   const [theme, setTheme] = useState("Light");
   const [isPlay, setIsPlay] = useState<boolean>(false);
   const [playerStyle,setPlayerStyle] = useState<any>("Classic");
+  const [isFavorites, setIsFavorites] = useState(false);
+  const [data, setData] = useState<any>([]);
+
 
 
 
@@ -76,10 +83,22 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
     fetchData();
   }, []);
 
+  useMemo(() => {
+    const fetchData = async () => {
+        try {
+            const users = await getData("item");
+            setData(users);
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    };
+    fetchData();
 
+
+}, [isFavorites,isFavoritesAll]);
 
   return (
-    <GlobalContext.Provider value={{ playbackRate, setPlaybackRate, urls, setUrls, uniqueId, setUniqueId, showMenu, setShowMenu, showPlaylist, setShowPlaylist, showAbout, setShowAbout, showSettings, setShowSettings, theme, setTheme, isPlay, setIsPlay,url, setUrl,isFavoritesAll, setIsFavoritesAll,nameAll, setNameAll,artistAll, setArtistAll,playerStyle,setPlayerStyle }}>
+    <GlobalContext.Provider value={{ playbackRate, setPlaybackRate, urls, setUrls, uniqueId, setUniqueId, showMenu, setShowMenu, showPlaylist, setShowPlaylist, showAbout, setShowAbout, showSettings, setShowSettings, theme, setTheme, isPlay, setIsPlay,url, setUrl,isFavoritesAll, setIsFavoritesAll,nameAll, setNameAll,artistAll, setArtistAll,playerStyle,setPlayerStyle,isFavorites, setIsFavorites,data, setData }}>
       {children}
     </GlobalContext.Provider>
   );

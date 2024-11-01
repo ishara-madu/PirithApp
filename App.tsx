@@ -13,6 +13,7 @@ import About from './src/pages/About';
 import { GlobalProvider } from './src/components/Hooks/GlobalContext';
 import { Alert, BackHandler } from 'react-native';
 import ExitAlert from './src/components/ExitAlert';
+import { fetchData } from './src/pages/Database';
 
 const Stack = createNativeStackNavigator();
 
@@ -20,7 +21,9 @@ const Stack = createNativeStackNavigator();
 
 function App() {
 
-
+React.useEffect(()=>{
+  fetchData()
+},[])
 
   return (
     <GlobalProvider>

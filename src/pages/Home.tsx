@@ -10,7 +10,7 @@ import Info from '../components/Info';
 import Pause from '../../assets/svg/Pause';
 import Heart from '../../assets/svg/Heart';
 import Shar from '../../assets/svg/Share';
-import { saveDataVariable, updateFavorite } from './Database';
+import { getData, saveDataVariable, updateFavorite } from './Database';
 import YoutubePlayer, { YoutubeIframeRef, getYoutubeMeta } from "react-native-youtube-iframe";
 import Playlist from './Playlist';
 import Slider from '@react-native-community/slider';
@@ -30,14 +30,13 @@ const Home: React.FC = () => {
   const playerRef = useRef<YoutubeIframeRef>(null);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(100);
-  const [isFavorites, setIsFavorites] = useState(false);
   const [repeat, setRepeat] = useState("all")
   const [shuffle, setShuffle] = useState(false)
   const [showLoading, setShowLoading] = useState(true)
   const [intervalId, setIntervalId] = useState<any>();
   const [btnPress, setBtnPress] = useState<boolean>(false)
 
-  const { playbackRate, setUniqueId, uniqueId, setUrls, urls, setShowPlaylist, showPlaylist, theme, isPlay, setIsPlay, url, setUrl, isFavoritesAll, nameAll, artistAll, playerStyle } = useGlobalContext();
+  const { playbackRate, setUniqueId, uniqueId, setUrls, urls, setShowPlaylist, showPlaylist, theme, isPlay, setIsPlay, url, setUrl, isFavoritesAll, nameAll, artistAll, playerStyle,isFavorites, setIsFavorites } = useGlobalContext();
 
   const currentStyles = theme === 'Light' ? lightStyles : darkStyles;
 
@@ -99,6 +98,7 @@ const Home: React.FC = () => {
     if (state === 'buffering' || state === 'unstarted') {
       setShowLoading(true);
       setDuration(0);
+      setCurrentTime(0)
     } else {
       setShowLoading(false);
       if (playerRef.current) {
@@ -127,7 +127,7 @@ const Home: React.FC = () => {
         setUrl(urls[uniqueId]);
         saveDataVariable("uniqueId", uniqueId);
       }
-    }
+    }    
   };
 
 
@@ -135,6 +135,7 @@ const Home: React.FC = () => {
   const handleshuffle = () => {
     setShuffle(!shuffle)
   }
+  
   const handleFavorite = () => {
     if (isFavorites) {
       setIsFavorites(false);
@@ -434,7 +435,7 @@ const Home: React.FC = () => {
         </View>
 
       </SafeAreaView>
-      <Playlist isFavorites={isFavorites} />
+      <Playlist />
     </>
   )
 }

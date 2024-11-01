@@ -21,7 +21,7 @@ export const saveData = async (group: any, url: any, name: any, artist: any, pla
 }
  
 
-const fetchData = async () => {
+export const fetchData = async () => {
   try {
     const tempIdsFirebase: any = [];
     let tempIdsAsync: any = [];
@@ -77,7 +77,6 @@ const fetchData = async () => {
     console.error('Error fetching documents: ', error);
   }
 };
-fetchData()
 
 
 export const saveDataVariable = async (id: any, data: any) => {
