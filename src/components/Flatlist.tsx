@@ -39,6 +39,16 @@ const Flatlist = (props: FlatlistProps) => {
         saveDataVariable("artistAll",props.listtype.map((item: Items) => item.artist).filter((artist: Items) => artist).reverse());
     }
 
+    function truncateString(str: string, length: number) {
+        if (str != null && str.length) {
+    
+          if (str.length > length) {
+            return str.slice(0, length) + '...';
+          }
+          return str;
+        }
+      }
+
     return (
         <FlatList
             data={props.listtype}
@@ -75,8 +85,8 @@ const Flatlist = (props: FlatlistProps) => {
                         </View>
                     </View>
                     <View>
-                        <Text className={`${currentStyles.tx_1} text-base font-semibold`}>{item.name}</Text>
-                        <Text className={`${currentStyles.tx_2} text-xs`}>{item.artist}</Text>
+                        <Text className={`${currentStyles.tx_1} text-base font-semibold`}>{truncateString(item.name,35)}</Text>
+                        <Text className={`${currentStyles.tx_2} text-xs`}>{truncateString(item.artist,35)}</Text>
                     </View>
                 </TouchableOpacity>
             )}

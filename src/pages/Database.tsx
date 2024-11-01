@@ -5,16 +5,15 @@ import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../../firebaseConfig';
 
 
-export const saveData = async (group: any, id: any, url: any, name: any, artist: any, playlist: any, isFavorites: any) => {
+export const saveData = async (group: any, url: any, name: any, artist: any, playlist: any) => {
   try {
     const data = {
       url,
       name,
       artist,
       playlist,
-      isFavorites
     }
-    await AsyncStorage.setItem(`${group}-${id}`, JSON.stringify(data));
+    await AsyncStorage.setItem(`${group}-${url}`, JSON.stringify(data));
   } catch (error) {
     console.log(error);
 
@@ -23,15 +22,65 @@ export const saveData = async (group: any, id: any, url: any, name: any, artist:
 
 
 const fetchData = async () => {
+  console.log("runinh");
+
   try {
+    const tempIdsFirebase: any = [];
+    let tempIdsAsync: any = [];
     const querySnapshot = await getDocs(collection(db, 'Items'));
     querySnapshot.forEach((doc) => {
-      console.log(`${doc.id} =>`, doc.data());
+      tempIdsFirebase.push(doc.id);
     });
+    try {
+      const keys = await AsyncStorage.getAllKeys();
+      tempIdsAsync = keys.filter(key => key.startsWith(`item-`));
+      tempIdsAsync.map(async (value: any, index: any) => {
+        const result = tempIdsFirebase.includes(value);
+        if (!result) {
+          await AsyncStorage.removeItem(value);
+          console.log('asyncStorage removed successfully');
+        }
+      }
+      );
+      tempIdsFirebase.map(async (value: any, index: any) => {
+        const result = tempIdsAsync.includes(value);
+        if (result) {
+          //update here
+          querySnapshot.forEach(async(doc) => {
+            const items: any = await AsyncStorage.getItem(value);
+            const data = JSON.parse(items);
+            data.name = doc.data().name;
+            data.artist = doc.data().artist;
+            data.playlist = doc.data().playlist;
+            await AsyncStorage.setItem(value, JSON.stringify(data));
+            console.log('firebase updated successfully');
+            
+          });
+
+        } else {
+          querySnapshot.forEach((doc) => {
+            doc.id == value && (
+              saveData("item", doc.data().url, doc.data().name, doc.data().artist, doc.data().playlist)
+            );
+            console.log('firebase added successfully');
+          });
+        }
+      })
+
+      // const userValues = await AsyncStorage.multiGet(userKeys);
+      // userValues.forEach(async (value, index) => {
+      //   const id = userKeys[index];
+      //   const result = tempIdsFirebase.includes(id);
+      //   !result && await AsyncStorage.removeItem(id)        
+      // });
+    } catch (error) {
+      console.log(error);
+    }
   } catch (error) {
     console.error('Error fetching documents: ', error);
   }
 };
+fetchData()
 
 
 export const saveDataVariable = async (id: any, data: any) => {

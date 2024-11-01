@@ -10,7 +10,7 @@ import Info from '../components/Info';
 import Pause from '../../assets/svg/Pause';
 import Heart from '../../assets/svg/Heart';
 import Shar from '../../assets/svg/Share';
-import {updateFavorite } from './Database';
+import { updateFavorite } from './Database';
 import YoutubePlayer, { YoutubeIframeRef, getYoutubeMeta } from "react-native-youtube-iframe";
 import Playlist from './Playlist';
 import Slider from '@react-native-community/slider';
@@ -21,6 +21,7 @@ import DownArrow from '../../assets/svg/DownArrow';
 import More from '../../assets/svg/More';
 import RightSkip from '../../assets/svg/RightSkip';
 import LeftSkip from '../../assets/svg/LeftSkip';
+import { length } from '../../node_modules/@protobufjs/base64/index.d';
 
 
 
@@ -201,27 +202,36 @@ const Home: React.FC = () => {
 
   }
 
-  const handleLeftSkip = ()=>{
+  const handleLeftSkip = () => {
     if (currentTime > 5) {
       if (playerRef.current) {
-        playerRef.current.seekTo(currentTime-5, true);
-        setCurrentTime(currentTime-5)
+        playerRef.current.seekTo(currentTime - 5, true);
+        setCurrentTime(currentTime - 5)
       }
     }
 
   }
 
 
-  const handleRightSkip = ()=>{
+  const handleRightSkip = () => {
 
     if ((duration - 5) > currentTime) {
       if (playerRef.current) {
-        playerRef.current.seekTo(currentTime+5, true);
-        setCurrentTime(currentTime+5)
+        playerRef.current.seekTo(currentTime + 5, true);
+        setCurrentTime(currentTime + 5)
       }
     }
   }
 
+  function truncateString(str: string, length: number) {
+    if (str != null && str.length) {
+
+      if (str.length > length) {
+        return str.slice(0, length) + '...';
+      }
+      return str;
+    }
+  }
 
   return (
     <>
@@ -252,8 +262,8 @@ const Home: React.FC = () => {
               {
                 <YoutubePlayer
                   ref={playerRef}
-                  height={0}
-                  width={0}
+                  height={300}
+                  // width={0}
                   play={isPlay}
                   videoId={urls[uniqueId]}
                   useLocalHTML={true}
@@ -290,15 +300,15 @@ const Home: React.FC = () => {
                 )
               }
 
-              <View className='flex items-center gap-3 w-[70%] justify-center'>
+              <View className={`flex items-center ${playerStyle === "Simple" ? "w-[90%]" : "w-[70%]"} justify-center`}>
 
 
                 <View >
                   <Text className={`text-2xl font-semibold ${currentStyles.tx_1} text-center`}>
-                    {nameAll[uniqueId]}
+                    {truncateString(nameAll[uniqueId], 40)}
                   </Text>
-                  <Text className={`text-md ${currentStyles.tx_2} opacity-60 text-center`}>
-                    {artistAll[uniqueId]}
+                  <Text className={`text-md ${currentStyles.tx_1} opacity-60 text-center mt-3`}>
+                    {truncateString(artistAll[uniqueId], 20)}
                   </Text>
                 </View>
 
@@ -314,7 +324,7 @@ const Home: React.FC = () => {
               }
 
             </View>
-            <View className='w-[70%] flex mt-10'>
+            <View className='w-[70%] flex mt-7'>
               <View className='w-full flex'>
                 <Slider
                   minimumValue={0}
@@ -351,8 +361,8 @@ const Home: React.FC = () => {
               </TouchableOpacity>
               {
                 playerStyle === "Advanced" && (
-                  <TouchableOpacity 
-                  onPress={handleLeftSkip}
+                  <TouchableOpacity
+                    onPress={handleLeftSkip}
                   >
                     <LeftSkip fill={currentStyles.svg_1} />
                   </TouchableOpacity>
