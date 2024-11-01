@@ -61,8 +61,8 @@ const Flatlist = (props: FlatlistProps) => {
                     setUrl(item.url)
                     saveDataVariable("url", item.url);
                     setShowPlaylist(false)
-                }} className={`w-full flex flex-row items-center px-3 h-16 ${currentStyles.bg_7} rounded-xl mt-1`}>
-                    <View className='w-11 h-11 rounded-md mr-7 overflow-hidden relative'>
+                }} className={`w-full flex flex-row items-center px-3 h-14 ${currentStyles.bg_7} rounded-xl mt-1`}>
+                    <View className='w-11 h-9 rounded-md mr-3 overflow-hidden relative'>
                         <Image className='rounded-md flex-1 w-full h-full' source={{ uri: `https://img.youtube.com/vi/${item.url}/default.jpg` }} />
                         <View className='absolute flex w-full h-full justify-center items-center'>
                             {
@@ -72,11 +72,11 @@ const Flatlist = (props: FlatlistProps) => {
                                         isPlay ?
                                             (
                                                 <>
-                                                    <Pause fill={currentStyles.svg_white} w={20} h={20} />
+                                                    <Pause fill={currentStyles.svg_white} w={18} h={18} />
                                                 </>
                                             ) : (
                                                 <>
-                                                    <Play fill={currentStyles.svg_white} w={20} h={20} />
+                                                    <Play fill={currentStyles.svg_white} w={18} h={18} />
                                                 </>
                                             )
                                     }
@@ -85,8 +85,8 @@ const Flatlist = (props: FlatlistProps) => {
                         </View>
                     </View>
                     <View>
-                        <Text className={`${currentStyles.tx_1} text-base font-semibold`}>{truncateString(item.name,35)}</Text>
-                        <Text className={`${currentStyles.tx_2} text-xs`}>{truncateString(item.artist,35)}</Text>
+                        <Text className={`${currentStyles.tx_1} text-sm font-semibold`}>{truncateString(item.name,26)}</Text>
+                        <Text className={`${currentStyles.tx_2} text-[10px]`}>{truncateString(item.artist,26)}</Text>
                     </View>
                 </TouchableOpacity>
             )}

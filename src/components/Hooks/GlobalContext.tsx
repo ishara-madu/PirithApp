@@ -120,7 +120,7 @@ export const lightStyles = {
   bg_3: 'bg-[#415a77]',
   bg_4: 'bg-[#1b263b]',
   bg_5: 'bg-[#051014]',
-  bg_6: 'bg-[#00000087]',
+  bg_6: 'bg-[#000000b6]',
   bg_7: 'bg-[#0000002f]',
   bg_active_7: 'active:bg-[#0000002f]',
 

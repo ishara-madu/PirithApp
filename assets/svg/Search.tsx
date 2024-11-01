@@ -8,8 +8,8 @@ type SearchProps = {
 function Search(props: SearchProps) {
     return (
         <Svg
-            width={24}
-            height={24}
+            width={18}
+            height={18}
             viewBox="0 0 24 24"
             fill="none"
         >

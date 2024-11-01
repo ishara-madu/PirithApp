@@ -12,7 +12,7 @@ function About(props : AboutProps) {
     <Svg
       width={props.wh}
       height={props.wh}
-      viewBox={`0 0 ${props.wh} ${props.wh}`}
+      viewBox={`0 0 40 40`}
       fill="none"
       {...props}
     >

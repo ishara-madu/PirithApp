@@ -10,8 +10,8 @@ type ListProps = {
 const List = (props:ListProps) => {
   return (
     <Svg
-      width={30}
-      height={30}
+      width={25}
+      height={25}
       viewBox="0 0 20 16"
       fill="none"
     >

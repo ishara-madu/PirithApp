@@ -52,17 +52,17 @@ const Info = () => {
                 <TouchableOpacity onPress={handlePlaybackButton} className={`w-[100%] ${activeButton == 2 ? `${currentStyles.bg_7} z-10` : ""} h-14 px-3 rounded-xl flex flex-row justify-between items-center`}>
                     <PlaybackSpeed handlePlaybackButton={handlePlaybackButton} showspeedOptions={showspeedOptions} />
                 </TouchableOpacity>
-                <TouchableOpacity onPress={handleAboutButton} className={`w-[100%] ${activeButton == 3 ? `${currentStyles.bg_7} z-10` : ""} h-14 px-3 rounded-xl flex flex-row justify-between items-center`}>
-                    <View className='flex flex-row items-center gap-x-3 h-full'>
-                        <About wh={40} fill={currentStyles.svg_1}/>
-                        <Text className={`${currentStyles.tx_1} text-md font-semibold`}>About Track</Text>
+                <TouchableOpacity onPress={handleAboutButton} className={`w-[100%] ${activeButton == 3 ? `${currentStyles.bg_7} z-10` : ""} h-14 px-2.5 rounded-xl flex flex-row justify-between items-center`}>
+                    <View className='flex flex-row items-center gap-x-1.5 h-full'>
+                        <About wh={35} fill={currentStyles.svg_1}/>
+                        <Text className={`${currentStyles.tx_1} text-xs font-semibold`}>About Track</Text>
                     </View>
                 </TouchableOpacity>
                 {
                     activeButton == 3 &&
                     <View className={`${currentStyles.bg_1} w-full h-full flex-1 rounded-3xl shadow-2xl p-5`}>
                         <ScrollView contentContainerStyle={{ paddingBottom: 20 }}>
-                            <Text className={`${currentStyles.tx_1} text-3xl font-bold mb-5 text-center w-full`}>
+                            <Text className={`${currentStyles.tx_1} text-base font-bold mb-5 text-center w-full`}>
                                 {title}
                             </Text>
 
@@ -85,26 +85,22 @@ const Info = () => {
                                 />
                             )}
 
-                            <Text className={`${currentStyles.tx_1} text-lg mb-2 font-normal`}>
+                            <Text className={`${currentStyles.tx_1} text-xs mb-2 font-normal`}>
                                 🌟 Author: <Text className={`font-semibold ${currentStyles.tx_6}`}>{author}</Text>
                             </Text>
 
                             <Text
-                                className={`${currentStyles.tx_7} underline mb-4`}
+                                className={`${currentStyles.tx_7} underline mb-4 text-xs`}
                                 onPress={() => Linking.openURL(authorUrl)}
                             >
                                 🔗 Check out their Channel!
                             </Text>
 
-                            <Text className={`${currentStyles.tx_2} text-sm mb-4`}>
+                            <Text className={`${currentStyles.tx_2} mb-4 text-xs`}>
                                 Click the link above to dive deeper into the amazing content created by <Text className={`font-semibold ${currentStyles.tx_6}`}>{author}</Text>! 🎉
                             </Text>
 
-                            <Text className={`${currentStyles.tx_8} text-sm font-semibold mb-2`}> {/* Lime green for positivity */}
-                                Thank you for supporting our channel! Your encouragement means the world to us! 💖
-                            </Text>
-
-                            <Text className={`${currentStyles.tx_2} text-xs italic mt-2`}>
+                            <Text className={`${currentStyles.tx_8} text-xs italic mt-2`}>
                                 Together, we can create more incredible experiences! 🚀
                             </Text>
                         </ScrollView>

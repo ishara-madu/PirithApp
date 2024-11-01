@@ -127,34 +127,34 @@ const Playlist = (props: PlaylistProps) => {
     return (
         <>
             <SafeAreaView className={`${showPlaylist ? "flex" : "hidden"} h-full w-full ${currentStyles.bg_1} items-center absolute`}>
-                <View className='flex flex-row w-[90%] mt-8 justify-between items-center mb-8'>
-                    <View className={`flex flex-row ${currentStyles.bg_2} rounded-full h-11 w-[85%] items-center`}>
-                        <View className='flex px-3'>
+                <View className='flex flex-row w-[90%] mt-5 justify-between items-center mb-5'>
+                    <View className={`flex flex-row ${currentStyles.bg_2} rounded-full h-9 w-[85%] items-center`}>
+                        <View className='flex px-2.5'>
                             <Search fill={currentStyles.svg_1} />
                         </View>
-                        <TextInput onChangeText={handleInputChange} placeholder='Search' placeholderTextColor={currentStyles.svg_2} value={inputValue} className={`text-base ${currentStyles.tx_1}`} />
+                        <TextInput onChangeText={handleInputChange} placeholder='Search' placeholderTextColor={currentStyles.svg_2} value={inputValue} className={`text-xs ${currentStyles.tx_1}`} />
                     </View>
-                    <TouchableOpacity onPress={() => { setShowMenu(true) }} className='p-1' >
+                    <TouchableOpacity onPress={() => { setShowMenu(true) }} className='p-1.5' >
                         <Hmaburger fill={currentStyles.svg_1} />
                     </TouchableOpacity>
                 </View>
-                <View className='flex flex-row w-[90%] justify-between items-center mb-8' >
-                    <TouchableOpacity onPress={() => { setListType("Favorite") }} className={`w-[30%] h-28 ${listType == "Favorite" ? `${currentStyles.bg_2}` : `${currentStyles.bg_7}`} rounded-lg flex justify-center items-center`}>
-                        <Image source={require('../../assets/Favorite.png')} />
-                        <Text className={`${currentStyles.tx_1} text-base font-semibold`}>Favorites</Text>
+                <View className='flex flex-row w-[90%] justify-between items-center mb-5' >
+                    <TouchableOpacity onPress={() => { setListType("Favorite") }} className={`w-[30%] h-24 ${listType == "Favorite" ? `${currentStyles.bg_2}` : `${currentStyles.bg_7}`} rounded-lg flex justify-between py-2 items-center`}>
+                        <Image resizeMode='contain' className='w-[60%]' source={require('../../assets/Favorite.png')} />
+                        <Text className={`${currentStyles.tx_1} text-xs font-semibold`}>Favorites</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => { setListType("Playlist") }} className={`w-[30%] h-28 ${listType == "Playlist" ? `${currentStyles.bg_2}` : `${currentStyles.bg_7}`} rounded-lg flex justify-center items-center`}>
-                        <Image source={require('../../assets/Playlist.png')} />
-                        <Text className={`${currentStyles.tx_1} text-base font-semibold`}>Playlists</Text>
+                    <TouchableOpacity onPress={() => { setListType("Playlist") }} className={`w-[30%] h-24 ${listType == "Playlist" ? `${currentStyles.bg_2}` : `${currentStyles.bg_7}`} rounded-lg flex justify-between pb-2 items-center`}>
+                        <Image resizeMode='contain' className='w-[60%]' source={require('../../assets/Playlist.png')} />
+                        <Text className={`${currentStyles.tx_1} text-xs font-semibold`}>Playlists</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => { setListType("Recent") }} className={`w-[30%] h-28 ${listType == "Recent" ? `${currentStyles.bg_2}` : `${currentStyles.bg_7}`} rounded-lg flex justify-center items-center`}>
-                        <Image source={require('../../assets/Recent.png')} />
-                        <Text className={`${currentStyles.tx_1} text-base font-semibold`}>Recent</Text>
+                    <TouchableOpacity onPress={() => { setListType("Recent") }} className={`w-[30%] h-24 ${listType == "Recent" ? `${currentStyles.bg_2}` : `${currentStyles.bg_7}`} rounded-lg flex justify-between pb-2 items-center`}>
+                        <Image resizeMode='contain' className='w-[60%]' source={require('../../assets/Recent.png')} />
+                        <Text className={`${currentStyles.tx_1} text-xs font-semibold`}>Recent</Text>
                     </TouchableOpacity>
                 </View>
                 <View className={`flex-1 w-full ${currentStyles.bg_2} rounded-t-3xl items-center pt-5`}>
                     <View className='flex w-[85%] mb-5 flex-row items-center justify-between h-10'>
-                        <Text className={`${currentStyles.tx_1} text-2xl font-bold`}>{listType}</Text>
+                        <Text className={`${currentStyles.tx_1} text-xl font-bold`}>{listType}</Text>
                         {
                             listType == "Playlist" && insidePlaylist ? (
                                 <TouchableOpacity onPress={() => {
@@ -188,14 +188,14 @@ const Playlist = (props: PlaylistProps) => {
                                                     renderItem={({ item }) => (
                                                         <TouchableOpacity onPress={() => {
                                                             handleInPlaylist(item.playlist)
-                                                        }} className={`w-full flex flex-row items-center px-3 h-16 ${currentStyles.bg_7} rounded-xl mt-1`}>
-                                                            <View className='w-11 h-11 rounded-md mr-7 overflow-hidden'>
+                                                        }} className={`w-full flex flex-row items-center px-3 h-14 ${currentStyles.bg_7} rounded-xl mt-1`}>
+                                                            <View className='w-11 h-11 rounded-md mr-3 overflow-hidden'>
                                                                 <View className='flex-1 justify-center items-center'>
                                                                     <List str={currentStyles.svg_1} />
                                                                 </View>
                                                             </View>
                                                             <View>
-                                                                <Text className={`${currentStyles.tx_1} text-base font-semibold`}>{truncateString(item.playlist,35)}</Text>
+                                                                <Text className={`${currentStyles.tx_1} text-sm font-semibold`}>{truncateString(item.playlist,35)}</Text>
                                                             </View>
                                                         </TouchableOpacity>
                                                     )}

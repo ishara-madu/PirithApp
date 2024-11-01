@@ -7,8 +7,8 @@ type HamburgerProps = {
 function Hmaburger(props : HamburgerProps) {
     return (
         <Svg
-            width={35}
-            height={35}
+            width={25}
+            height={25}
             viewBox="0 0 35 35"
             fill="none"
         >
