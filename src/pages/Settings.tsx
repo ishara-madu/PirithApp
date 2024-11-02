@@ -93,7 +93,7 @@ const Settings = () => {
           <TouchableOpacity onPress={handleThemeButton} className={`h-14 px-2 ${activeButton == 4 ? `${currentStyles.bg_7} z-10` : ""} rounded-xl w-full flex flex-row items-center`}>
             <Theme />
           </TouchableOpacity>
-          <TouchableOpacity onPress={handleBackgroundPlayButton} className={`h-14 px-2 ${activeButton == 5 ? `${currentStyles.bg_7} z-10` : ""} rounded-xl w-full flex flex-row items-center`}>
+          <TouchableOpacity onPress={handleBackgroundPlayButton} className={`h-14 px-2 ${activeButton == 5 ? `${currentStyles.bg_7} z-10` : ""} rounded-xl w-full flex-row items-center hidden`}>
             <BackgroundPlay />
           </TouchableOpacity>
         </View>

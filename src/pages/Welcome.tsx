@@ -4,7 +4,6 @@ import { LinearGradient } from 'expo-linear-gradient'
 import { StatusBar } from 'expo-status-bar';
 
 type WelcomeProps = {
-    navigation: any;
   
 }
 
@@ -26,7 +25,7 @@ const Welcome = (navigation : WelcomeProps) => {
     <Text className='text-white mb-16'>සියලුම සෙත් පිරිත් දේශනා එකම තැනකි​න්</Text>
     <TouchableOpacity
       className='bg-[#ffffff2e] h-12 w-[70%] rounded-full text-white font-bold flex flex-row justify-center items-center'
-      onPress={() => navigation.navigation.replace('Home')}
+      onPress={() => {}}
     >
       <Text className='font-bold text-white'>පටන් ගන්න</Text>
     </TouchableOpacity>

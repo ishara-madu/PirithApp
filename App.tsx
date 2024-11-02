@@ -27,16 +27,8 @@ React.useEffect(()=>{
 
   return (
     <GlobalProvider>
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName="Home">
-          <Stack.Screen name="Welcome" component={Welcome} options={{ headerShown: false }} />
-          <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
-          <Stack.Screen name="Menu" component={Menu} options={{ headerShown: false }} />
-          <Stack.Screen name="Settings" component={Settings} options={{ headerShown: false }} />
-          <Stack.Screen name="About" component={About} options={{ headerShown: false }} />
-        </Stack.Navigator>
-      </NavigationContainer>
-        <ExitAlert />
+      {/* <Welcome/> */}
+      <Home/>
     </GlobalProvider>
 
   );
