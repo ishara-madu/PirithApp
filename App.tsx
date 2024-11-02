@@ -50,7 +50,6 @@ function App() {
 
   return (
     <GlobalProvider data={data}>
-      <ConnectivityChecker />
       {loading ? (
         <Loading text={text} />
       ) : (
@@ -60,7 +59,8 @@ function App() {
           <Home />
         )
       )
-      }
+    }
+    <ConnectivityChecker />
     </GlobalProvider>
 
   );

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Alert } from 'react-native';
+import { Alert, Text, TouchableOpacity, View } from 'react-native';
 import NetInfo from '@react-native-community/netinfo';
 import { fetchData, getData } from '../pages/Database';
 import { useGlobalContext } from './Hooks/GlobalContext';
@@ -16,19 +16,8 @@ const ConnectivityChecker = () => {
         return () => unsubscribe();
     }, []);
 
-    const retryCheck = () => {
-        setTimeout(() => {
-            NetInfo.fetch().then(state => {
-                setIsConnected(state.isConnected);
-                if (!state.isConnected) {
-                    showAlert(); // Show alert again if still disconnected
-                }
-            });
-        }, 5000);
-    };
 
-    // Show alert based on connection status
-    const showAlert = async() => {
+    const showAlert = async () => {
         if (isConnected) {
             try {
                 await fetchData();
@@ -45,27 +34,30 @@ const ConnectivityChecker = () => {
             } catch (error) {
                 console.log(error);
             }
-        } else {
-            Alert.alert(
-                "⚠️ No Internet Connection!",
-                "🌐 It looks like you're offline. Please check your connection and try again.",
-                [
-                    {
-                        text: "🔄 Retry",
-                        onPress: retryCheck, // Call retryCheck after pressing Retry
-                    }
-                ],
-                { cancelable: false }
-            );
         }
     };
 
-    // Trigger alert when isConnected state changes
     useEffect(() => {
         showAlert();
     }, [isConnected]);
 
-    return null; // No need for a return UI element
+    return (
+        <>{
+            !isConnected && (
+                <View className="flex-1 items-center justify-center bg-gray-900/80 absolute z-50 w-full h-full">
+                    <View className="bg-white p-6 rounded-xl shadow-2xl w-11/12 max-w-md">
+                        <Text className="text-base font-bold text-red-600 mb-2 flex items-center">
+                            ⚠️ No Internet Connection!
+                        </Text>
+                        <Text className="text-sm text-gray-700 leading-relaxed">
+                            It seems you're currently offline. Please check your internet connection and try again.
+                        </Text>
+                    </View>
+                </View>
+            )
+        }
+        </>
+    )
 };
 
 export default ConnectivityChecker;

@@ -8,9 +8,11 @@ type WelcomeProps={
 }
 
 const Welcome = ({onChange}:WelcomeProps) => {
+  const  {setShowPlaylist} = useGlobalContext()
   const setVal = ()=>{
     onChange(false);
     saveDataVariable('Welcome',false)
+    setShowPlaylist(true);
   }
   return (
     <SafeAreaView className="flex w-full h-full items-center justify-center bg-black">
