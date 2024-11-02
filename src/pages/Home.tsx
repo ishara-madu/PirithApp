@@ -51,7 +51,6 @@ const Home: React.FC = () => {
         console.error("Error fetching data:", error);
       }
     };
-    // fetchData();
     setTimeout(() => {
       fetchAsyncData();
     }, 1000);

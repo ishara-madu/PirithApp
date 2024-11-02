@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Alert } from 'react-native';
 import NetInfo from '@react-native-community/netinfo';
+import { fetchData } from '../pages/Database';
 
 const ConnectivityChecker = () => {
     const [isConnected, setIsConnected] = useState<any>(true);
@@ -27,12 +28,7 @@ const ConnectivityChecker = () => {
     // Show alert based on connection status
     const showAlert = () => {
         if (isConnected) {
-            Alert.alert(
-                "✅ Connected",
-                "You are back online.",
-                [{ text: "OK" }],
-                { cancelable: true }
-            );
+            fetchData();
         } else {
             Alert.alert(
                 "⚠️ No Internet Connection!",
