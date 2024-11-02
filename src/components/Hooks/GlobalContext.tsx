@@ -1,6 +1,5 @@
-import React, { createContext, useContext, useState, ReactNode, useEffect, useMemo } from 'react';
-import { getData, getDataVariable, saveData, saveDataVariable } from '../../pages/Database';
-import NetInfo from '@react-native-community/netinfo';
+import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import {  getDataVariable } from '../../pages/Database';
 
 type GlobalContextType = {
   playbackRate: number;
