@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../../firebaseConfig';
+import NetInfo from '@react-native-community/netinfo';
 
 
 export const saveData = async (group: any, url: any, name: any, artist: any, playlist: any) => {
@@ -17,62 +18,72 @@ export const saveData = async (group: any, url: any, name: any, artist: any, pla
 
   }
 }
- 
+
+// const clearAllAsyncStorage = async () => {
+//   try {
+//       await AsyncStorage.clear();
+//       console.log("AsyncStorage cleared!");
+//   } catch (error) {
+//       console.error("Error clearing AsyncStorage:", error);
+//   }
+// };
+
+// // Call the function to clear AsyncStorage
+// clearAllAsyncStorage();
+
 
 export const fetchData = async () => {
-  try {
-    const tempIdsFirebase: any = [];
-    let tempIdsAsync: any = [];
-    const querySnapshot = await getDocs(collection(db, 'Items'));
-    querySnapshot.forEach((doc) => {
-      tempIdsFirebase.push(doc.id);
-    });
+  let value: any;
+  NetInfo.addEventListener(state => {
+    value = state.isConnected
+  });
+  if (value == true) {
     try {
-      const keys = await AsyncStorage.getAllKeys();
-      tempIdsAsync = keys.filter(key => key.startsWith(`item-`));
-      tempIdsAsync.map(async (value: any, index: any) => {
-        const result = tempIdsFirebase.includes(value);
-        if (!result) {
-          await AsyncStorage.removeItem(value);
-          console.log('asyncStorage removed successfully');
-        }
-      }
-      );  
-      tempIdsFirebase.map(async (value: any, index: any) => {
-        querySnapshot.forEach(async(doc) => {
-        const result = tempIdsAsync.includes(value);
-        if (result) {
-          if(doc.id === value){
-            const items: any = await AsyncStorage.getItem(value);
-            const data = JSON.parse(items);
-            data.name = doc.data().name;
-            data.artist = doc.data().artist;
-            data.playlist = doc.data().playlist;
-            await AsyncStorage.setItem(value, JSON.stringify(data));
-            console.log('firebase updated successfully');
+      const tempIdsFirebase: any = [];
+      let tempIdsAsync: any = [];
+      const querySnapshot = await getDocs(collection(db, 'Items'));
+      querySnapshot.forEach((doc) => {
+        tempIdsFirebase.push(doc.id);
+      });
+      try {
+        const keys = await AsyncStorage.getAllKeys();
+        tempIdsAsync = keys.filter(key => key.startsWith(`item-`));
+        tempIdsAsync.map(async (value: any, index: any) => {
+          const result = tempIdsFirebase.includes(value);
+          if (!result) {
+            await AsyncStorage.removeItem(value);
+            console.log('asyncStorage removed successfully');
           }
-            
+        }
+        );
+        tempIdsFirebase.map(async (value: any, index: any) => {
+          querySnapshot.forEach(async (doc) => {
+            const result = tempIdsAsync.includes(value);
+            if (result) {
+              if (doc.id === value) {
+                const items: any = await AsyncStorage.getItem(value);
+                const data = JSON.parse(items);
+                data.name = doc.data().name;
+                data.artist = doc.data().artist;
+                data.playlist = doc.data().playlist;
+                await AsyncStorage.setItem(value, JSON.stringify(data));
+                console.log('firebase updated successfully');
+              }
+            } else {
+              if (doc.id == value) {
+                saveData("item", doc.data().url, doc.data().name, doc.data().artist, doc.data().playlist)
+                console.log('firebase added successfully');
+              }
+            }
+          })
+        })
 
-        } else {
-            if(doc.id == value){
-              saveData("item", doc.data().url, doc.data().name, doc.data().artist, doc.data().playlist)
-              console.log('firebase added successfully');
-            } 
-        } 
-      })
-      })
-
-      // const userValues = await AsyncStorage.multiGet(userKeys);
-      // userValues.forEach(async (value, index) => {
-      //   const id = userKeys[index];
-      //   const result = tempIdsFirebase.includes(id);
-      //   !result && await AsyncStorage.removeItem(id)        
-      // });
+      } catch (error) {
+        console.log(error);
+      }
     } catch (error) {
-      console.log(error);
+      console.error('Error fetching documents: ', error);
     }
-  } catch (error) {
-    console.error('Error fetching documents: ', error);
   }
 };
 

@@ -1,5 +1,5 @@
-import { View, Text, Image, TouchableOpacity, Share, TouchableWithoutFeedback, StatusBar,SafeAreaView } from 'react-native'
-import React, { useEffect, useRef, useState } from 'react'
+import { View, Text, Image, TouchableOpacity, Share, TouchableWithoutFeedback, StatusBar, SafeAreaView, Alert } from 'react-native'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import Shuffle from '../../assets/svg/Shuffle'
 import SkipPreviews from '../../assets/svg/SkipPreviews'
 import Play from '../../assets/svg/Play'
@@ -9,7 +9,7 @@ import Info from '../components/Info';
 import Pause from '../../assets/svg/Pause';
 import Heart from '../../assets/svg/Heart';
 import Shar from '../../assets/svg/Share';
-import { getData, saveDataVariable, updateFavorite } from './Database';
+import { fetchData, getData, saveDataVariable, updateFavorite } from './Database';
 import YoutubePlayer, { YoutubeIframeRef, getYoutubeMeta } from "react-native-youtube-iframe";
 import Playlist from './Playlist';
 import Slider from '@react-native-community/slider';
@@ -19,6 +19,7 @@ import DownArrow from '../../assets/svg/DownArrow';
 import More from '../../assets/svg/More';
 import RightSkip from '../../assets/svg/RightSkip';
 import LeftSkip from '../../assets/svg/LeftSkip';
+import ConnectivityChecker from '../components/ConnectivityChecker'
 
 
 
@@ -26,19 +27,37 @@ const Home: React.FC = () => {
   const [showInfo, setShowInfo] = useState(false);
   const playerRef = useRef<YoutubeIframeRef>(null);
   const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(100);
+  const [duration, setDuration] = useState(0);
   const [repeat, setRepeat] = useState("all")
   const [shuffle, setShuffle] = useState(false)
   const [showLoading, setShowLoading] = useState(true)
   const [intervalId, setIntervalId] = useState<any>();
   const [btnPress, setBtnPress] = useState<boolean>(false)
 
-  const { playbackRate, setUniqueId, uniqueId, setUrls, urls, setShowPlaylist, showPlaylist, theme, isPlay, setIsPlay, url, setUrl, isFavoritesAll, nameAll, artistAll, playerStyle, isFavorites, setIsFavorites, setActiveButton,showspeedOptions,showTimeOptions, setShowTimeOptions, setShowSpeedOptions,showTypeOptions, setShowTypeOptions,showThemeOptions, setShowThemeOptions,showBackgroundPlayOptions, setShowBackgroundPlayOptions } = useGlobalContext();
+  const { setData, playbackRate, setUniqueId, uniqueId, setUrls, urls, setShowPlaylist, showPlaylist, theme, isPlay, setIsPlay, url, setUrl, isFavoritesAll, nameAll, artistAll, playerStyle, isFavorites, setIsFavorites, setActiveButton, showspeedOptions, showTimeOptions, setShowTimeOptions, setShowSpeedOptions, showTypeOptions, setShowTypeOptions, showThemeOptions, setShowThemeOptions, showBackgroundPlayOptions, setShowBackgroundPlayOptions } = useGlobalContext();
 
   const currentStyles = theme === 'Light' ? lightStyles : darkStyles;
 
 
 
+
+
+  useMemo(() => {
+    const fetchAsyncData = async () => {
+      try {
+        const users = await getData("item");
+        setData(users);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    // fetchData();
+    setTimeout(() => {
+      fetchAsyncData();
+    }, 1000);
+    
+
+  }, [isFavoritesAll[uniqueId]]);
 
   const handlePlayPause = () => {
     setIsPlay((prev: any) => !prev);
@@ -135,17 +154,6 @@ const Home: React.FC = () => {
     setShuffle(!shuffle)
   }
 
-  const handleFavorite = () => {
-    if (isFavorites) {
-      setIsFavorites(false);
-      updateFavorite(false, url);
-      isFavoritesAll[uniqueId] = false;
-    } else {
-      setIsFavorites(true);
-      updateFavorite(true, url);
-      isFavoritesAll[uniqueId] = true;
-    }
-  }
 
   const handleNext = () => {
     if (shuffle) {
@@ -253,6 +261,8 @@ const Home: React.FC = () => {
   }
 
 
+
+
   return (
     <>
       <StatusBar barStyle={"default"} />
@@ -314,15 +324,26 @@ const Home: React.FC = () => {
                 playerStyle === "Simple" ? (
                   ""
                 ) : (
-                  <TouchableOpacity className='absolute bottom-0 left-8' onPress={handleFavorite}>
-                    {
-                      isFavoritesAll[uniqueId] ? (
-                        <Heart fill={"red"} fillStr={"red"} />
-                      ) : (
-                        <Heart fill={"none"} fillStr={currentStyles.svg_1} />
-                      )
-                    }
-                  </TouchableOpacity>
+
+                  isFavoritesAll[uniqueId] ? (
+                    <TouchableOpacity className='absolute bottom-0 left-8' onPress={() => {
+                      setIsFavorites(false);
+                      updateFavorite(false, url);
+                      isFavoritesAll[uniqueId] = false;
+                      
+                    }}>
+                      <Heart fill={"red"} fillStr={"red"} />
+                    </TouchableOpacity>
+                  ) : (
+                    <TouchableOpacity className='absolute bottom-0 left-8' onPress={() => {
+                      setIsFavorites(true);
+                      updateFavorite(true, url);
+                      isFavoritesAll[uniqueId] = true;
+                    }}>
+                      <Heart fill={"none"} fillStr={currentStyles.svg_1} />
+                    </TouchableOpacity>
+                  )
+
                 )
               }
 
@@ -331,10 +352,10 @@ const Home: React.FC = () => {
 
                 <View >
                   <Text className={`text-sm font-semibold ${currentStyles.tx_1} text-center`}>
-                    {truncateString(nameAll[uniqueId], 60)}
+                    {truncateString(nameAll[uniqueId], 60) || "Unknown Name"}
                   </Text>
                   <Text className={`text-xs ${currentStyles.tx_1} opacity-60 text-center mt-3`}>
-                    {truncateString(artistAll[uniqueId], 20)}
+                    {truncateString(artistAll[uniqueId], 20) || ("Unknown artist")}
                   </Text>
                 </View>
 

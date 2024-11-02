@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect, useMemo } from 'react';
 import { getData, getDataVariable, saveData, saveDataVariable } from '../../pages/Database';
+import NetInfo from '@react-native-community/netinfo';
 
 type GlobalContextType = {
   playbackRate: number;
@@ -80,7 +81,6 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
 
 
 
-
   useEffect(() => {    
     const fetchData = async () => {
       const theme = await getDataVariable("theme");
@@ -103,22 +103,10 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
     fetchData();
   }, []);
 
-  useMemo(() => {
-    const fetchData = async () => {
-        try {
-            const users = await getData("item");
-            setData(users);
-        } catch (error) {
-            console.error("Error fetching data:", error);
-        }
-    };
-    fetchData();
 
-
-}, [isFavorites,isFavoritesAll]);
 
   return (
-    <GlobalContext.Provider value={{ playbackRate, setPlaybackRate, urls, setUrls, uniqueId, setUniqueId, showMenu, setShowMenu, showPlaylist, setShowPlaylist, showAbout, setShowAbout, showSettings, setShowSettings, theme, setTheme, isPlay, setIsPlay,url, setUrl,isFavoritesAll, setIsFavoritesAll,nameAll, setNameAll,artistAll, setArtistAll,playerStyle,setPlayerStyle,selectedBackgroundPlay, setSelectedBackgroundPlay,isFavorites, setIsFavorites,data, setData,showTimeOptions, setShowTimeOptions,showspeedOptions, setShowSpeedOptions,activeButton, setActiveButton,showTypeOptions, setShowTypeOptions,showThemeOptions, setShowThemeOptions,showBackgroundPlayOptions, setShowBackgroundPlayOptions}}>
+    <GlobalContext.Provider value={{playbackRate, setPlaybackRate, urls, setUrls, uniqueId, setUniqueId, showMenu, setShowMenu, showPlaylist, setShowPlaylist, showAbout, setShowAbout, showSettings, setShowSettings, theme, setTheme, isPlay, setIsPlay,url, setUrl,isFavoritesAll, setIsFavoritesAll,nameAll, setNameAll,artistAll, setArtistAll,playerStyle,setPlayerStyle,selectedBackgroundPlay, setSelectedBackgroundPlay,isFavorites, setIsFavorites,data, setData,showTimeOptions, setShowTimeOptions,showspeedOptions, setShowSpeedOptions,activeButton, setActiveButton,showTypeOptions, setShowTypeOptions,showThemeOptions, setShowThemeOptions,showBackgroundPlayOptions, setShowBackgroundPlayOptions}}>
       {children}
     </GlobalContext.Provider>
   );

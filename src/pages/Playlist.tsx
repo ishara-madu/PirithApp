@@ -31,7 +31,6 @@ const Playlist = (props: PlaylistProps) => {
 
 
 
-
     const fuzzyMatch = (text: any, search: any) => {
         let searchIndex = 0;
         for (let char of text.toLowerCase()) {
@@ -89,7 +88,7 @@ const Playlist = (props: PlaylistProps) => {
         }));
     }, [data])
 
-    const handleFavorite = useMemo(() => {
+    const handleFavorite = useMemo(() => {    
         return data
             .filter((song: any) => song.isFavorites === 1 || song.isFavorites === true)
             .map((song: any, index: any) => ({ ...song, uniqueId: index })); // Prefix for unique IDs
@@ -99,6 +98,8 @@ const Playlist = (props: PlaylistProps) => {
         if (listType === 'Recent') {
             setRecentData(filterAndSort(handleRecent));
         } else if (listType === 'Favorite') {
+            console.log(handleFavorite.length);
+            
             setFavoriteData(filterAndSort(handleFavorite));
         } else if (listType === 'Playlist') {
             setOutsidePlaylist(filterAndSort(handleOutPlaylist));
