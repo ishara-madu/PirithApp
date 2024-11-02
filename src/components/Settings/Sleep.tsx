@@ -5,10 +5,9 @@ import DownArrow from '../../../assets/svg/DownArrow';
 import { darkStyles, lightStyles, useGlobalContext } from '../Hooks/GlobalContext';
 
 type SleepProps = {
-    handleSleepButton?: any;
 }
 
-const Sleep = ({ handleSleepButton, ...props }: SleepProps) => {
+const Sleep = ({  ...props }: SleepProps) => {
     const [selectedTime, setSelectedTime] = useState("Off");
 
 
@@ -33,7 +32,7 @@ const Sleep = ({ handleSleepButton, ...props }: SleepProps) => {
             </View>
             <View className='flex flex-row items-center h-full relative'>
                 <TouchableOpacity className={`absolute right-1 flex h-auto items-center justify-center w-28 flex-row rounded-md ${currentStyles.bg_6}`}
-                    onPress={() => { handleSleepTimer(); handleSleepButton(); }}
+                    onPress={() => { handleSleepTimer(); }}
                 >
                     <View className='flex w-full items-center'>
 

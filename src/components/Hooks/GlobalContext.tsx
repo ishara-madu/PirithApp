@@ -36,6 +36,8 @@ type GlobalContextType = {
   setData: (value: any) => void;
   showTimeOptions: boolean;
   setShowTimeOptions: (value: boolean) => void;
+  showspeedOptions: boolean;
+  setShowSpeedOptions: (value: boolean) => void;
 };
 
 const GlobalContext = createContext<GlobalContextType | undefined>(undefined);
@@ -58,6 +60,8 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
   const [isFavorites, setIsFavorites] = useState(false);
   const [data, setData] = useState<any>([]);
   const [showTimeOptions, setShowTimeOptions] = useState(false);
+  const [showspeedOptions, setShowSpeedOptions] = useState(false);
+
 
 
 
@@ -100,7 +104,7 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
 }, [isFavorites,isFavoritesAll]);
 
   return (
-    <GlobalContext.Provider value={{ playbackRate, setPlaybackRate, urls, setUrls, uniqueId, setUniqueId, showMenu, setShowMenu, showPlaylist, setShowPlaylist, showAbout, setShowAbout, showSettings, setShowSettings, theme, setTheme, isPlay, setIsPlay,url, setUrl,isFavoritesAll, setIsFavoritesAll,nameAll, setNameAll,artistAll, setArtistAll,playerStyle,setPlayerStyle,isFavorites, setIsFavorites,data, setData,showTimeOptions, setShowTimeOptions}}>
+    <GlobalContext.Provider value={{ playbackRate, setPlaybackRate, urls, setUrls, uniqueId, setUniqueId, showMenu, setShowMenu, showPlaylist, setShowPlaylist, showAbout, setShowAbout, showSettings, setShowSettings, theme, setTheme, isPlay, setIsPlay,url, setUrl,isFavoritesAll, setIsFavoritesAll,nameAll, setNameAll,artistAll, setArtistAll,playerStyle,setPlayerStyle,isFavorites, setIsFavorites,data, setData,showTimeOptions, setShowTimeOptions,showspeedOptions, setShowSpeedOptions}}>
       {children}
     </GlobalContext.Provider>
   );

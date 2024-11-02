@@ -5,13 +5,10 @@ import Play from '../../../assets/svg/Playback';
 import { darkStyles, lightStyles, useGlobalContext } from '../Hooks/GlobalContext';
 
 type PlaybackProps = {
-    handlePlaybackButton?: any;
-    showspeedOptions: boolean;
 }
 
-const PlaybackSpeed = ({ handlePlaybackButton, ...props }: PlaybackProps) => {
-    const { playbackRate, setPlaybackRate,theme } = useGlobalContext();
-    const [showspeedOptions, setShowSpeedOptions] = useState(false);
+const PlaybackSpeed = ({  ...props }: PlaybackProps) => {
+    const { playbackRate, setPlaybackRate,theme,showspeedOptions, setShowSpeedOptions } = useGlobalContext();
     const [playbackSpeed, setPlaybackSpeed] = useState<any>(playbackRate);
 
 
@@ -20,9 +17,7 @@ const PlaybackSpeed = ({ handlePlaybackButton, ...props }: PlaybackProps) => {
     const handlePlaybackSpeed = () => {
         setShowSpeedOptions(true)
     }
-    useEffect(() => {
-        setShowSpeedOptions(props.showspeedOptions)
-    }, [props.showspeedOptions])
+
 
 
     const speedOptions = [0.5, 0.75, 1, 1.25, 1.5, 2];
@@ -62,21 +57,21 @@ const PlaybackSpeed = ({ handlePlaybackButton, ...props }: PlaybackProps) => {
                 <Text className={`${currentStyles.tx_1} text-xs font-semibold`}>Playback Speed</Text>
             </View>
             <View className='flex flex-row items-center h-full gap-1 relative'>
-                <TouchableOpacity className={`absolute right-1 flex h-auto items-center justify-start px-2 w-28 flex-row rounded-md ${currentStyles.bg_6}`}
-                    onPress={() => { handlePlaybackSpeed(); handlePlaybackButton(); }}
+                <TouchableOpacity className={`absolute right-1 flex h-auto items-center justify-start w-28 flex-row rounded-md ${currentStyles.bg_6}`}
+                    onPress={() => { handlePlaybackSpeed(); }}
                 >
-                    <View className='flex justify-center items-center'>
+                    <View className='flex items-center w-full'>
                         {
                             showspeedOptions ?
                                 (speedOptions.map((speedOption, id) => {
                                     return (
-                                        <TouchableOpacity key={id} onPress={() => { setPlaybackSpeed(speedOption); setPlaybackRate(speedOption); setShowSpeedOptions(false) }} className='flex flex-row items-center justify-start w-full py-1'>
+                                        <TouchableOpacity key={id} onPress={() => { setPlaybackSpeed(speedOption); setPlaybackRate(speedOption); setShowSpeedOptions(false) }} className='flex-1 items-center w-full py-1'>
                                             <Text className={`${currentStyles.tx_white} text-xs`}>{speedSet(speedOption)}</Text>
                                         </TouchableOpacity>
                                     )
                                 })) :
                                 ( 
-                                    <View className='flex flex-row items-center justify-between w-full py-1'>
+                                    <View className='flex flex-row items-center justify-around w-full py-1'>
                                         <Text className={`${currentStyles.tx_white} text-xs`}>{speedSet(playbackSpeed)} </Text>
                                         <DownArrow fill={currentStyles.svg_white} width={14} height={14} />
                                     </View>
