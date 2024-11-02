@@ -7,11 +7,11 @@ import { darkStyles, lightStyles, useGlobalContext } from '../Hooks/GlobalContex
 type SleepProps = {
 }
 
-const Sleep = ({  ...props }: SleepProps) => {
+const Sleep = ({ ...props }: SleepProps) => {
     const [selectedTime, setSelectedTime] = useState("Off");
 
 
-    const { theme,showTimeOptions, setShowTimeOptions,setActiveButton,showspeedOptions, setShowSpeedOptions,showTypeOptions, setShowTypeOptions,showThemeOptions, setShowThemeOptions,showBackgroundPlayOptions, setShowBackgroundPlayOptions } = useGlobalContext();
+    const { setIsPlay,theme, showTimeOptions, setShowTimeOptions, setActiveButton, showspeedOptions, setShowSpeedOptions, showTypeOptions, setShowTypeOptions, showThemeOptions, setShowThemeOptions, showBackgroundPlayOptions, setShowBackgroundPlayOptions } = useGlobalContext();
     const currentStyles = theme === 'Light' ? lightStyles : darkStyles;
 
 
@@ -28,7 +28,16 @@ const Sleep = ({  ...props }: SleepProps) => {
         showBackgroundPlayOptions && setShowBackgroundPlayOptions(false);
     }
 
-
+    useEffect(() => {
+        if (selectedTime != "Off") {
+            const minutes = parseInt(selectedTime, 10);
+            const milliseconds = minutes * 60 * 1000;
+            setTimeout(() => {
+                setSelectedTime("Off")
+                setIsPlay(false);
+            }, milliseconds);
+        }
+    }, [selectedTime])
 
     return (
         <View className='flex flex-row justify-between items-center w-full h-full'>

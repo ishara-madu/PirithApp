@@ -52,7 +52,6 @@ export const fetchData = async () => {
           const result = tempIdsFirebase.includes(value);
           if (!result) {
             await AsyncStorage.removeItem(value);
-            console.log('asyncStorage removed successfully');
           }
         }
         );
@@ -67,12 +66,10 @@ export const fetchData = async () => {
                 data.artist = doc.data().artist;
                 data.playlist = doc.data().playlist;
                 await AsyncStorage.setItem(value, JSON.stringify(data));
-                console.log('firebase updated successfully');
               }
             } else {
               if (doc.id == value) {
                 saveData("item", doc.data().url, doc.data().name, doc.data().artist, doc.data().playlist)
-                console.log('firebase added successfully');
               }
             }
           })

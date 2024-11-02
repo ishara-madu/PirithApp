@@ -30,8 +30,6 @@ function App() {
             try {
               const users = await getData("item");
               setData(users);
-              console.log('feched');
-
             } catch (error) {
               console.error("Error fetching data:", error);
             }
