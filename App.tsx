@@ -14,7 +14,7 @@ function App() {
 
   return (
     <GlobalProvider>
-      {/* <Welcome/> */}
+      <Welcome/>
       <Home />
     </GlobalProvider>
 

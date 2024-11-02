@@ -1,23 +1,23 @@
 {
   "expo": {
-    "name": "recipe",
-    "slug": "recipe",
+    "name": "Pirith App - සෙත් පිරි​ත්",
+    "slug": "pirith",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/logo.png",
-    "userInterfaceStyle": "light",
+    "icon": "./assets/icon.jpg",
+    "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/logo.png",
+      "image": "./assets/splash.jpg",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.recipe"
+      "bundleIdentifier": "com.pixeleye.pirith"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/logo.png",
+        "foregroundImage": "./assets/foregroundImage.png",
         "backgroundColor": "#ffffff"
       },
       "permissions": [
@@ -25,12 +25,10 @@
         "android.permission.RECEIVE_BOOT_COMPLETED",
         "FOREGROUND_SERVICE"
       ],
-      "package": "com.anonymous.recipe"
+      "package": "com.pixeleye.pirith"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
     },
-    "plugins": [
-      "expo-font"    ]
+    "plugins": []
   }
 }

@@ -11,7 +11,7 @@ const Welcome = () => {
       <Image className='mb-10 w-[90%]' resizeMode='contain' source={require("../../assets/sethpirith.png")}/>
     <Text className='text-white mb-16 text-xs'>සියලුම සෙත් පිරිත් දේශනා එකම තැනකි​න්</Text>
     <TouchableOpacity
-      className='bg-[#ffffff2e] h-12 w-[70%] rounded-full text-white font-bold flex flex-row justify-center items-center'
+      className='bg-[#ffffff2e] h-10 w-[70%] rounded-full text-white font-bold flex flex-row justify-center items-center'
       onPress={() => {}}
     >
       <Text className='font-bold text-white'>Start Now</Text>
