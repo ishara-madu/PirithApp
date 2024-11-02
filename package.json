@@ -10,10 +10,11 @@
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "1.23.1",
-    "@react-native-community/netinfo": "^11.4.1",
+    "@react-native-community/netinfo": "11.3.1",
     "@react-native-community/slider": "4.5.2",
     "expo": "~51.0.28",
     "expo-background-fetch": "^12.0.1",
+    "expo-dev-client": "~4.0.28",
     "expo-task-manager": "^11.8.2",
     "firebase": "^11.0.1",
     "nativewind": "^2.0.11",

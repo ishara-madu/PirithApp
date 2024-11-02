@@ -27,8 +27,12 @@
       ],
       "package": "com.pixeleye.pirith"
     },
-    "web": {
-    },
-    "plugins": []
+    "web": {},
+    "plugins": [],
+    "extra": {
+      "eas": {
+        "projectId": "8801c924-b670-4a82-bafe-e48cb4b9f628"
+      }
+    }
   }
 }
