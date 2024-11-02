@@ -2,11 +2,12 @@
 
 import * as React from 'react';
 import Home from './src/pages/Home';
-import {  GlobalProvider } from './src/components/Hooks/GlobalContext';
+import { GlobalProvider } from './src/components/Hooks/GlobalContext';
 import { fetchData, getData, getDataVariable } from './src/pages/Database';
 import Welcome from './src/pages/Welcome';
 import Loading from './src/components/Loading';
 import ConnectivityChecker from './src/components/ConnectivityChecker';
+import { err } from 'react-native-svg';
 
 function App() {
   const [welcome, setWelcome] = React.useState(true);
@@ -19,22 +20,27 @@ function App() {
       try {
         const welcome = await getDataVariable('Welcome');
         setWelcome(welcome ?? true);
-        // fetchData();
-        const fetchAsyncData = async () => {
-          try {
-              const users = await getData("item");
-              setData(users);
-          } catch (error) {
-              console.error("Error fetching data:", error);
-          }
-      };
-      fetchAsyncData();
       } catch (error) {
         console.log(error);
       } finally {
         setLoading(false);
-      }
+        try {
+          await fetchData();
+          const fetchAsyncData = async () => {
+            try {
+              const users = await getData("item");
+              setData(users);
+              console.log('feched');
 
+            } catch (error) {
+              console.error("Error fetching data:", error);
+            }
+          };
+          await fetchAsyncData();
+        } catch (error) {
+          console.log(error);
+        }
+      }
     }
     fetchWelcome();
   }, [])
@@ -44,9 +50,9 @@ function App() {
 
   return (
     <GlobalProvider data={data}>
-      <ConnectivityChecker/>
+      <ConnectivityChecker />
       {loading ? (
-        <Loading text={text}/>
+        <Loading text={text} />
       ) : (
         welcome ? (
           <Welcome onChange={setWelcome} />

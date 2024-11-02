@@ -28,23 +28,23 @@ const ConnectivityChecker = () => {
     };
 
     // Show alert based on connection status
-    const showAlert = () => {
+    const showAlert = async() => {
         if (isConnected) {
             try {
-                fetchData();
-            } catch (error) {
-                console.log(error);
-            } finally {
+                await fetchData();
                 const fetchAsyncData = async () => {
                     try {
                         const users = await getData("item");
                         setData(users);
+
                     } catch (error) {
                         console.error("Error fetching data:", error);
                     }
                 };
-                fetchAsyncData();
-            } 
+                await fetchAsyncData();
+            } catch (error) {
+                console.log(error);
+            }
         } else {
             Alert.alert(
                 "⚠️ No Internet Connection!",

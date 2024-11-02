@@ -53,7 +53,7 @@ type GlobalContextType = {
 
 const GlobalContext = createContext<GlobalContextType | undefined>(undefined);
 
-export const GlobalProvider = ({ children }: { children: ReactNode }) => {
+export const GlobalProvider = ({ children,...props }: { children: ReactNode,data:any }) => {
   const [playbackRate, setPlaybackRate] = useState(1);
   const [isFavoritesAll, setIsFavoritesAll] = useState<any>([]);
   const [nameAll, setNameAll] = useState<any>([])
@@ -70,7 +70,7 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
   const [playerStyle, setPlayerStyle] = useState<any>("Classic");
   const [selectedBackgroundPlay, setSelectedBackgroundPlay] = useState("On");
   const [isFavorites, setIsFavorites] = useState(false);
-  const [data, setData] = useState<any>([]);
+  const [data, setData] = useState<any>(props.data);
   const [activeButton, setActiveButton] = useState(0);
   const [showTimeOptions, setShowTimeOptions] = useState(false);
   const [showspeedOptions, setShowSpeedOptions] = useState(false);
