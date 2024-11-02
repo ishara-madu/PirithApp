@@ -2,12 +2,12 @@
   "expo": {
     "name": "Pirith App - සෙත් පිරි​ත්",
     "slug": "pirith",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
-    "icon": "./assets/icon.jpg",
+    "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/splash.jpg",
+      "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -22,7 +22,6 @@
       },
       "permissions": [
         "INTERNET",
-        "android.permission.RECEIVE_BOOT_COMPLETED",
         "FOREGROUND_SERVICE"
       ],
       "package": "com.pixeleye.pirith"

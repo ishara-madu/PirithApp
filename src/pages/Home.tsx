@@ -1,4 +1,4 @@
-import { View, Text, Image, TouchableOpacity, Share, TouchableWithoutFeedback, StatusBar, SafeAreaView, Alert } from 'react-native'
+import { View, Text, Image, TouchableOpacity, Share, TouchableWithoutFeedback, StatusBar, SafeAreaView, Alert, AppState } from 'react-native'
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import Shuffle from '../../assets/svg/Shuffle'
 import SkipPreviews from '../../assets/svg/SkipPreviews'
@@ -39,7 +39,21 @@ const Home: React.FC = () => {
   const currentStyles = theme === 'Light' ? lightStyles : darkStyles;
 
 
+  useEffect(() => {
+    const handleAppStateChange = (nextAppState: any) => {
+      if (nextAppState === 'active') {
+        setIsPlay(true);
+      } else if (nextAppState === 'background') {
+        setIsPlay(false)
+      }
+    };
 
+    const subscription = AppState.addEventListener('change', handleAppStateChange);
+
+    return () => {
+      subscription.remove();
+    };
+  }, []);
 
 
   useMemo(() => {
@@ -325,7 +339,7 @@ const Home: React.FC = () => {
                       setIsFavorites(false);
                       updateFavorite(false, url);
                       isFavoritesAll[uniqueId] = false;
-                      saveDataVariable('isFavoritesAll',isFavoritesAll)
+                      saveDataVariable('isFavoritesAll', isFavoritesAll)
                     }}>
                       <Heart fill={"red"} fillStr={"red"} />
                     </TouchableOpacity>
@@ -334,7 +348,7 @@ const Home: React.FC = () => {
                       setIsFavorites(true);
                       updateFavorite(true, url);
                       isFavoritesAll[uniqueId] = true;
-                      saveDataVariable('isFavoritesAll',isFavoritesAll)
+                      saveDataVariable('isFavoritesAll', isFavoritesAll)
                     }}>
                       <Heart fill={"none"} fillStr={currentStyles.svg_1} />
                     </TouchableOpacity>
