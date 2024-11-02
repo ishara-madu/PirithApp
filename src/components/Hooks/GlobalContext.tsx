@@ -119,15 +119,7 @@ export const useGlobalContext = () => {
   }
   return context;
 };
-export const fetchAsyncData = async () => {
-  const {setData} = useGlobalContext()
-  try {
-    const users = await getData("item");
-    setData(users);
-  } catch (error) {
-    console.error("Error fetching data:", error);
-  }
-};
+
 
 export const lightStyles = {
   bg_1: 'bg-[#e0e1dd]',

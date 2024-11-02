@@ -25,7 +25,7 @@ const Playlist = (props: PlaylistProps) => {
     const [favoriteData, setFavoriteData] = useState()
 
 
-    const {setData, showMenu, setShowMenu, setShowPlaylist, showPlaylist, theme, isFavorites, setIsFavorites, data } = useGlobalContext();
+    const { setData, showMenu, setShowMenu, setShowPlaylist, showPlaylist, theme, isFavorites, setIsFavorites, data } = useGlobalContext();
 
     const currentStyles = theme === 'Light' ? lightStyles : darkStyles;
 
@@ -97,26 +97,13 @@ const Playlist = (props: PlaylistProps) => {
 
     useEffect(() => {
         if (listType === 'Recent') {
-            if (handleRecent == "") {
-                const fetchAsyncData = async () => {
-                    try {
-                        const users = await getData("item");
-                        setData(users);                        
-                    } catch (error) {
-                        console.error("Error fetching data:", error);
-                    }finally{
-                        setRecentData(filterAndSort(data.filter((song: any) => song.isFavorites === 1 || song.isFavorites === true).map((song: any, index: any) => ({ ...song, uniqueId: index }))));
-                    }
-                };
-                fetchAsyncData();
-            }
             setRecentData(filterAndSort(handleRecent));
         } else if (listType === 'Favorite') {
             setFavoriteData(filterAndSort(handleFavorite));
         } else if (listType === 'Playlist') {
             setOutsidePlaylist(filterAndSort(handleOutPlaylist));
         }
-    }, [listType, showPlaylist, inputValue]);
+    }, [listType, showPlaylist, inputValue,data]);
 
     const handleInputChange = (text: any) => {
         setInputValue(text);
@@ -182,7 +169,7 @@ const Playlist = (props: PlaylistProps) => {
                         }
                     </View>
                     <View className='flex-1 w-[90%]'>
-                        {listType === 'Recent' ?
+                        {listType === 'Recent' && handleRecent != '' ?
                             (
                                 <Flatlist listtype={recentData} />
                             ) : (

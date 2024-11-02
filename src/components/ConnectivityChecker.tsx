@@ -6,7 +6,7 @@ import { useGlobalContext } from './Hooks/GlobalContext';
 
 const ConnectivityChecker = () => {
     const [isConnected, setIsConnected] = useState<any>(true);
-    const {setData} = useGlobalContext();
+    const { setData } = useGlobalContext();
 
     useEffect(() => {
         const unsubscribe = NetInfo.addEventListener(state => {
@@ -30,16 +30,21 @@ const ConnectivityChecker = () => {
     // Show alert based on connection status
     const showAlert = () => {
         if (isConnected) {
-            // fetchData();
-            // const fetchAsyncData = async () => {
-            //     try {
-            //         const users = await getData("item");
-            //         setData(users);
-            //     } catch (error) {
-            //         console.error("Error fetching data:", error);
-            //     }
-            // };
-            // fetchAsyncData();
+            try {
+                fetchData();
+            } catch (error) {
+                console.log(error);
+            } finally {
+                const fetchAsyncData = async () => {
+                    try {
+                        const users = await getData("item");
+                        setData(users);
+                    } catch (error) {
+                        console.error("Error fetching data:", error);
+                    }
+                };
+                fetchAsyncData();
+            } 
         } else {
             Alert.alert(
                 "⚠️ No Internet Connection!",
