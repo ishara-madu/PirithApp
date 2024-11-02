@@ -97,9 +97,7 @@ const Playlist = (props: PlaylistProps) => {
     useEffect(() => {
         if (listType === 'Recent') {
             setRecentData(filterAndSort(handleRecent));
-        } else if (listType === 'Favorite') {
-            console.log(handleFavorite.length);
-            
+        } else if (listType === 'Favorite') {            
             setFavoriteData(filterAndSort(handleFavorite));
         } else if (listType === 'Playlist') {
             setOutsidePlaylist(filterAndSort(handleOutPlaylist));

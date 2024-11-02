@@ -54,8 +54,6 @@ const Home: React.FC = () => {
     setTimeout(() => {
       fetchAsyncData();
     }, 1000);
-    
-
   }, [isFavoritesAll[uniqueId]]);
 
   const handlePlayPause = () => {
@@ -73,7 +71,6 @@ const Home: React.FC = () => {
   useEffect(() => {
     let interval: NodeJS.Timeout | null = null;
 
-    // Only start interval if player is playing
     if (playerRef.current && isPlay) {
       interval = setInterval(() => {
         playerRef.current
@@ -83,7 +80,6 @@ const Home: React.FC = () => {
       }, 1000);
     }
 
-    // Cleanup interval on component unmount or if `isPlay` changes
     return () => {
       if (interval) clearInterval(interval);
     };
@@ -329,7 +325,7 @@ const Home: React.FC = () => {
                       setIsFavorites(false);
                       updateFavorite(false, url);
                       isFavoritesAll[uniqueId] = false;
-                      
+                      saveDataVariable('isFavoritesAll',isFavoritesAll)
                     }}>
                       <Heart fill={"red"} fillStr={"red"} />
                     </TouchableOpacity>
@@ -338,6 +334,7 @@ const Home: React.FC = () => {
                       setIsFavorites(true);
                       updateFavorite(true, url);
                       isFavoritesAll[uniqueId] = true;
+                      saveDataVariable('isFavoritesAll',isFavoritesAll)
                     }}>
                       <Heart fill={"none"} fillStr={currentStyles.svg_1} />
                     </TouchableOpacity>
