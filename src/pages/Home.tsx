@@ -36,7 +36,7 @@ const Home: React.FC = () => {
   const [intervalId, setIntervalId] = useState<any>();
   const [btnPress, setBtnPress] = useState<boolean>(false)
 
-  const { playbackRate, setUniqueId, uniqueId, setUrls, urls, setShowPlaylist, showPlaylist, theme, isPlay, setIsPlay, url, setUrl, isFavoritesAll, nameAll, artistAll, playerStyle, isFavorites, setIsFavorites, setActiveButton } = useGlobalContext();
+  const { playbackRate, setUniqueId, uniqueId, setUrls, urls, setShowPlaylist, showPlaylist, theme, isPlay, setIsPlay, url, setUrl, isFavoritesAll, nameAll, artistAll, playerStyle, isFavorites, setIsFavorites, setActiveButton,showspeedOptions,showTimeOptions, setShowTimeOptions, setShowSpeedOptions,showTypeOptions, setShowTypeOptions,showThemeOptions, setShowThemeOptions,showBackgroundPlayOptions, setShowBackgroundPlayOptions } = useGlobalContext();
 
   const currentStyles = theme === 'Light' ? lightStyles : darkStyles;
 
