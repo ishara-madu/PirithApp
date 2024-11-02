@@ -6,16 +6,14 @@ import { darkStyles, lightStyles, useGlobalContext } from '../Hooks/GlobalContex
 
 type SleepProps = {
     handleSleepButton?: any;
-    showTimeOptions: boolean;
 }
 
 const Sleep = ({ handleSleepButton, ...props }: SleepProps) => {
-    const [showTimeOptions, setShowTimeOptions] = useState(false);
     const [selectedTime, setSelectedTime] = useState("Off");
     const buttonRef = useRef(null);
 
 
-    const { theme,isClickedOutside, setIsClickedOutside } = useGlobalContext();
+    const { theme,showTimeOptions, setShowTimeOptions } = useGlobalContext();
     const currentStyles = theme === 'Light' ? lightStyles : darkStyles;
 
 
@@ -25,9 +23,6 @@ const Sleep = ({ handleSleepButton, ...props }: SleepProps) => {
     const handleSleepTimer = () => {
         setShowTimeOptions(true)
     }
-    // useEffect(() => {
-    //     setShowTimeOptions(props.showTimeOptions)
-    // }, [props.showTimeOptions])
 
 
 

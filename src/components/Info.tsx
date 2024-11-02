@@ -9,14 +9,13 @@ import { getYoutubeMeta } from 'react-native-youtube-iframe'
 
 const Info = () => {
     const [activeButton, setActiveButton] = useState(0);
-    const [showTimeOptions, setShowTimeOptions] = useState(false);
     const [showspeedOptions, setShowSpeedOptions] = useState(false);
     const [author, setAuthor] = useState('');
     const [authorUrl, setAuthorUrl] = useState('');
     const [title, setTitle] = useState('');
     const [thumbnail, setThumbnail] = useState('');
 
-    const { urls, uniqueId, theme,isClickedOutside, setIsClickedOutside } = useGlobalContext();
+    const { urls, uniqueId, theme,showTimeOptions, setShowTimeOptions } = useGlobalContext();
     const currentStyles = theme === 'Light' ? lightStyles : darkStyles;
 
     const meta = () => {
@@ -31,28 +30,27 @@ const Info = () => {
     const handleSleepButton = () => {
         setActiveButton(1);
         setShowSpeedOptions(false);
-        setIsClickedOutside(true);
-        console.log('outside click');
-        
+        showTimeOptions && setShowTimeOptions(false)
     }
     const handlePlaybackButton = () => {
         setActiveButton(2);
         setShowTimeOptions(false);
-        setIsClickedOutside(true);
+        showTimeOptions && setShowTimeOptions(false)
 
     }
     const handleAboutButton = () => {
         setActiveButton(3);
         setShowTimeOptions(false);
         setShowSpeedOptions(false);
-        setIsClickedOutside(true);
+        showTimeOptions && setShowTimeOptions(false)
+
         meta();
     }
     return (
         <View className={`w-full h-[91%] ${currentStyles.bg_2} inset-0 backdrop-blur-md absolute rounded-t-3xl flex justify-center items-center flex-row`}>
             <View className='w-[90%] h-[80%] flex items-center gap-y-2'>
                 <TouchableOpacity onPress={handleSleepButton} className={`w-[100%] ${activeButton == 1 ? `${currentStyles.bg_7} z-10` : ""} h-14 px-3 rounded-xl flex flex-row justify-between items-center`}>
-                    <Sleep handleSleepButton={handleSleepButton} showTimeOptions={showTimeOptions} />
+                    <Sleep handleSleepButton={handleSleepButton} />
                 </TouchableOpacity>
 
                 <TouchableOpacity onPress={handlePlaybackButton} className={`w-[100%] ${activeButton == 2 ? `${currentStyles.bg_7} z-10` : ""} h-14 px-3 rounded-xl flex flex-row justify-between items-center`}>
