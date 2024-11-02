@@ -245,6 +245,15 @@ const Home: React.FC = () => {
     }
   }
 
+  const clearSettings = () => {
+    setShowInfo(false);
+    showspeedOptions && setShowSpeedOptions(false);
+    showTimeOptions && setShowTimeOptions(false)
+    showTypeOptions && setShowTypeOptions(false);
+    showThemeOptions && setShowThemeOptions(false);
+    showBackgroundPlayOptions && setShowBackgroundPlayOptions(false);
+    setActiveButton(0);
+  }
 
 
   return (
@@ -252,13 +261,13 @@ const Home: React.FC = () => {
       <StatusBar barStyle={"default"} />
       <SafeAreaView>
         <View className={`w-full h-full flex flex-col items-center ${currentStyles.bg_1} justify-end`}>
-          <TouchableWithoutFeedback onPress={() => { setShowInfo(false); setActiveButton(0); }}>
+          <TouchableWithoutFeedback onPress={() => { clearSettings() }}>
 
 
             <View className='w-full flex h-10 flex-row justify-around items-end z-20 bg-gre5'>
               <TouchableOpacity
                 className='w-7 h-7 flex justify-center items-center rounded-full'
-                onPress={() => { setShowPlaylist(true); setShowInfo(false); setActiveButton(0); }}
+                onPress={() => { setShowPlaylist(true); clearSettings() }}
               >
                 <DownArrow fill={currentStyles.svg_1} width={22} height={12} />
               </TouchableOpacity>
@@ -267,13 +276,7 @@ const Home: React.FC = () => {
                 className=' w-7 h-7 flex justify-center items-center rounded-full'
                 onPress={() => {
                   if (showInfo) {
-                    setShowInfo(false);
-                    setActiveButton(0);
-                    showspeedOptions && setShowSpeedOptions(false);
-    showTimeOptions && setShowTimeOptions(false)
-    showTypeOptions && setShowTypeOptions(false);
-    showThemeOptions && setShowThemeOptions(false);
-    showBackgroundPlayOptions && setShowBackgroundPlayOptions(false);
+                    clearSettings();
                   } else {
                     setShowInfo(true);
                   }
