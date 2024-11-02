@@ -7,8 +7,8 @@ import { darkStyles, lightStyles, useGlobalContext } from '../Hooks/GlobalContex
 type PlaybackProps = {
 }
 
-const PlaybackSpeed = ({  ...props }: PlaybackProps) => {
-    const { playbackRate, setPlaybackRate,theme,showspeedOptions, setShowSpeedOptions,setActiveButton } = useGlobalContext();
+const PlaybackSpeed = ({ ...props }: PlaybackProps) => {
+    const { playbackRate, setPlaybackRate, theme, showspeedOptions, showTimeOptions, setShowTimeOptions, setShowSpeedOptions, setActiveButton, showTypeOptions, setShowTypeOptions, showThemeOptions, setShowThemeOptions, showBackgroundPlayOptions, setShowBackgroundPlayOptions } = useGlobalContext();
     const [playbackSpeed, setPlaybackSpeed] = useState<any>(playbackRate);
 
 
@@ -17,6 +17,11 @@ const PlaybackSpeed = ({  ...props }: PlaybackProps) => {
     const handlePlaybackSpeed = () => {
         setShowSpeedOptions(true)
         setActiveButton(2)
+        showspeedOptions && setShowSpeedOptions(false);
+        showTimeOptions && setShowTimeOptions(false)
+        showTypeOptions && setShowTypeOptions(false);
+        showThemeOptions && setShowThemeOptions(false);
+        showBackgroundPlayOptions && setShowBackgroundPlayOptions(false);
     }
 
 
@@ -36,8 +41,8 @@ const PlaybackSpeed = ({  ...props }: PlaybackProps) => {
                 ) : (
                     speedOption == 1.25 ? (
                         val = "1.25x"
-                    ):(
-                        speedOption == 1.5? (
+                    ) : (
+                        speedOption == 1.5 ? (
                             val = "1.5x"
                         ) : (
                             speedOption == 2 && (
@@ -71,7 +76,7 @@ const PlaybackSpeed = ({  ...props }: PlaybackProps) => {
                                         </TouchableOpacity>
                                     )
                                 })) :
-                                ( 
+                                (
                                     <View className='flex flex-row items-center justify-around w-full py-1'>
                                         <Text className={`${currentStyles.tx_white} text-xs`}>{speedSet(playbackSpeed)} </Text>
                                         <DownArrow fill={currentStyles.svg_white} width={14} height={14} />

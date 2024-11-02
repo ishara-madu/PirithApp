@@ -30,16 +30,24 @@ type GlobalContextType = {
   setArtistAll: (value: any) => void;
   playerStyle: any;
   setPlayerStyle: (value: any) => void;
+  selectedBackgroundPlay: any;
+  setSelectedBackgroundPlay: (value: any) => void;
   isFavorites: boolean;
   setIsFavorites: (value: boolean) => void;
   data: any;
   setData: (value: any) => void;
+  activeButton: number;
+  setActiveButton: (value: number) => void;
   showTimeOptions: boolean;
   setShowTimeOptions: (value: boolean) => void;
   showspeedOptions: boolean;
   setShowSpeedOptions: (value: boolean) => void;
-  activeButton: number;
-  setActiveButton: (value: number) => void;
+  showTypeOptions: boolean;
+  setShowTypeOptions: (value: boolean) => void;
+  showThemeOptions: boolean;
+  setShowThemeOptions: (value: boolean) => void;
+  showBackgroundPlayOptions: boolean;
+  setShowBackgroundPlayOptions: (value: boolean) => void;
 };
 
 const GlobalContext = createContext<GlobalContextType | undefined>(undefined);
@@ -59,12 +67,15 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
   const [theme, setTheme] = useState("Light");
   const [isPlay, setIsPlay] = useState<boolean>(false);
   const [playerStyle,setPlayerStyle] = useState<any>("Classic");
+  const [selectedBackgroundPlay, setSelectedBackgroundPlay] = useState("On");
   const [isFavorites, setIsFavorites] = useState(false);
   const [data, setData] = useState<any>([]);
   const [activeButton, setActiveButton] = useState(0);
   const [showTimeOptions, setShowTimeOptions] = useState(false);
   const [showspeedOptions, setShowSpeedOptions] = useState(false);
-
+  const [showTypeOptions, setShowTypeOptions] = useState(false);
+  const [showThemeOptions, setShowThemeOptions] = useState(false);
+  const [showBackgroundPlayOptions, setShowBackgroundPlayOptions] = useState(false);
 
 
 
@@ -107,7 +118,7 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
 }, [isFavorites,isFavoritesAll]);
 
   return (
-    <GlobalContext.Provider value={{ playbackRate, setPlaybackRate, urls, setUrls, uniqueId, setUniqueId, showMenu, setShowMenu, showPlaylist, setShowPlaylist, showAbout, setShowAbout, showSettings, setShowSettings, theme, setTheme, isPlay, setIsPlay,url, setUrl,isFavoritesAll, setIsFavoritesAll,nameAll, setNameAll,artistAll, setArtistAll,playerStyle,setPlayerStyle,isFavorites, setIsFavorites,data, setData,showTimeOptions, setShowTimeOptions,showspeedOptions, setShowSpeedOptions,activeButton, setActiveButton}}>
+    <GlobalContext.Provider value={{ playbackRate, setPlaybackRate, urls, setUrls, uniqueId, setUniqueId, showMenu, setShowMenu, showPlaylist, setShowPlaylist, showAbout, setShowAbout, showSettings, setShowSettings, theme, setTheme, isPlay, setIsPlay,url, setUrl,isFavoritesAll, setIsFavoritesAll,nameAll, setNameAll,artistAll, setArtistAll,playerStyle,setPlayerStyle,selectedBackgroundPlay, setSelectedBackgroundPlay,isFavorites, setIsFavorites,data, setData,showTimeOptions, setShowTimeOptions,showspeedOptions, setShowSpeedOptions,activeButton, setActiveButton,showTypeOptions, setShowTypeOptions,showThemeOptions, setShowThemeOptions,showBackgroundPlayOptions, setShowBackgroundPlayOptions}}>
       {children}
     </GlobalContext.Provider>
   );

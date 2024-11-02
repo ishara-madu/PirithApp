@@ -8,14 +8,11 @@ import { darkStyles, lightStyles, useGlobalContext } from '../Hooks/GlobalContex
 import { saveDataVariable } from '../../pages/Database';
 
 type SleepProps = {
-    handleThemeButton?: any;
-    showThemeOptions: boolean;
+
 }
 
-const Theme = ({ handleThemeButton, ...props }: SleepProps) => {
-    const { theme,setTheme } = useGlobalContext();
-    const [showThemeOptions, setShowThemeOptions] = useState(false);
-    const [selectedTheme, setSelectedTheme] = useState(theme);
+const Theme = ({  ...props }: SleepProps) => {
+    const { theme,setTheme,setActiveButton ,showspeedOptions,showTimeOptions , setShowTimeOptions, setShowSpeedOptions,showTypeOptions, setShowTypeOptions,showThemeOptions, setShowThemeOptions,showBackgroundPlayOptions, setShowBackgroundPlayOptions } = useGlobalContext();
 
     const currentStyles = theme === 'Light' ? lightStyles : darkStyles;
 
@@ -23,14 +20,14 @@ const Theme = ({ handleThemeButton, ...props }: SleepProps) => {
 
     const handleTheme = () => {
         setShowThemeOptions(true)
+        setActiveButton(4);
+        showspeedOptions && setShowSpeedOptions(false);
+        showTimeOptions && setShowTimeOptions(false)
+        showTypeOptions && setShowTypeOptions(false);
+        showThemeOptions && setShowThemeOptions(false);
+        showBackgroundPlayOptions && setShowBackgroundPlayOptions(false);
     }
-    useEffect(() => {
-        setShowThemeOptions(props.showThemeOptions)
-    }, [props.showThemeOptions])
 
-    useEffect(() => {
-        setTheme(selectedTheme);
-    },[selectedTheme])
 
 
 
@@ -42,7 +39,7 @@ const Theme = ({ handleThemeButton, ...props }: SleepProps) => {
             </View>
             <View className='flex flex-row items-center h-full gap-1 relative'>
                 <TouchableOpacity className={`absolute right-1 flex h-auto items-center justify-center px-2 w-28 flex-row rounded-md ${currentStyles.bg_6}`}
-                    onPress={() => { handleTheme(); handleThemeButton(); }}
+                    onPress={() => { handleTheme(); }}
                 >
                     <View className='flex justify-center items-center'>
 
@@ -51,14 +48,14 @@ const Theme = ({ handleThemeButton, ...props }: SleepProps) => {
                             showThemeOptions ?
                                 (timeOptions.map((timeOption, id) => {
                                     return (
-                                        <TouchableOpacity key={id} onPress={() => { setSelectedTheme(timeOption); setShowThemeOptions(false);saveDataVariable("theme", timeOption); }} className='flex flex-row items-center justify-start py-1 w-full'>
+                                        <TouchableOpacity key={id} onPress={() => { setTheme(timeOption); setShowThemeOptions(false);saveDataVariable("theme", timeOption); }} className='flex flex-row items-center justify-start py-1 w-full'>
                                             <Text className={`${currentStyles.tx_white} text-xs`}>{timeOption}</Text>
                                         </TouchableOpacity>
                                     )
                                 })) :
                                 (
                                     <View className='flex flex-row items-center justify-between w-full py-1'>
-                                        <Text className={`${currentStyles.tx_white} text-xs`}>{selectedTheme}</Text>
+                                        <Text className={`${currentStyles.tx_white} text-xs`}>{theme}</Text>
                                         <DownArrow fill={currentStyles.svg_white} width={14} height={14} />
                                     </View>
                                 )

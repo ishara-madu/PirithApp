@@ -7,14 +7,11 @@ import { darkStyles, lightStyles, useGlobalContext } from '../Hooks/GlobalContex
 import { saveDataVariable } from '../../pages/Database';
 
 type SleepProps = {
-    handleStyleButton?: any;
-    showTypeOptions: boolean;
+
 }
 
-const PlayerStyle = ({ handleStyleButton, ...props }: SleepProps) => {
-    const { theme,playerStyle,setPlayerStyle } = useGlobalContext();
-    const [showTypeOptions, setShowTypeOptions] = useState(false);
-    const [selectedType, setSelectedType] = useState(playerStyle);
+const PlayerStyle = ({  ...props }: SleepProps) => {
+    const { theme,playerStyle,setPlayerStyle,setActiveButton,showTimeOptions , setShowTimeOptions,showspeedOptions, setShowSpeedOptions,showTypeOptions, setShowTypeOptions,showThemeOptions, setShowThemeOptions,showBackgroundPlayOptions, setShowBackgroundPlayOptions } = useGlobalContext();
 
     const currentStyles = theme === 'Light' ? lightStyles : darkStyles;
 
@@ -22,14 +19,15 @@ const PlayerStyle = ({ handleStyleButton, ...props }: SleepProps) => {
 
     const handleStyle = () => {
         setShowTypeOptions(true)
+        setActiveButton(3);
+        showspeedOptions && setShowSpeedOptions(false);
+        showTimeOptions && setShowTimeOptions(false)
+        showTypeOptions && setShowTypeOptions(false);
+        showThemeOptions && setShowThemeOptions(false);
+        showBackgroundPlayOptions && setShowBackgroundPlayOptions(false);
     }
-    useEffect(() => {
-        setShowTypeOptions(props.showTypeOptions)
-    }, [props.showTypeOptions])
 
-    useEffect(() => {
-        setPlayerStyle(selectedType);
-    },[selectedType])
+
 
 
     return (
@@ -40,7 +38,7 @@ const PlayerStyle = ({ handleStyleButton, ...props }: SleepProps) => {
             </View>
             <View className='flex flex-row items-center h-full gap-1 relative'>
                 <TouchableOpacity className={`absolute right-1 flex h-auto items-center justify-center px-2 w-28 flex-row rounded-md ${currentStyles.bg_6}`}
-                    onPress={() => { handleStyle(); handleStyleButton(); }}
+                    onPress={() => { handleStyle();  }}
                 >
                     <View className='flex justify-center items-center'>
 
@@ -49,14 +47,14 @@ const PlayerStyle = ({ handleStyleButton, ...props }: SleepProps) => {
                             showTypeOptions ?
                                 (timeOptions.map((timeOption, id) => {
                                     return (
-                                        <TouchableOpacity key={id} onPress={() => { setSelectedType(timeOption); setShowTypeOptions(false);saveDataVariable("playerStyle", timeOption); }} className='flex flex-row items-center justify-start py-1 w-full'>
+                                        <TouchableOpacity key={id} onPress={() => { setPlayerStyle(timeOption); setShowTypeOptions(false);saveDataVariable("playerStyle", timeOption); }} className='flex flex-row items-center justify-start py-1 w-full'>
                                             <Text className={`${currentStyles.tx_white} text-xs`}>{timeOption}</Text>
                                         </TouchableOpacity>
                                     )
                                 })) :
                                 (
                                     <View className='flex flex-row items-center justify-between w-full py-1'>
-                                        <Text className={`${currentStyles.tx_white} text-xs`}>{selectedType}</Text>
+                                        <Text className={`${currentStyles.tx_white} text-xs`}>{playerStyle}</Text>
                                         <DownArrow fill={currentStyles.svg_white} width={14} height={14} />
                                     </View>
                                 )

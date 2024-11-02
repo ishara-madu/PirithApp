@@ -8,25 +8,24 @@ import BackgroundPlayIcon from '../../../assets/svg/BackgroundPlayIcon';
 import { darkStyles, lightStyles, useGlobalContext } from '../Hooks/GlobalContext';
 
 type SleepProps = {
-    handleBackgroundPlayButton?: any;
-    showBackgroundPlayOptions: boolean;
+
 }
 
-const BackgroundPlay = ({ handleBackgroundPlayButton, ...props }: SleepProps) => {
-    const [showBackgroundPlayOptions, setShowBackgroundPlayOptions] = useState(false);
-    const [selectedBackgroundPlay, setSelectedBackgroundPlay] = useState("On");
-
-    const { theme } = useGlobalContext();
+const BackgroundPlay = ({  ...props }: SleepProps) => {
+    const { theme,setActiveButton,selectedBackgroundPlay,showTimeOptions , setShowTimeOptions, setSelectedBackgroundPlay,showspeedOptions, setShowSpeedOptions,showTypeOptions, setShowTypeOptions,showThemeOptions, setShowThemeOptions,showBackgroundPlayOptions, setShowBackgroundPlayOptions } = useGlobalContext();
     const currentStyles = theme === 'Light' ? lightStyles : darkStyles;
 
     const bacgroundOptions = ["Off", "On",]
 
     const handleBackground = () => {
         setShowBackgroundPlayOptions(true)
+        setActiveButton(5);
+        showspeedOptions && setShowSpeedOptions(false);
+        showTimeOptions && setShowTimeOptions(false)
+        showTypeOptions && setShowTypeOptions(false);
+        showThemeOptions && setShowThemeOptions(false);
+        showBackgroundPlayOptions && setShowBackgroundPlayOptions(false);
     }
-    useEffect(() => {
-        setShowBackgroundPlayOptions(props.showBackgroundPlayOptions)
-    }, [props.showBackgroundPlayOptions])
 
 
     return (
@@ -37,7 +36,7 @@ const BackgroundPlay = ({ handleBackgroundPlayButton, ...props }: SleepProps) =>
             </View>
             <View className='flex flex-row items-center h-full gap-1 relative'>
                 <TouchableOpacity className={`absolute right-1 flex h-auto items-center justify-center px-2 w-28 flex-row rounded-md ${currentStyles.bg_6}`}
-                    onPress={() => { handleBackground(); handleBackgroundPlayButton(); }}
+                    onPress={() => { handleBackground(); }}
                 >
                     <View className='flex justify-center items-center'>
 

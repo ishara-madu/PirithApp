@@ -36,7 +36,7 @@ const Home: React.FC = () => {
   const [intervalId, setIntervalId] = useState<any>();
   const [btnPress, setBtnPress] = useState<boolean>(false)
 
-  const { playbackRate, setUniqueId, uniqueId, setUrls, urls, setShowPlaylist, showPlaylist, theme, isPlay, setIsPlay, url, setUrl, isFavoritesAll, nameAll, artistAll, playerStyle, isFavorites, setIsFavorites } = useGlobalContext();
+  const { playbackRate, setUniqueId, uniqueId, setUrls, urls, setShowPlaylist, showPlaylist, theme, isPlay, setIsPlay, url, setUrl, isFavoritesAll, nameAll, artistAll, playerStyle, isFavorites, setIsFavorites, setActiveButton } = useGlobalContext();
 
   const currentStyles = theme === 'Light' ? lightStyles : darkStyles;
 
@@ -97,7 +97,7 @@ const Home: React.FC = () => {
   const onStateChange = (state: any) => {
     if (state === 'buffering' || state === 'unstarted') {
       setShowLoading(true);
-      if(state === 'unstarted'){
+      if (state === 'unstarted') {
         setDuration(0);
         setCurrentTime(0)
       }
@@ -252,20 +252,32 @@ const Home: React.FC = () => {
       <StatusBar barStyle={"default"} />
       <SafeAreaView>
         <View className={`w-full h-full flex flex-col items-center ${currentStyles.bg_1} justify-end`}>
-          <TouchableWithoutFeedback onPress={() => { setShowInfo(false) }}>
+          <TouchableWithoutFeedback onPress={() => { setShowInfo(false); setActiveButton(0); }}>
 
 
             <View className='w-full flex h-10 flex-row justify-around items-end z-20 bg-gre5'>
               <TouchableOpacity
                 className='w-7 h-7 flex justify-center items-center rounded-full'
-                onPress={() => { setShowPlaylist(true); setShowInfo(false); }}
+                onPress={() => { setShowPlaylist(true); setShowInfo(false); setActiveButton(0); }}
               >
                 <DownArrow fill={currentStyles.svg_1} width={22} height={12} />
               </TouchableOpacity>
               <Text className={`${currentStyles.tx_1} text-sm font-semibold`}>Now Playing</Text>
               <TouchableOpacity
                 className=' w-7 h-7 flex justify-center items-center rounded-full'
-                onPress={() => { showInfo ? setShowInfo(false) : setShowInfo(true) }}
+                onPress={() => {
+                  if (showInfo) {
+                    setShowInfo(false);
+                    setActiveButton(0);
+                    showspeedOptions && setShowSpeedOptions(false);
+    showTimeOptions && setShowTimeOptions(false)
+    showTypeOptions && setShowTypeOptions(false);
+    showThemeOptions && setShowThemeOptions(false);
+    showBackgroundPlayOptions && setShowBackgroundPlayOptions(false);
+                  } else {
+                    setShowInfo(true);
+                  }
+                }}
               >
                 <More fill={currentStyles.svg_1} />
               </TouchableOpacity>
