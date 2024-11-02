@@ -1,25 +1,21 @@
 // In App.js in a new project
 
 import * as React from 'react';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Home from './src/pages/Home';
 import { GlobalProvider } from './src/components/Hooks/GlobalContext';
 import { fetchData } from './src/pages/Database';
-
-const Stack = createNativeStackNavigator();
-
-
+import Welcome from './src/pages/Welcome';
 
 function App() {
 
-React.useEffect(()=>{
-  fetchData()
-},[])
+  React.useEffect(() => {
+    fetchData()
+  }, [])
 
   return (
     <GlobalProvider>
       {/* <Welcome/> */}
-      <Home/>
+      <Home />
     </GlobalProvider>
 
   );

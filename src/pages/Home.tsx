@@ -1,8 +1,7 @@
-import { View, Text, Image, TouchableOpacity, Alert, Share, TouchableWithoutFeedback, StatusBar } from 'react-native'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { View, Text, Image, TouchableOpacity, Share, TouchableWithoutFeedback, StatusBar,SafeAreaView } from 'react-native'
+import React, { useEffect, useRef, useState } from 'react'
 import Shuffle from '../../assets/svg/Shuffle'
 import SkipPreviews from '../../assets/svg/SkipPreviews'
-import { NavigationContainer, useFocusEffect } from '@react-navigation/native';
 import Play from '../../assets/svg/Play'
 import SkipNext from '../../assets/svg/SkipNext'
 import Repeat from '../../assets/svg/Repeat'
@@ -16,12 +15,10 @@ import Playlist from './Playlist';
 import Slider from '@react-native-community/slider';
 import Loading from '../components/Loading';
 import { darkStyles, lightStyles, useGlobalContext } from '../components/Hooks/GlobalContext';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import DownArrow from '../../assets/svg/DownArrow';
 import More from '../../assets/svg/More';
 import RightSkip from '../../assets/svg/RightSkip';
 import LeftSkip from '../../assets/svg/LeftSkip';
-import { length } from '../../node_modules/@protobufjs/base64/index.d';
 
 
 

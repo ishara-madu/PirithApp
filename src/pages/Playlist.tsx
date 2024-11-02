@@ -1,14 +1,12 @@
-import { View, Text, TextInput, Image, ScrollView, TouchableOpacity, FlatList } from 'react-native'
+import { View, Text, TextInput, Image, ScrollView, TouchableOpacity, FlatList,SafeAreaView } from 'react-native'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import Hmaburger from '../../assets/svg/Hamburger'
 import Search from '../../assets/svg/Search'
 import Return from '../../assets/svg/Return'
 import List from '../../assets/svg/List'
 import Flatlist from '../components/Flatlist'
-import { getData, saveData } from './Database'
 import Menu from './Menu'
 import { darkStyles, lightStyles, useGlobalContext } from '../components/Hooks/GlobalContext'
-import { SafeAreaView } from 'react-native-safe-area-context'
 
 
 type PlaylistProps = {
