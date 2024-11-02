@@ -8,13 +8,12 @@ import { getYoutubeMeta } from 'react-native-youtube-iframe'
 
 
 const Info = () => {
-    const [activeButton, setActiveButton] = useState(0);
     const [author, setAuthor] = useState('');
     const [authorUrl, setAuthorUrl] = useState('');
     const [title, setTitle] = useState('');
     const [thumbnail, setThumbnail] = useState('');
 
-    const { urls, uniqueId, theme,showTimeOptions, setShowTimeOptions,showspeedOptions, setShowSpeedOptions } = useGlobalContext();
+    const { urls, uniqueId, theme,showTimeOptions, setShowTimeOptions,showspeedOptions, setShowSpeedOptions,activeButton, setActiveButton } = useGlobalContext();
     const currentStyles = theme === 'Light' ? lightStyles : darkStyles;
 
     const meta = () => {

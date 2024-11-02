@@ -8,7 +8,7 @@ type PlaybackProps = {
 }
 
 const PlaybackSpeed = ({  ...props }: PlaybackProps) => {
-    const { playbackRate, setPlaybackRate,theme,showspeedOptions, setShowSpeedOptions } = useGlobalContext();
+    const { playbackRate, setPlaybackRate,theme,showspeedOptions, setShowSpeedOptions,setActiveButton } = useGlobalContext();
     const [playbackSpeed, setPlaybackSpeed] = useState<any>(playbackRate);
 
 
@@ -16,6 +16,7 @@ const PlaybackSpeed = ({  ...props }: PlaybackProps) => {
 
     const handlePlaybackSpeed = () => {
         setShowSpeedOptions(true)
+        setActiveButton(2)
     }
 
 

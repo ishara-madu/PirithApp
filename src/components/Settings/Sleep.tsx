@@ -11,7 +11,7 @@ const Sleep = ({  ...props }: SleepProps) => {
     const [selectedTime, setSelectedTime] = useState("Off");
 
 
-    const { theme,showTimeOptions, setShowTimeOptions } = useGlobalContext();
+    const { theme,showTimeOptions, setShowTimeOptions,setActiveButton } = useGlobalContext();
     const currentStyles = theme === 'Light' ? lightStyles : darkStyles;
 
 
@@ -20,6 +20,7 @@ const Sleep = ({  ...props }: SleepProps) => {
 
     const handleSleepTimer = () => {
         setShowTimeOptions(true)
+        setActiveButton(1);
     }
 
 
