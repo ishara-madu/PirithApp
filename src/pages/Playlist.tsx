@@ -1,4 +1,4 @@
-import { View, Text, TextInput, Image, ScrollView, TouchableOpacity, FlatList,SafeAreaView } from 'react-native'
+import { View, Text, TextInput, Image, ScrollView, TouchableOpacity, FlatList, SafeAreaView } from 'react-native'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import Hmaburger from '../../assets/svg/Hamburger'
 import Search from '../../assets/svg/Search'
@@ -7,6 +7,7 @@ import List from '../../assets/svg/List'
 import Flatlist from '../components/Flatlist'
 import Menu from './Menu'
 import { darkStyles, lightStyles, useGlobalContext } from '../components/Hooks/GlobalContext'
+import { getData } from './Database'
 
 
 type PlaylistProps = {
@@ -24,7 +25,7 @@ const Playlist = (props: PlaylistProps) => {
     const [favoriteData, setFavoriteData] = useState()
 
 
-    const { showMenu, setShowMenu, setShowPlaylist, showPlaylist, theme,isFavorites, setIsFavorites,data } = useGlobalContext();
+    const {setData, showMenu, setShowMenu, setShowPlaylist, showPlaylist, theme, isFavorites, setIsFavorites, data } = useGlobalContext();
 
     const currentStyles = theme === 'Light' ? lightStyles : darkStyles;
 
@@ -88,16 +89,29 @@ const Playlist = (props: PlaylistProps) => {
         }));
     }, [data])
 
-    const handleFavorite = useMemo(() => {    
+    const handleFavorite = useMemo(() => {
         return data
             .filter((song: any) => song.isFavorites === 1 || song.isFavorites === true)
             .map((song: any, index: any) => ({ ...song, uniqueId: index })); // Prefix for unique IDs
-    },[data,isFavorites])
+    }, [data, isFavorites])
 
     useEffect(() => {
         if (listType === 'Recent') {
+            if (handleRecent == "") {
+                const fetchAsyncData = async () => {
+                    try {
+                        const users = await getData("item");
+                        setData(users);                        
+                    } catch (error) {
+                        console.error("Error fetching data:", error);
+                    }finally{
+                        setRecentData(filterAndSort(data.filter((song: any) => song.isFavorites === 1 || song.isFavorites === true).map((song: any, index: any) => ({ ...song, uniqueId: index }))));
+                    }
+                };
+                fetchAsyncData();
+            }
             setRecentData(filterAndSort(handleRecent));
-        } else if (listType === 'Favorite') {            
+        } else if (listType === 'Favorite') {
             setFavoriteData(filterAndSort(handleFavorite));
         } else if (listType === 'Playlist') {
             setOutsidePlaylist(filterAndSort(handleOutPlaylist));
@@ -192,7 +206,7 @@ const Playlist = (props: PlaylistProps) => {
                                                                 </View>
                                                             </View>
                                                             <View>
-                                                                <Text className={`${currentStyles.tx_1} text-sm font-semibold`}>{truncateString(item.playlist,35)}</Text>
+                                                                <Text className={`${currentStyles.tx_1} text-sm font-semibold`}>{truncateString(item.playlist, 35)}</Text>
                                                             </View>
                                                         </TouchableOpacity>
                                                     )}

@@ -67,7 +67,7 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
   const [showSettings, setShowSettings] = useState<boolean>(false);
   const [theme, setTheme] = useState("Light");
   const [isPlay, setIsPlay] = useState<boolean>(false);
-  const [playerStyle,setPlayerStyle] = useState<any>("Classic");
+  const [playerStyle, setPlayerStyle] = useState<any>("Classic");
   const [selectedBackgroundPlay, setSelectedBackgroundPlay] = useState("On");
   const [isFavorites, setIsFavorites] = useState(false);
   const [data, setData] = useState<any>([]);
@@ -81,7 +81,7 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
 
 
 
-  useEffect(() => {    
+  useEffect(() => {
     const fetchData = async () => {
       const theme = await getDataVariable("theme");
       const playerStyle = await getDataVariable("playerStyle");
@@ -91,8 +91,8 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
       const isFavoritesAll = await getDataVariable("isFavoritesAll");
       const nameAll = await getDataVariable("nameAll");
       const artistAll = await getDataVariable("artistAll");
-      setTheme(theme ?? "Light");      
-      setPlayerStyle(playerStyle ?? "Classic"); 
+      setTheme(theme ?? "Light");
+      setPlayerStyle(playerStyle ?? "Classic");
       setUniqueId(uniqueId ?? 0);
       setUrl(url ?? '');
       setUrls(urls ?? []);
@@ -104,9 +104,8 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
 
-
   return (
-    <GlobalContext.Provider value={{playbackRate, setPlaybackRate, urls, setUrls, uniqueId, setUniqueId, showMenu, setShowMenu, showPlaylist, setShowPlaylist, showAbout, setShowAbout, showSettings, setShowSettings, theme, setTheme, isPlay, setIsPlay,url, setUrl,isFavoritesAll, setIsFavoritesAll,nameAll, setNameAll,artistAll, setArtistAll,playerStyle,setPlayerStyle,selectedBackgroundPlay, setSelectedBackgroundPlay,isFavorites, setIsFavorites,data, setData,showTimeOptions, setShowTimeOptions,showspeedOptions, setShowSpeedOptions,activeButton, setActiveButton,showTypeOptions, setShowTypeOptions,showThemeOptions, setShowThemeOptions,showBackgroundPlayOptions, setShowBackgroundPlayOptions}}>
+    <GlobalContext.Provider value={{ playbackRate, setPlaybackRate, urls, setUrls, uniqueId, setUniqueId, showMenu, setShowMenu, showPlaylist, setShowPlaylist, showAbout, setShowAbout, showSettings, setShowSettings, theme, setTheme, isPlay, setIsPlay, url, setUrl, isFavoritesAll, setIsFavoritesAll, nameAll, setNameAll, artistAll, setArtistAll, playerStyle, setPlayerStyle, selectedBackgroundPlay, setSelectedBackgroundPlay, isFavorites, setIsFavorites, data, setData, showTimeOptions, setShowTimeOptions, showspeedOptions, setShowSpeedOptions, activeButton, setActiveButton, showTypeOptions, setShowTypeOptions, showThemeOptions, setShowThemeOptions, showBackgroundPlayOptions, setShowBackgroundPlayOptions }}>
       {children}
     </GlobalContext.Provider>
   );
@@ -120,7 +119,15 @@ export const useGlobalContext = () => {
   }
   return context;
 };
-
+export const fetchAsyncData = async () => {
+  const {setData} = useGlobalContext()
+  try {
+    const users = await getData("item");
+    setData(users);
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+};
 
 export const lightStyles = {
   bg_1: 'bg-[#e0e1dd]',

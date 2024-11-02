@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import Home from './src/pages/Home';
-import { GlobalProvider } from './src/components/Hooks/GlobalContext';
+import { fetchAsyncData, GlobalProvider } from './src/components/Hooks/GlobalContext';
 import { fetchData, getDataVariable } from './src/pages/Database';
 import Welcome from './src/pages/Welcome';
 import Loading from './src/components/Loading';
@@ -18,6 +18,8 @@ function App() {
       try {
         const welcome = await getDataVariable('Welcome');
         setWelcome(welcome ?? true);
+        fetchData();
+        fetchAsyncData();
       } catch (error) {
         console.log(error);
       } finally {

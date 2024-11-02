@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Alert } from 'react-native';
 import NetInfo from '@react-native-community/netinfo';
-import { fetchData } from '../pages/Database';
+import { fetchData, getData } from '../pages/Database';
+import { useGlobalContext } from './Hooks/GlobalContext';
 
 const ConnectivityChecker = () => {
     const [isConnected, setIsConnected] = useState<any>(true);
+    const {setData} = useGlobalContext();
 
     useEffect(() => {
         const unsubscribe = NetInfo.addEventListener(state => {
@@ -28,7 +30,16 @@ const ConnectivityChecker = () => {
     // Show alert based on connection status
     const showAlert = () => {
         if (isConnected) {
-            fetchData();
+            // fetchData();
+            // const fetchAsyncData = async () => {
+            //     try {
+            //         const users = await getData("item");
+            //         setData(users);
+            //     } catch (error) {
+            //         console.error("Error fetching data:", error);
+            //     }
+            // };
+            // fetchAsyncData();
         } else {
             Alert.alert(
                 "⚠️ No Internet Connection!",
