@@ -1,15 +1,15 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 
-// Your Firebase configuration
+// Your Firebase configuration using environment variables
 const firebaseConfig = {
-  apiKey: "AIzaSyBt0cgSTJkAmmIbsi6g3FPNKK7OljETZk0",
-  authDomain: "pirith-6fb06.firebaseapp.com",
-  projectId: "pirith-6fb06",
-  storageBucket: "pirith-6fb06.firebasestorage.app",
-  messagingSenderId: "799214750008",
-  appId: "1:799214750008:web:98e9abb50f8158e2a199cd",
-  measurementId: "G-8RGQ69DG09"
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
+  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID,
 };
 
 // Initialize Firebase
@@ -18,4 +18,4 @@ const app = initializeApp(firebaseConfig);
 // Initialize Firestore
 const db = getFirestore(app);
 
-export {db}
+export { db };
