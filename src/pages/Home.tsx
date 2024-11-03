@@ -20,11 +20,11 @@ import More from '../../assets/svg/More';
 import RightSkip from '../../assets/svg/RightSkip';
 import LeftSkip from '../../assets/svg/LeftSkip';
 import ConnectivityChecker from '../components/ConnectivityChecker'
+import ExitAlert from '../components/ExitAlert'
 
 
 
 const Home: React.FC = () => {
-  const [showInfo, setShowInfo] = useState(false);
   const playerRef = useRef<YoutubeIframeRef>(null);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -34,7 +34,7 @@ const Home: React.FC = () => {
   const [intervalId, setIntervalId] = useState<any>();
   const [btnPress, setBtnPress] = useState<boolean>(false)
 
-  const { setData, playbackRate, setUniqueId, uniqueId, setUrls, urls, setShowPlaylist, showPlaylist, theme, isPlay, setIsPlay, url, setUrl, isFavoritesAll, nameAll, artistAll, playerStyle, isFavorites, setIsFavorites, setActiveButton, showspeedOptions, showTimeOptions, setShowTimeOptions, setShowSpeedOptions, showTypeOptions, setShowTypeOptions, showThemeOptions, setShowThemeOptions, showBackgroundPlayOptions, setShowBackgroundPlayOptions } = useGlobalContext();
+  const { showInfo, setShowInfo,setData, playbackRate, setUniqueId, uniqueId, setUrls, urls, setShowPlaylist, showPlaylist, theme, isPlay, setIsPlay, url, setUrl, isFavoritesAll, nameAll, artistAll, playerStyle, isFavorites, setIsFavorites, setActiveButton, showspeedOptions, showTimeOptions, setShowTimeOptions, setShowSpeedOptions, showTypeOptions, setShowTypeOptions, showThemeOptions, setShowThemeOptions, showBackgroundPlayOptions, setShowBackgroundPlayOptions } = useGlobalContext();
 
   const currentStyles = theme === 'Light' ? lightStyles : darkStyles;
 
@@ -123,7 +123,6 @@ const Home: React.FC = () => {
     if (state === 'buffering' || state === 'unstarted') {
       setShowLoading(true);
       if (state === 'unstarted') {
-        setDuration(0);
         setCurrentTime(0)
       }
     } else {
@@ -274,8 +273,8 @@ const Home: React.FC = () => {
 
   return (
     <>
-      <StatusBar barStyle={"default"} />
       <SafeAreaView>
+      <StatusBar barStyle={`${theme === 'Light' ? "dark-content" : "light-content"}`} backgroundColor={currentStyles.svg_5} />
         <View className={`w-full h-full flex flex-col items-center ${currentStyles.bg_1} justify-end`}>
           <TouchableWithoutFeedback onPress={() => { clearSettings() }}>
 
@@ -476,7 +475,6 @@ const Home: React.FC = () => {
             showInfo && <Info />
           }
         </View>
-
       </SafeAreaView>
       <Playlist />
     </>

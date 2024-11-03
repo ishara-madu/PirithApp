@@ -48,6 +48,9 @@ type GlobalContextType = {
   setShowThemeOptions: (value: boolean) => void;
   showBackgroundPlayOptions: boolean;
   setShowBackgroundPlayOptions: (value: boolean) => void;
+  showInfo: boolean;
+  setShowInfo: (value: boolean) => void;
+
 };
 
 const GlobalContext = createContext<GlobalContextType | undefined>(undefined);
@@ -76,6 +79,7 @@ export const GlobalProvider = ({ children,...props }: { children: ReactNode,data
   const [showTypeOptions, setShowTypeOptions] = useState(false);
   const [showThemeOptions, setShowThemeOptions] = useState(false);
   const [showBackgroundPlayOptions, setShowBackgroundPlayOptions] = useState(false);
+  const [showInfo, setShowInfo] = useState(false);
 
 
 
@@ -104,7 +108,7 @@ export const GlobalProvider = ({ children,...props }: { children: ReactNode,data
 
 
   return (
-    <GlobalContext.Provider value={{ playbackRate, setPlaybackRate, urls, setUrls, uniqueId, setUniqueId, showMenu, setShowMenu, showPlaylist, setShowPlaylist, showAbout, setShowAbout, showSettings, setShowSettings, theme, setTheme, isPlay, setIsPlay, url, setUrl, isFavoritesAll, setIsFavoritesAll, nameAll, setNameAll, artistAll, setArtistAll, playerStyle, setPlayerStyle, selectedBackgroundPlay, setSelectedBackgroundPlay, isFavorites, setIsFavorites, data, setData, showTimeOptions, setShowTimeOptions, showspeedOptions, setShowSpeedOptions, activeButton, setActiveButton, showTypeOptions, setShowTypeOptions, showThemeOptions, setShowThemeOptions, showBackgroundPlayOptions, setShowBackgroundPlayOptions }}>
+    <GlobalContext.Provider value={{showInfo, setShowInfo, playbackRate, setPlaybackRate, urls, setUrls, uniqueId, setUniqueId, showMenu, setShowMenu, showPlaylist, setShowPlaylist, showAbout, setShowAbout, showSettings, setShowSettings, theme, setTheme, isPlay, setIsPlay, url, setUrl, isFavoritesAll, setIsFavoritesAll, nameAll, setNameAll, artistAll, setArtistAll, playerStyle, setPlayerStyle, selectedBackgroundPlay, setSelectedBackgroundPlay, isFavorites, setIsFavorites, data, setData, showTimeOptions, setShowTimeOptions, showspeedOptions, setShowSpeedOptions, activeButton, setActiveButton, showTypeOptions, setShowTypeOptions, showThemeOptions, setShowThemeOptions, showBackgroundPlayOptions, setShowBackgroundPlayOptions }}>
       {children}
     </GlobalContext.Provider>
   );
@@ -126,7 +130,7 @@ export const lightStyles = {
   bg_3: 'bg-[#415a77]',
   bg_4: 'bg-[#1b263b]',
   bg_5: 'bg-[#051014]',
-  bg_6: 'bg-[#000000b6]',
+  bg_6: 'bg-[#000000d4]',
   bg_7: 'bg-[#0000002f]',
   bg_active_7: 'active:bg-[#0000002f]',
 
@@ -154,7 +158,7 @@ export const darkStyles = {
   bg_3: 'bg-[#415a77]', // Opposite of lightStyles bg_3
   bg_4: 'bg-[#778da9]', // Opposite of lightStyles bg_4
   bg_5: 'bg-[#e0e1dd]', // Opposite of lightStyles bg_5
-  bg_6: 'bg-[#00000087]',
+  bg_6: 'bg-[#000000d4]',
   bg_7: 'bg-[#0000002f]',
   bg_active_7: 'active:bg-[#0000002f]',
 

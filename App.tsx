@@ -8,6 +8,7 @@ import Welcome from './src/pages/Welcome';
 import Loading from './src/components/Loading';
 import ConnectivityChecker from './src/components/ConnectivityChecker';
 import { err } from 'react-native-svg';
+import ExitAlert from './src/components/ExitAlert';
 
 function App() {
   const [welcome, setWelcome] = React.useState(true);
@@ -59,6 +60,7 @@ function App() {
       )
     }
     <ConnectivityChecker />
+    <ExitAlert />
     </GlobalProvider>
 
   );
