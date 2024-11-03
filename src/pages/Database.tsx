@@ -37,7 +37,7 @@ export const fetchData = async () => {
   NetInfo.addEventListener(state => {
     value = state.isConnected
   });
-  if (value == true) {
+  if (value === true) {
     try {
       const tempIdsFirebase: any = [];
       let tempIdsAsync: any = [];

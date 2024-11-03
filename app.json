@@ -21,7 +21,8 @@
         "backgroundColor": "#ffffff"
       },
       "permissions": [
-        "INTERNET"
+        "INTERNET",
+        "com.google.android.gms.permission.AD_ID"
       ],
       "package": "com.pixeleye.pirith"
     },

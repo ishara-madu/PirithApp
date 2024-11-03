@@ -39,7 +39,7 @@ function App() {
         console.log(error);
       } finally {
         setLoading(false);
-        
+
       }
     }
     fetchWelcome();
@@ -59,11 +59,10 @@ function App() {
           <Home />
         )
       )
-    }
-    <ConnectivityChecker />
-    <ExitAlert />
+      }
+      <ConnectivityChecker />
+      <ExitAlert />
     </GlobalProvider>
-
   );
 }
 

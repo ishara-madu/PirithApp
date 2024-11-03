@@ -23,6 +23,7 @@ const Playlist = (props: PlaylistProps) => {
     const [insidePlaylistData, setInsidePlaylistData] = useState()
     const [recentData, setRecentData] = useState()
     const [favoriteData, setFavoriteData] = useState()
+    const [playlistName,setPlaylistName] = useState<string | any>()
 
 
     const { setData, showMenu, setShowMenu, setShowPlaylist, showPlaylist, theme, isFavorites, setIsFavorites, data } = useGlobalContext();
@@ -109,6 +110,7 @@ const Playlist = (props: PlaylistProps) => {
         setInputValue(text);
     };
 
+    
     function truncateString(str: string, length: number) {
         if (str != null && str.length) {
 
@@ -118,7 +120,6 @@ const Playlist = (props: PlaylistProps) => {
             return str;
         }
     }
-
 
 
 
@@ -152,7 +153,7 @@ const Playlist = (props: PlaylistProps) => {
                 </View>
                 <View className={`flex-1 w-full ${currentStyles.bg_2} rounded-t-3xl items-center pt-5`}>
                     <View className='flex w-[85%] mb-5 flex-row items-center justify-between h-10'>
-                        <Text className={`${currentStyles.tx_1} text-xl font-bold`}>{listType}</Text>
+                        <Text className={`${currentStyles.tx_1} text-xl font-bold`}>{!insidePlaylist ? listType : truncateString(playlistName,15)}</Text>
                         {
                             listType == "Playlist" && insidePlaylist ? (
                                 <TouchableOpacity onPress={() => {
@@ -186,6 +187,7 @@ const Playlist = (props: PlaylistProps) => {
                                                     renderItem={({ item }) => (
                                                         <TouchableOpacity onPress={() => {
                                                             handleInPlaylist(item.playlist)
+                                                            setPlaylistName(item.playlist);
                                                         }} className={`w-full flex flex-row items-center px-3 h-14 ${currentStyles.bg_7} rounded-xl mt-1`}>
                                                             <View className='w-11 h-11 rounded-md mr-3 overflow-hidden'>
                                                                 <View className='flex-1 justify-center items-center'>
@@ -193,7 +195,7 @@ const Playlist = (props: PlaylistProps) => {
                                                                 </View>
                                                             </View>
                                                             <View>
-                                                                <Text className={`${currentStyles.tx_1} text-sm font-semibold`}>{truncateString(item.playlist, 35)}</Text>
+                                                                <Text className={`${currentStyles.tx_1} text-sm font-semibold`}>{truncateString(item.playlist, 23)}</Text>
                                                             </View>
                                                         </TouchableOpacity>
                                                     )}
