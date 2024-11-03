@@ -21,10 +21,6 @@ function App() {
       try {
         const welcome = await getDataVariable('Welcome');
         setWelcome(welcome ?? true);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setLoading(false);
         try {
           await fetchData();
           const fetchAsyncData = async () => {
@@ -39,6 +35,11 @@ function App() {
         } catch (error) {
           console.log(error);
         }
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+        
       }
     }
     fetchWelcome();
