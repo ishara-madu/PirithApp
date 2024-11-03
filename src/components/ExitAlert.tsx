@@ -4,7 +4,7 @@ import { darkStyles, lightStyles, useGlobalContext } from './Hooks/GlobalContext
 
 const ExitAlert = () => {
     const [showExitPopup,setShowExitPopup] = React.useState(false)
-    const { theme,showPlaylist,setShowPlaylist,showMenu,setShowMenu,showSettings,setShowSettings,showAbout,setShowAbout } = useGlobalContext();
+    const { theme,showInfo, setShowInfo,showPlaylist,setShowPlaylist,showMenu,setShowMenu,showSettings,setShowSettings,showAbout,setShowAbout } = useGlobalContext();
     const currentStyles = theme === 'Light' ? lightStyles : darkStyles;
 
     React.useEffect(() => {
@@ -17,6 +17,8 @@ const ExitAlert = () => {
                 setShowMenu(false);
             } else if (showPlaylist) {
                 setShowPlaylist(false);
+            } else if (showInfo){
+                setShowInfo(false);
             } else {
                 setShowExitPopup(true);
             }
@@ -28,7 +30,7 @@ const ExitAlert = () => {
         return () => {
             backHandler.remove();
         };
-    }, [showPlaylist, showMenu, showSettings, showAbout]);
+    }, [showPlaylist, showMenu, showSettings, showAbout,showInfo]);
     
     
 
