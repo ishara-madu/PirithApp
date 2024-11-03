@@ -84,7 +84,7 @@ Our plans include:
 
 ## **Contact Us**
 
-For any issues, feedback, or suggestions, feel free to [open an issue](https://github.com/Pirith-mobile-app/issues) or reach out via email at [isharamadushankab@gmail.com].
+For any issues, feedback, or suggestions, feel free to [open an issue](https://github.com/ishara-madu/Pirith-mobile-app/issues) or reach out via email at [isharamadushankab@gmail.com].
 
 ---
 
