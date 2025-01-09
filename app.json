@@ -2,7 +2,10 @@
   "expo": {
     "name": "Pirith App - සෙත් පිරි​ත්",
     "slug": "pirith",
+<<<<<<< HEAD
     "newArchEnabled": true,
+=======
+>>>>>>> 3d8cd524728d7fe4048cf1c727888fe7ea9f76f1
     "version": "1.0.3",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

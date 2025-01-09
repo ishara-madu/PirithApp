@@ -19,6 +19,21 @@ export const saveData = async (group: any, url: any, name: any, artist: any, pla
   }
 }
 
+<<<<<<< HEAD
+=======
+// const clearAllAsyncStorage = async () => {
+//   try {
+//       await AsyncStorage.clear();
+//       console.log("AsyncStorage cleared!");
+//   } catch (error) {
+//       console.error("Error clearing AsyncStorage:", error);
+//   }
+// };
+
+// // Call the function to clear AsyncStorage
+// clearAllAsyncStorage();
+
+>>>>>>> 3d8cd524728d7fe4048cf1c727888fe7ea9f76f1
 
 export const fetchData = async () => {
   let value: any;

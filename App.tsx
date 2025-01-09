@@ -7,6 +7,10 @@ import { fetchData, getData, getDataVariable } from './src/pages/Database';
 import Welcome from './src/pages/Welcome';
 import Loading from './src/components/Loading';
 import ConnectivityChecker from './src/components/ConnectivityChecker';
+<<<<<<< HEAD
+=======
+import { err } from 'react-native-svg';
+>>>>>>> 3d8cd524728d7fe4048cf1c727888fe7ea9f76f1
 import ExitAlert from './src/components/ExitAlert';
 
 function App() {
@@ -44,7 +48,11 @@ function App() {
     fetchWelcome();
   }, [])
 
+<<<<<<< HEAD
   const text = "This may take few minutes for loading dependecies..."
+=======
+  const text = "This may take a long time on the first launch..."
+>>>>>>> 3d8cd524728d7fe4048cf1c727888fe7ea9f76f1
 
 
   return (

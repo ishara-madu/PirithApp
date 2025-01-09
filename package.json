@@ -1,5 +1,9 @@
 {
+<<<<<<< HEAD
   "name": "pirith-app-seth-pirith",
+=======
+  "name": "pirith",
+>>>>>>> 3d8cd524728d7fe4048cf1c727888fe7ea9f76f1
   "version": "1.0.3",
   "main": "expo/AppEntry.js",
   "scripts": {
@@ -10,6 +14,7 @@
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "1.23.1",
+<<<<<<< HEAD
     "@react-native-community/netinfo": "11.4.1",
     "@react-native-community/slider": "4.5.5",
     "expo": "^52.0.24",
@@ -20,11 +25,27 @@
     "react-native-dotenv": "^3.4.11",
     "react-native-svg": "15.8.0",
     "react-native-webview": "^13.12.5",
+=======
+    "@react-native-community/netinfo": "11.3.1",
+    "@react-native-community/slider": "4.5.2",
+    "expo": "~51.0.28",
+    "firebase": "^11.0.1",
+    "nativewind": "^2.0.11",
+    "react": "18.2.0",
+    "react-native": "0.74.5",
+    "react-native-dotenv": "^3.4.11",
+    "react-native-svg": "15.2.0",
+    "react-native-webview": "13.8.6",
+>>>>>>> 3d8cd524728d7fe4048cf1c727888fe7ea9f76f1
     "react-native-youtube-iframe": "^2.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.24.0",
+<<<<<<< HEAD
     "@types/react": "~18.3.12",
+=======
+    "@types/react": "~18.2.79",
+>>>>>>> 3d8cd524728d7fe4048cf1c727888fe7ea9f76f1
     "tailwindcss": "3.3.2",
     "typescript": "~5.3.3"
   },

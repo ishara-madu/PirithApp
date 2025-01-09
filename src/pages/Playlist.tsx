@@ -7,6 +7,10 @@ import List from '../../assets/svg/List'
 import Flatlist from '../components/Flatlist'
 import Menu from './Menu'
 import { darkStyles, lightStyles, useGlobalContext } from '../components/Hooks/GlobalContext'
+<<<<<<< HEAD
+=======
+import { getData } from './Database'
+>>>>>>> 3d8cd524728d7fe4048cf1c727888fe7ea9f76f1
 
 
 type PlaylistProps = {
