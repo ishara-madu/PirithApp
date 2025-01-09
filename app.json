@@ -1,0 +1,38 @@
+{
+  "expo": {
+    "name": "Pirith App - සෙත් පිරි​ත්",
+    "slug": "pirith",
+    "newArchEnabled": true,
+    "version": "1.0.3",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.pixeleye.pirith"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/foregroundImage.png",
+        "backgroundColor": "#ffffff"
+      },
+      "permissions": [
+        "INTERNET",
+        "com.google.android.gms.permission.AD_ID"
+      ],
+      "package": "com.pixeleye.pirith"
+    },
+    "web": {},
+    "plugins": [],
+    "extra": {
+      "eas": {
+        "projectId": "8801c924-b670-4a82-bafe-e48cb4b9f628"
+      }
+    }
+  }
+}
